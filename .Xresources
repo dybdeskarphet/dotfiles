@@ -1,0 +1,91 @@
+!! URxvt | colors
+! special
+*.foreground:   #ffffff
+*.background:   #000000
+*.cursorColor:  #ffffff
+
+! black
+*.color0:       #646e5b
+*.color8:       #88927e
+
+! red
+*.color1:       #db7464
+*.color9:       #dba08f
+
+! green
+*.color2:       #97b168
+*.color10:      #aec289
+
+! yellow
+*.color3:       #dbd560
+*.color11:      #dbda8b
+
+! blue
+*.color4:       #69b2d6
+*.color12:      #95a9d6
+
+! magenta
+*.color5:       #a073d6
+*.color13:      #b59fd6
+
+! cyan
+*.color6:       #69e1d3
+*.color14:      #95e1d2
+
+! white
+*.color7:       #9ea894
+*.color15:      #c9d0c2
+
+! URxvt | fonts 
+URxvt.font: xft:monospace:style=Regular:size=10:antialias=true
+URxvt.boldfont: xft:monospace:style=Bold:size=10:antialias=true
+URxvt.italicFont: xft:monospace:style=Italic:size=10:antialias=true
+URxvt.boldItalicFont: xft:monospace:style=Bold Itallic:size=10:antialias=true
+ 
+!! URxvt | appearance
+URxvt.termName: rxvt-unicode
+URxvt.letterSpace: 0
+URxvt.lineSpace: 0
+URxvt.geometry: 92x24
+URxvt.internalBorder: 24
+URxvt.cursorBlink: true
+URxvt.cursorUnderLine: false
+URxvt.saveline: 2048
+URxvt.scrollBar: false
+URxvt.scrollBar_right: false
+URxvt.urgentOnBell: true
+URxvt.depth: 24
+URxvt.iso14755: false
+!
+! transparency
+URxvt.transparent: true
+URxvt.tintColor: white
+URxvt.shading: 11
+
+!! URxvt | extensions and stuff
+URxvt.perl-ext-common: default,matcher,url-select,resize-font
+!
+! clickable urls
+URxvt.url-launcher: /usr/bin/xdg-open
+URxvt.matcher.rend.0: Uline Bold fg6
+URxvt.matcher.button: 1
+!
+! selectible urls
+URxvt.keysym.M-u: perl:url-select:select_next
+URxvt.url-select.launcher: /usr/bin/xdg-open
+URxvt.url-select.underline: true
+!
+! copy paste
+URxvt.clipboard.autocopy: true
+URxvt.keysym.Control-Meta-c: builtin-string:
+URxvt.keysym.Control-Meta-v: builtin-string:
+URxvt.keysym.Control-Shift-V: eval:paste_clipboard
+URxvt.keysym.Control-Shift-C: eval:selection_to_clipboard
+!
+! resize font
+URxvt.keysym.C-KP_Add:  resize-font:bigger
+URxvt.keysym.C-KP_Subtract:    resize-font:smaller
+URxvt.keysym.C-KP_Divide:    resize-font:reset
+
+! dpi value
+Xft.dpi: 96

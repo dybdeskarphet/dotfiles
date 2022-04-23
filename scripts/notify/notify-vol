@@ -1,0 +1,71 @@
+#!/bin/bash
+case $1 in
+	up)
+	  pamixer -i 5
+
+	  dunstify -h int:value:$(pamixer --get-volume) \
+	  -i audio-volume-high \
+	  -r 92030 \
+	  -t 3000 \
+	  "ses $(pamixer --get-volume-human)" 
+
+#	  ffplay -nodisp -autoexit /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga
+	;;
+
+	down)
+	  pamixer -d 5
+
+	  dunstify -h int:value:$(pamixer --get-volume) \
+	  -i audio-volume-medium \
+	  -r 92030 \
+	  -t 3000 \
+	  "ses $(pamixer --get-volume-human)" 
+
+#	  ffplay -nodisp -autoexit /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga
+	;;
+
+	full)
+	  pamixer --set-volume 100
+
+	  dunstify -h int:value:$(pamixer --get-volume) \
+	  -i audio-volume-high \
+	  -r 92030 \
+	  -t 3000 \
+	  "ses $(pamixer --get-volume-human)" 
+
+#	  ffplay -nodisp -autoexit /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga
+	;;
+
+	off)
+	  pamixer --set-volume 0
+
+	  dunstify -h int:value:$(pamixer --get-volume) \
+	  -i audio-volume-low \
+	  -r 92030 \
+	  -t 3000 \
+	  "ses $(pamixer --get-volume-human)" 
+	;;
+
+	toggle)
+	  case $(pamixer --get-volume-human) in
+	  	muted)
+	 	  pamixer -t
+
+		  dunstify -h int:value:$(pamixer --get-volume) \
+		  -i audio-volume-high \
+		  -r 92030 \
+		  -t 3000 \
+		  "ses $(pamixer --get-volume-human)" 
+		;;
+
+		*)
+		  pamixer -t
+
+		  dunstify -r 92030 \
+		  -i audio-volume-muted \
+		  -t 3000 \
+		  "susturuldu" 
+		;;
+	  esac
+	;;
+esac

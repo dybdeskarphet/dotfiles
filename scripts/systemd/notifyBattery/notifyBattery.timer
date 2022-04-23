@@ -1,0 +1,10 @@
+[Unit]
+Description=Notify when the battery is low
+Requires=notifyBattery.service
+
+[Timer]
+Unit=notifyBattery.service
+OnCalendar=*-*-* *:*:00
+
+[Install]
+WantedBy=timers.target

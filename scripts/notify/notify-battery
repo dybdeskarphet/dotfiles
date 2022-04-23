@@ -1,0 +1,17 @@
+#!/bin/bash
+if [[ "$(cat /sys/class/power_supply/BAT0/status)" = "Charging" ]]
+then
+	exit 1
+fi
+
+if [[ $(cat /sys/class/power_supply/BAT0/capacity) -lt 15 && $(cat /sys/class/power_supply/BAT0/capacity) -gt 10 ]]
+then
+	dunstify -r 87873 -i battery-empty "pil %15'nin altında" "cihazınızı şarja takmanız tavsiye edilir."
+elif [[ $(cat /sys/class/power_supply/BAT0/capacity) -lt 10 && $(cat /sys/class/power_supply/BAT0/capacity) -gt 5 ]]
+then
+	dunstify -r 87873 -u critical -i battery-empty "pil düşük!" "cihaz birkaç dakika içinde kapanabilir."
+elif [[ $(cat /sys/class/power_supply/BAT0/capacity) -lt 5 ]]
+then
+	dunstify -r 87873  -u critical -i battery-empty "pil neredeyse boş!" "cihazınız birazdan kapanacak!."
+	xbacklight -set 20
+fi
