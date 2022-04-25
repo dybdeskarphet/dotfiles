@@ -18,7 +18,7 @@ $HOME/.config/feh/.fehbg &
 dunst -conf $HOME/.config/dunst/config.ini -verbosity warn 2>&1 | tee $HOME/.config/dunst/dunst.log &
 
 # start polybar
-polybar --log=error --config=$HOME/.config/polybar/config.ini skarphet 2>&1 | tee $HOME/.config/polybar/polybar.log &
+polybar --log=error --config=$HOME/.config/polybar/config.ini <your username> 2>&1 | tee $HOME/.config/polybar/polybar.log &
 
 # start gestures daemon
 # libinput-gestures -c $HOME/.config/libinput-gestures/libinput-gestures.conf 2>&1 | tee $HOME/.config/libinput-gestures/libinput-gestures.log &

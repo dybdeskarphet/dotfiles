@@ -1,5 +1,13 @@
 ## Before You Use
 - Some configs won't work out of the box (because of the required packages and absolute paths). Also most of the messages are in Turkish, change them according to your own language, paths and needs.
+  - You can change usernames in absolute paths by running:
+  ```
+  change_username() { find . -type f -name "*" -print0 | xargs -0 sed -i "s/<your username>/$1/g" ; }
+  ```
+  - And you can change the usernames to your username with:
+  ```
+  change_username myusername
+  ```
 - Move `custom-icons` to `~/.local/share` for default script icons to work.
 - You can change the fonts (for all programs) by just changing the `fontconfig/fonts.conf` file. If you want to use the default fonts, download and copy these to `~/.local/share/fonts`:
   - [Readex Pro](https://fonts.google.com/specimen/Readex+Pro)

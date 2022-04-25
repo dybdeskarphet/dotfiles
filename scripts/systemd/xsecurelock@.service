@@ -5,7 +5,7 @@ Before=sleep.target
 [Service]
 User=%i
 Environment=DISPLAY=:0
-EnvironmentFile=/home/skarphet/.config/systemd/env/env_xsecurelock
+EnvironmentFile=/home/<your username>/.config/systemd/env/env_xsecurelock
 ExecStart=/usr/bin/xsecurelock
 
 [Install]

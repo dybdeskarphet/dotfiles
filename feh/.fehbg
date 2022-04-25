@@ -1,2 +1,2 @@
 #!/bin/sh
-feh --no-fehbg --bg-fill '/home/skarphet/img/wal/sajad-nori-3.jpg'
+feh --no-fehbg --bg-fill '/home/<your username>/img/wal/sajad-nori-3.jpg'
