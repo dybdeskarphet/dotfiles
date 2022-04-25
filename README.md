@@ -4,7 +4,7 @@
   ```
   change_username() { find . -type f -name "*" -print0 | xargs -0 sed -i "s/<your username>/$1/g" ; }
   ```
-  - And you can change the usernames to your username with:
+  - And this command with your username:
   ```
   change_username myusername
   ```
