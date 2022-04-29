@@ -15,4 +15,4 @@
 - And finally, you may want to use [my backup script](https://gist.github.com/dybdeskarphet/e3e4864fafd21d446d43d7b77f10057a#file-backup-sh) with these dots.
 
 ## Screenshot
-<a href="https://unsplash.com/photos/PBhVmnIpGrc"><img src="screenshot.png"></a>
+<a href="https://unsplash.com/photos/cWf2MUIk1LI"><img src="screenshot.png"></a>
