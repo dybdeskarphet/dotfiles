@@ -17,8 +17,8 @@ xset b 0
 
 # border settings
 bspc config border_width		0
-bspc config focused_border_color	\#a3cc99
-bspc config normal_border_color		\#66aa55
+bspc config focused_border_color	\#bdc99c
+bspc config normal_border_color		\#748448
 
 # mouse settings
 bspc config pointer_modifier mod1

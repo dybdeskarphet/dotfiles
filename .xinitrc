@@ -23,5 +23,5 @@ fi
 # start these
 numlockx
 xsetroot -cursor_name left_ptr
-setxkbmap -option grp:ctrls_toggle tr,ru,ru -variant ,,phonetic
+setxkbmap -option grp:ctrls_toggle tr,es
 exec bspwm

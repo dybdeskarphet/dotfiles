@@ -1,4 +1,3 @@
-!! URxvt | colors
 ! special
 *.foreground:   #ffffff
 *.background:   #000000
@@ -13,8 +12,8 @@
 *.color9:       #dba08f
 
 ! green
-*.color2:       #97b168
-*.color10:      #aec289
+*.color2:       #9cae6b
+*.color10:      #b2c08c
 
 ! yellow
 *.color3:       #dbd560
@@ -60,7 +59,7 @@ URxvt.iso14755: false
 ! transparency
 URxvt.transparent: true
 URxvt.tintColor: white
-URxvt.shading: 11
+URxvt.shading: 8
 
 !! URxvt | extensions and stuff
 URxvt.perl-ext-common: default,matcher,url-select,resize-font
