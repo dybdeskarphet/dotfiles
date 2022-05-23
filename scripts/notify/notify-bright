@@ -2,55 +2,54 @@
 
 case $1 in
 	down)
-	  xbacklight -dec 10 
+		xbacklight -dec 10 
 
-	  dunstify -h int:value:$(xbacklight -getf | sed 's/[.].*//g') \
-	  -u LOW \
-	  -i display-brightness-low \
-	  -r 64983 \
-	  -t 3000 \
-	  "parlaklık $(xbacklight -getf | sed 's/[.].*//g')%" 
+		dunstify -h int:value:$(xbacklight -getf | sed 's/[.].*//g') \
+			-u LOW \
+			-i display-brightness-low \
+			-r 64983 \
+			-t 3000 \
+			"parlaklık $(xbacklight -getf | sed 's/[.].*//g')%" 
 	;;
 
 	up)
-	  xbacklight -inc 10
+		xbacklight -inc 10
 
-	  dunstify -h int:value:$(xbacklight -getf | sed 's/[.].*//g') \
-	  -i display-brightness-full \
-	  -u LOW \
-	  -r 64983 \
-	  -t 3000 \
-	  "parlaklık $(xbacklight -getf | sed 's/[.].*//g')%" 
+		dunstify -h int:value:$(xbacklight -getf | sed 's/[.].*//g') \
+			-i display-brightness-full \
+			-u LOW \
+			-r 64983 \
+			-t 3000 \
+			"parlaklık $(xbacklight -getf | sed 's/[.].*//g')%" 
 	;;
 
 	full)
-	  xbacklight -set 100
+		xbacklight -set 100 -steps 10
 
-	  dunstify -h int:value:$(xbacklight -getf | sed 's/[.].*//g') \
-	  -i display-brightness-full \
-	  -u LOW \
-	  -r 64983 \
-	  -t 3000 \
-	  "parlaklık $(xbacklight -getf | sed 's/[.].*//g')%" 
+		dunstify -h int:value:$(xbacklight -getf | sed 's/[.].*//g') \
+			-i display-brightness-full \
+			-u LOW \
+			-r 64983 \
+			-t 3000 \
+			"parlaklık $(xbacklight -getf | sed 's/[.].*//g')%" 
 	;;
 
 	off)
-	  xbacklight -set 1
-	  dunstify -h int:value:$(xbacklight -getf | sed 's/[.].*//g') \
-	  -i display-brightness-low \
-	  -u LOW \
-	  -r 64983 \
-	  -t 3000 \
-	  "ekran karartıldı"
+		xbacklight -set 1 -steps 10
+		dunstify -h int:value:$(xbacklight -getf | sed 's/[.].*//g') \
+		-i display-brightness-low \
+		-u LOW \
+		-r 64983 \
+		-t 3000 \
+		"ekran karartıldı"
 	;;
 
-
 	*)
-	  dunstify -h int:value:$(xbacklight -getf | sed 's/[.].*//g') \
-	  -u LOW \
-	  -i display-brightness-full \
-	  -r 64983 \
-	  -t 3000 \
-	  "parlaklık $(xbacklight -getf | sed 's/[.].*//g')%" 
+		dunstify -h int:value:$(xbacklight -getf | sed 's/[.].*//g') \
+			-u LOW \
+			-i display-brightness-full \
+			-r 64983 \
+			-t 3000 \
+			"parlaklık $(xbacklight -getf | sed 's/[.].*//g')%" 
 	;;
 esac

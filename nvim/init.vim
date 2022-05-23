@@ -34,14 +34,16 @@ function! StatuslineGit()
 endfunction
 
 " statusline
-set statusline=%f
-set statusline+=\ \ \|\ \  
-set statusline+=%l/%L
-set statusline+=\ \ \|\ \  
-set statusline+=%p%%
+set statusline=\ \\ %f
+set statusline+=\ \\ \ 
+set statusline+=\ %l/%L
+set statusline+=\ \ \\ \ 
+set statusline+=\ %p%%
+set statusline+=\ \ \\ 
+set statusline+=%y\ %m
 set statusline+=%=
-set statusline+=%{&fileencoding?&fileencoding:&encoding}
-set statusline+=\ \ \|
+set statusline+=\ %{&fileencoding?&fileencoding:&encoding}
+set statusline+=\ \ \
 set statusline+=%{StatuslineGit()}
 hi StatusLine ctermbg=16 ctermfg=green
 hi VertSplit cterm=NONE

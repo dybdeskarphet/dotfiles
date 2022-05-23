@@ -1,9 +1,9 @@
-#
+#lt
 # HOT HOTKEYS
 #
 
 alt + Return
-	urxvt
+	urxvtc
 
 alt + p
 	dmenu_run -l 4 -p "başlat:"
@@ -12,15 +12,11 @@ super + p
 	passmenu --type
 
 alt + w
-	firefox 
+	firejail --net=wlp2s0 --private=/to/your/firejail/dir firefox 
 
 alt + Escape
 	pkill -USR1 -x sxhkd && dunstify -i dialog-information --urgency=LOW --replace=864 "sxhkd yenilendi!"
 
-alt + x
-	xrdb $HOME/.Xresources && dunstify -i dialog-information --urgency=LOW --replace=867 "xresources yenilend!"
-
-#
 # BSPWM HOTKEYS
 #
 
@@ -78,9 +74,6 @@ XF86AudioRaiseVolume
 
 XF86AudioMute
 	notify-vol toggle
-
-XF86WebCam
-	mpv /dev/video0
 
 alt + F11
 	notify-vol off

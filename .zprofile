@@ -1,14 +1,15 @@
 # env
 export EDITOR="nvim"
 export VISUAL="nvim"
-export PATH=/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/usr/bin:$HOME/code/sh:$HOME/.local/bin:
+export PATH="/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:$HOME/.local/bin:$HOME/code/sh/eye-candy:$HOME/code/sh/notify:$HOME/code/sh/tools:$HOME/code/py/tools:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:"
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
 export XDG_DATA_HOME=$HOME/.local/share
 export XDG_STATE_HOME=$HOME/.local/state
 export LESSHISTFILE=$XDG_CONFIG_HOME/less/history
-export ADB_KEYS_PATH=$XDG_DATA_HOME/android
 export _JAVA_AWT_WM_NONREPARENTING=1
+export MESA_GLSL_CACHE_DISABLE=true
+export GNUPGHOME=$XDG_CONFIG_HOME/gnupg
 
 # colorful pager
 export LESS_TERMCAP_mb=$'\e[01;31m'		# begin blinking
@@ -27,35 +28,30 @@ export XSECURELOCK_SHOW_DATETIME=1
 # no beep
 setterm --blength=0
 
-# cd correction
-shopt -s cdspell
-
 # start x
-[[ -f ~/.bashrc ]] && . ~/.bashrc
-
 if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
   startx > /dev/null 2>&1
 fi
 
 if [ "$TERM" = "linux" ]; then
   recolor() {
-  /bin/echo -e "
-  \e]P020201d
-  \e]P1d73737
-  \e]P260ac39
-  \e]P3cfb017
-  \e]P46684e1
-  \e]P5b854d4
-  \e]P61fad83
-  \e]P7a6a28c
-  \e]P87d7a68
-  \e]P9d73737
-  \e]PA60ac39
-  \e]PBcfb017
-  \e]PC6684e1
-  \e]PDb854d4
-  \e]PE1fad83
-  \e]PFfefbec
+  echo -e "
+  \e]P00c0d0e
+  \e]P1e31a1c
+  \e]P231a354
+  \e]P3dca060
+  \e]P43182bd
+  \e]P5756bb1
+  \e]P680b1d3
+  \e]P7b7b8b9
+  \e]P8737475
+  \e]P9e31a1c
+  \e]PA31a354
+  \e]PBdca060
+  \e]PC3182bd
+  \e]PD756bb1
+  \e]PE80b1d3
+  \e]PFfcfdfe
   "
   }
   # get rid of artifacts

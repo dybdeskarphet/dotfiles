@@ -1,2 +1,2 @@
 #!/bin/sh
-feh --no-fehbg --bg-fill '/home/skarphet/img/wal/johannes-hofmann.jpg'
+feh --no-fehbg --bg-fill '/path/to/wallpaper.png'

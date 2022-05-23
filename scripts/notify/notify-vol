@@ -8,8 +8,6 @@ case $1 in
 	  -r 92030 \
 	  -t 3000 \
 	  "ses $(pamixer --get-volume-human)" 
-
-#	  ffplay -nodisp -autoexit /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga
 	;;
 
 	down)
@@ -20,8 +18,6 @@ case $1 in
 	  -r 92030 \
 	  -t 3000 \
 	  "ses $(pamixer --get-volume-human)" 
-
-#	  ffplay -nodisp -autoexit /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga
 	;;
 
 	full)
@@ -32,8 +28,6 @@ case $1 in
 	  -r 92030 \
 	  -t 3000 \
 	  "ses $(pamixer --get-volume-human)" 
-
-#	  ffplay -nodisp -autoexit /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga
 	;;
 
 	off)

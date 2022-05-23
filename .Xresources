@@ -12,8 +12,8 @@
 *.color9:       #dba08f
 
 ! green
-*.color2:       #9cae6b
-*.color10:      #b2c08c
+*.color2:       #6bae7f
+*.color10:      #9cc9aa
 
 ! yellow
 *.color3:       #dbd560
@@ -59,7 +59,7 @@ URxvt.iso14755: false
 ! transparency
 URxvt.transparent: true
 URxvt.tintColor: white
-URxvt.shading: 8
+URxvt.shading: 15
 
 !! URxvt | extensions and stuff
 URxvt.perl-ext-common: default,matcher,url-select,resize-font

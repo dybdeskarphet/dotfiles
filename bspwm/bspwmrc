@@ -1,5 +1,6 @@
 #!/bin/sh
 pgrep -x sxhkd > /dev/null || sxhkd &
+pgrep -x urxvtd > /dev/null || urxvtd -f
 
 # workspace names
 bspc monitor -d 1 2 3 4 5 6 7 8 9 10
@@ -32,6 +33,9 @@ bspc config pointer_action2 resize_corner
 # xinput set-prop "MSFT0001:00 04F3:31BE Touchpad" "libinput Accel Profile Enabled" 1 0
 # xinput set-prop "MSFT0001:00 04F3:31BE Touchpad" "libinput Accel Profile Enabled Default" 1 0
 # xinput set-prop "MSFT0001:00 04F3:31BE Touchpad" "libinput Accel Profiles Available" 1 0
+
+# rules
+bspc rule -a '*:zbar' state=floating focus=on
 
 # startup
 source $HOME/.config/bspwm/autostart

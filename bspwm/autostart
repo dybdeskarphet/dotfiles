@@ -4,15 +4,13 @@ killall picom > /dev/null
 killall polybar > /dev/null
 killall dunst > /dev/null
 killall picom > /dev/null
-killall urxvtd > /dev/null
-killall libinput-gestures > /dev/null
 killall conky > /dev/null
-
-# start picom and log errors
-picom --config $HOME/.config/picom/picom.conf --log-level ERROR --log-file $HOME/.config/picom/picom.log &
 
 # set wallpaper
 $HOME/.config/feh/.fehbg &
+
+# start picom and log errors
+picom --config $HOME/.config/picom/picom.conf --log-level ERROR --log-file $HOME/.config/picom/picom.log &
 
 # start duns and log
 dunst -conf $HOME/.config/dunst/config.ini -verbosity warn 2>&1 | tee $HOME/.config/dunst/dunst.log &
