@@ -12,30 +12,11 @@ wifi_name="<b>ağ ismi:</b> $(iwgetid -r)"
 ip_address="<b>ip adresi:</b> $(ip -4 addr show wlp2s0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')"
 
 case $1 in
-    battery)
-	urxvt -e bash -c "$battery_details" 
-	;;
-
-    date)
-	dunstify -r 8493 -i timer -t 10000 "$calendar" 
-	;;
-
-    htop_mem)
-        urxvt -e bash -c "$htop_mem" 
-	;;
-
-    htop_cpu)
-	urxvt -e bash -c "$htop_cpu"
-	;;
-
-    wifi_menu)
-        urxvt -e bash -c "$wifi_menu"
-	;;
-
-    temp)
-	urxvt -e bash -c "$temp"
-	;;
-    network_info)
-        dunstify -r 9324 -i wireless-icon -t 5000 "ağ bilgileri" "$wifi_name"$'\n'"$ip_address"
-
+	battery) urxvt -e bash -c "$battery_details" ;;
+	date) dunstify -r 8493 -i timer -t 0 "$calendar" ;;
+	htop_mem) urxvt -e bash -c "$htop_mem" ;;
+	htop_cpu) urxvt -e bash -c "$htop_cpu" ;;
+	wifi_menu) urxvt -e bash -c "$wifi_menu" ;;
+	temp) urxvt -e bash -c "$temp" ;;
+	network_info) dunstify -r 9324 -i wireless-icon -t 5000 "ağ bilgileri" "$wifi_name"$'\n'"$ip_address"
 esac
