@@ -34,7 +34,6 @@ print_usage() {
 
 case $1 in
 	-r | --read) read_qr ;;
-	-h | --help) print_usage
-		exit 1 ;;
+	-h | --help) print_usage && exit 1 ;;
 	*) create_qr ;;
 esac
