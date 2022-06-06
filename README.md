@@ -1,11 +1,11 @@
-## Before You Use
-- Majority of the configuration files won't work out of the box (because of the required packages and absolute paths). Also most of the messages are in Turkish, change them according to your own language, `$PATH`s and needs.
+- Change `<your username>` strings to your username.
 - Move `custom-icons` to `~/.local/share` for default script icons to work.
-- You can change the fonts (for all programs) by just changing the `fontconfig/fonts.conf` file. If you want to use the default fonts, download and copy these to `~/.local/share/fonts`:
+- My [backup script](https://gist.github.com/dybdeskarphet/e3e4864fafd21d446d43d7b77f10057a) if you use [rclone](https://rclone.org/).
+
+### Fonts: 
   - [Brick Shapers](https://www.fontspace.com/brickshapers-font-f31281)
   - [JetBrains Mono Nerd Font](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/JetBrainsMono/Ligatures/Regular/complete)
   - [Readex Pro](https://fonts.google.com/specimen/Readex+Pro)
-- And finally, you may want to use [my backup script](https://gist.github.com/dybdeskarphet/e3e4864fafd21d446d43d7b77f10057a#file-backup-sh) with these dots.
 
 ## Screenshot
 <img src="screenshot.png">
