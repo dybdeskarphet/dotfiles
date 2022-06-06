@@ -1,5 +1,5 @@
 # look
-set font "Readex Pro 9"
+set font "proportional_font 9"
 set recolor-keephue
 
 # copy text to main clipboard

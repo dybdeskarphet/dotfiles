@@ -12,7 +12,7 @@ case $1 in
 	toggle)
 		case $(pamixer --get-volume-human) in
 			muted) pamixer -t && dunstify_vol audio-volume-high ;;
-			*) pamixer -t && dunstify_vol audio-volume-muted ;;
+			*) pamixer -t && dunstify -h int:value:$(pamixer --get-volume) -i audio-volume-muted -r 92030 -t 3000 "susturuldu" ;;
 	  	esac
 	;;
 esac

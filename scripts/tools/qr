@@ -5,12 +5,7 @@ second_input="$2"
 
 read_qr() {
 	printf '%b\n' "\e[32mKodu kameraya göster.\e[0m"
-
-	if zbarcam; then
-		:
-	else
-		printf '\n%b\n\n' "\e[31mhata: \e[0mzbar paketini yükle."
-	fi
+        zbarcam || printf '\n%b\n\n' "\e[31mhata: \e[0mzbar paketini yükle."
 }
 
 create_qr() {
@@ -34,6 +29,7 @@ print_usage() {
 
 case $1 in
 	-r | --read) read_qr ;;
-	-h | --help) print_usage && exit 1 ;;
+	-h | --help) print_usage
+		exit 1 ;;
 	*) create_qr ;;
 esac

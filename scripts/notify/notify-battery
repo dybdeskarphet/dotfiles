@@ -1,7 +1,8 @@
 #!/bin/bash
 capacity=$(cat /sys/class/power_supply/BAT0/capacity)
+bat_status="$(cat /sys/class/power_supply/BAT0/status)"
 
-if [[ "$(cat /sys/class/power_supply/BAT0/status)" = "Charging" ]]
+if [[ $bat_status = "Charging" || $bat_status = "Full" ]]
 then
 	if [[ $capacity -gt 90 ]]
 	then

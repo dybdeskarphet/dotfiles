@@ -8,8 +8,11 @@ alt + Return
 alt + p
 	dmenu_run -l 4 -p "başlat:"
 
-super + p
+super + w
 	passmenu --type
+
+super + p
+	arandr
 
 alt + w
 	firejail --net=wlp2s0 --private=/to/your/firejail/dir firefox 
@@ -75,10 +78,10 @@ XF86AudioRaiseVolume
 XF86AudioMute
 	notify-vol toggle
 
-alt + F11
+alt + F2
 	notify-vol off
 
-alt + F12
+alt + F3
 	notify-vol full
 
 XF86MonBrightnessUp
