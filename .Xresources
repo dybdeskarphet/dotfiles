@@ -12,8 +12,8 @@
 *.color9:       #dba08f
 
 ! green
-*.color2:       #6bae7f
-*.color10:      #9cc9aa
+*.color2:       #a7e160
+*.color10:      #bde18b
 
 ! yellow
 *.color3:       #dbd560
@@ -24,8 +24,8 @@
 *.color12:      #95a9d6
 
 ! magenta
-*.color5:       #a073d6
-*.color13:      #b59fd6
+*.color5:       #8d7cb6
+*.color13:      #a99dc8
 
 ! cyan
 *.color6:       #69e1d3
@@ -36,10 +36,10 @@
 *.color15:      #c9d0c2
 
 ! URxvt | fonts 
-URxvt.font: xft:monospace:style=Regular:size=10:antialias=true
-URxvt.boldfont: xft:monospace:style=Bold:size=10:antialias=true
-URxvt.italicFont: xft:monospace:style=Italic:size=10:antialias=true
-URxvt.boldItalicFont: xft:monospace:style=Bold Itallic:size=10:antialias=true
+URxvt.font: xft:monospace_font:style=Regular:size=10:antialias=true
+URxvt.boldfont: xft:monospace_font:style=Bold:size=10:antialias=true
+URxvt.italicFont: xft:monospace_font:style=Italic:size=10:antialias=true
+URxvt.boldItalicFont: xft:monospace_font:style=Bold Itallic:size=10:antialias=true
  
 !! URxvt | appearance
 URxvt.termName: rxvt-unicode

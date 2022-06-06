@@ -6,10 +6,15 @@ export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
 export XDG_DATA_HOME=$HOME/.local/share
 export XDG_STATE_HOME=$HOME/.local/state
+export ZDOTDIR=$HOME/.zsh
+export HISTFILE=$HOME/.zsh/.zsh_history
+export HISTSIZE=1000
+export SAVEHIST=1000
 export LESSHISTFILE=$XDG_CONFIG_HOME/less/history
 export _JAVA_AWT_WM_NONREPARENTING=1
-export MESA_GLSL_CACHE_DISABLE=true
+export MESA_SHADER_CACHE_DISABLE=true
 export GNUPGHOME=$XDG_CONFIG_HOME/gnupg
+export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
 # colorful pager
 export LESS_TERMCAP_mb=$'\e[01;31m'		# begin blinking
@@ -24,43 +29,3 @@ export LESS_TERMCAP_us=$'\e[4;93m'		# start underlining
 export XSECURELOCK_PASSWORD_PROMPT='time'
 export XSECURELOCK_COMPOSITE_OBSCURER=0
 export XSECURELOCK_SHOW_DATETIME=1
-
-# no beep
-setterm --blength=0
-
-# start x
-if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
-  startx > /dev/null 2>&1
-fi
-
-if [ "$TERM" = "linux" ]; then
-  recolor() {
-  echo -e "
-  \e]P00c0d0e
-  \e]P1e31a1c
-  \e]P231a354
-  \e]P3dca060
-  \e]P43182bd
-  \e]P5756bb1
-  \e]P680b1d3
-  \e]P7b7b8b9
-  \e]P8737475
-  \e]P9e31a1c
-  \e]PA31a354
-  \e]PBdca060
-  \e]PC3182bd
-  \e]PD756bb1
-  \e]PE80b1d3
-  \e]PFfcfdfe
-  "
-  }
-  # get rid of artifacts
-  recolor
-  clear
-  ufetch
-  bundle -c
-  echo
-
-  alias r='ranger --choosedir=$HOME/.config/ranger/.rangerdir; LASTDIR=`cat $HOME/.config/ranger/.rangerdir`; cd "$LASTDIR"; recolor'
-
-fi
