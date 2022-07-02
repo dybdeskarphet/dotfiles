@@ -8,4 +8,4 @@
   - [Readex Pro](https://fonts.google.com/specimen/Readex+Pro)
 
 ## Screenshot
- <img src="screenshot.png" alt="Screenshot">
+![screenshot](https://user-images.githubusercontent.com/42360077/177014459-4f35394a-afac-4bf8-8ff4-f8925ef73d7b.png)
