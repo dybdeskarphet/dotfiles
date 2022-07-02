@@ -15,7 +15,7 @@ super + p
 	arandr
 
 alt + w
-	firejail --net=wlp2s0 --private=/to/your/firejail/dir firefox 
+	firefox 
 
 alt + Escape
 	pkill -USR1 -x sxhkd && dunstify -i dialog-information --urgency=LOW --replace=864 "sxhkd yenilendi!"
@@ -96,7 +96,7 @@ alt + F6
 alt + F5
 	notify-bright off
 
-alt + Print
+super + shift + s
 	screenshot select
 
 Print

@@ -3,7 +3,7 @@
 battery_details="watch -p -t -n 0.5 upower -i /org/freedesktop/UPower/devices/battery_BAT0"
 calendar=$(cal && date +Bugün\ ayın\ %-d.\ günü)
 
-temp="watch -p -t -n 0.5 sensors"
+temp="watch -p -t -n 0.5 'sensors'"
 htop_mem="htop -t --sort-key PERCENT_MEM"
 htop_cpu="htop -t --sort-key PERCENT_CPU"
 

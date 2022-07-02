@@ -114,20 +114,17 @@ powersave(){
 
 solid_wallpaper() {
 
-	if [[ "$input_2" = "pc" && "$input_3" != "" ]]; then
-	convert -size 1920x1080 \
-		canvas:"$input_3" \
-		./wallpaper.png
-	elif [[ "$input_2" = "phone" && "$input_3" != "" ]]; then
-	convert -size 720x1560 \
-		canvas:"$input_3" \
-		./wallpaper.png
-	else 
-		printf '%b\n' "\e[31m! \e[0myou missed some arguments."
-		printf '%b\n' "\e[1musage:\e[0m bundle -W pc #colorcode"
+	if [[ $input_3 == "" ]]; then
+		color_code=$(hexdump -n 3 -v -e '"#" 3/1 "%02X" "\n"' /dev/urandom)
+	else
+		color_code=$input_3
 	fi
 
-
+	case $input_2 in
+		pc) convert -size 1920x1080 canvas:"$color_code" ./wallpaper.png ;;
+		phone) 	convert -size 720x1560 canvas:"$color_code" ./wallpaper.png ;;
+		*) printf '%b\n' "\e[31m! \e[0myou missed some arguments.\n\e[1musage:\e[0m bundle -W pc #colorcode"
+	esac
 }
 
 searchforword() { grep --color=auto -rnw "$input_2" -e "$input_3"; }
@@ -150,21 +147,22 @@ print_usage(){
 	printf '\n%b\n' "  \e[1mBUNDLE OF OFTUSED TOOLS\e[0m"
 
 	printf '\n%b\n' "\e[1mINFO COMMANDS\e[0m"
-	printf '%b\n' "  bundle {-C --colors2}                        show colors in different backgrounds"
-	printf '%b\n' "  bundle {-c --colors}                         show colors"
-	printf '%b\n' "  bundle {-h --help}                           print this message"
-	printf '%b\n' "  bundle {-w --weather} [city]                 show the weather for the specified city"
+	printf '%b\n' "  bundle {-C --colors2}                           show colors in different backgrounds"
+	printf '%b\n' "  bundle {-c --colors}                            show colors"
+	printf '%b\n' "  bundle {-h --help}                              print this message"
+	printf '%b\n' "  bundle {-w --weather} [city]                    show the weather for the specified city"
 
 	printf '\n%b\n' "\e[1mACTION COMMANDS\e[0m"
-	printf '%b\n' "  bundle {-P --powersave}                      turn on the power saving mode"
-	printf '%b\n' "  bundle {-b --polybar-toggle}                 toggle polybar"
-	printf '%b\n' "  bundle {-f --ffsend}                         ffsend qr"
-	printf '%b\n' "  bundle {-s --search-for-word} [path] [word]  toggle polybar"
+	printf '%b\n' "  bundle {-P --powersave}                         turn on the power saving mode"
+	printf '%b\n' "  bundle {-b --polybar-toggle}                    toggle polybar"
+	printf '%b\n' "  bundle {-f --ffsend}                            ffsend qr"
+	printf '%b\n' "  bundle {-s --search-for-word} [path] [word]     toggle polybar"
 
 	printf '\n%b\n' "\e[1mIMAGE COMMANDS\e[0m"
-	printf '%b\n' "  bundle {-W --solid--wallpaper} [pc/phone]    make a single color wallpaper"
-	printf '%b\n' "  bundle {-i --image-to-clipboard}             pipe an image to clipboard"
-	printf '%b\n\n' "  bundle {-p --wrff}                           resize an image for 1560x720 screens"
+	printf '%b\n' "  bundle {-W --solid--wallpaper} [pc/phone] [hex] make a single color wallpaper "
+	printf '%b\n' "                                                  (random color if hex is empty)"
+	printf '%b\n' "  bundle {-i --image-to-clipboard}                pipe an image to clipboard"
+	printf '%b\n\n' "  bundle {-p --wrff}                              resize an image for 1560x720 screens"
 	exit 1
 }
 

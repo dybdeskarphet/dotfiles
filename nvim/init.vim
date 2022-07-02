@@ -13,7 +13,6 @@ Plug 'romgrk/barbar.nvim'
 call plug#end()
 
 "" coc configurations
-let g:coc_notify_warning_sign = '!'
 """ confirm completion
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
 """ scroll through completions
@@ -26,9 +25,9 @@ inoremap <silent><expr> <Tab>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<Tab>" :
       \ coc#refresh()
-""" indent char
+"" indent char
 let g:indentLine_char = '╎'
-""" ff
+"" ff
 nnoremap <C-P> <cmd>Telescope find_files<cr>
 
 " .               
@@ -40,6 +39,8 @@ set clipboard+=unnamedplus
 set title
 set titlestring=NVIM:\ %-25.55F\ %a%r%m titlelen=70
 set number relativenumber
+set cursorline
+set autoindent 
 
 " git branch functions for statusline
 function! GitBranch()
@@ -52,26 +53,31 @@ function! StatuslineGit()
 endfunction
 
 " colors
-hi StatusLine ctermbg=16 ctermfg=magenta
+colorscheme molokai
 hi VertSplit cterm=NONE
 hi Pmenu ctermbg=magenta ctermfg=16
-hi LineNr ctermbg=234 ctermfg=grey
 hi SignColumn ctermbg=none
-hi Normal ctermbg=16
 hi SpellBad cterm=underline ctermfg=red ctermbg=NONE
 hi Search ctermfg=234 ctermbg=yellow
-hi CocErrorSign ctermfg=16 ctermbg=red 
-hi CocWarningSign ctermfg=16 ctermbg=yellow
-hi CocHintSign ctermfg=16 ctermbg=blue
-hi CocInfoSign ctermfg=16 ctermbg=blue
+hi CursorLineNr ctermbg=239 ctermfg=251 
+"" coc colors
+hi CocErrorSign ctermfg=16 ctermbg=161
+hi CocWarningSign ctermfg=16 ctermbg=208
+hi CocHintSign ctermfg=16 ctermbg=81
+hi CocInfoSign ctermfg=16 ctermbg=81
+"" barbar
+hi BufferTabpageFill ctermbg=16
+hi BufferInactive ctermbg=16
+hi BufferInactiveSign ctermbg=16
 
 " shortcuts and automations
 map <esc> :noh<CR>
 " autocmd FileType mediawiki set spell spelllang=tr
-command CheckSpell set spell spelllang=tr
-command PreviewWebsite execute "!firefox --new-window=file://%:p"
+command Terminal belowright split term://zsh
+command SpellCheck set spell spelllang=tr
+command WebsitePreview execute "!firefox --new-window=file://%:p"
 command TexCreate execute "!pdflatex '%' >/dev/null 2>&1" | redraw!
-command CreatePoem execute "!poemaker '%' >/dev/null 2>&1" | redraw!
+command PoemCreate w poem.txt | execute "!poemaker '%' >/dev/null 2>&1" | redraw!
 
 " create parent dirs on write (W)
 function WriteCreatingDirs()
