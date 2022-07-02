@@ -12,8 +12,8 @@
 *.color9:       #dba08f
 
 ! green
-*.color2:       #a7e160
-*.color10:      #bde18b
+*.color2:       #70dba9
+*.color10:      #99e6c2 
 
 ! yellow
 *.color3:       #dbd560
@@ -24,8 +24,8 @@
 *.color12:      #95a9d6
 
 ! magenta
-*.color5:       #8d7cb6
-*.color13:      #a99dc8
+*.color5:       #a073d6
+*.color13:      #b59fd6
 
 ! cyan
 *.color6:       #69e1d3
@@ -46,7 +46,7 @@ URxvt.termName: rxvt-unicode
 URxvt.letterSpace: 0
 URxvt.lineSpace: 0
 URxvt.geometry: 92x24
-URxvt.internalBorder: 24
+URxvt.internalBorder: 20
 URxvt.cursorBlink: true
 URxvt.cursorUnderLine: false
 URxvt.saveline: 2048
@@ -59,7 +59,7 @@ URxvt.iso14755: false
 ! transparency
 URxvt.transparent: true
 URxvt.tintColor: white
-URxvt.shading: 15
+URxvt.shading: 10
 
 !! URxvt | extensions and stuff
 URxvt.perl-ext-common: default,matcher,url-select,resize-font

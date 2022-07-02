@@ -1,7 +1,6 @@
 #!/bin/bash
 
 first_input="$1"
-second_input="$2"
 
 read_qr() {
 	printf '%b\n' "\e[32mKodu kameraya göster.\e[0m"

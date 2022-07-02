@@ -72,19 +72,31 @@ zstyle ':completion:*' menu select
 # load version control information
 autoload -Uz vcs_info
 zstyle ':vcs_info:*' enable git svn
+
 precmd() {
     vcs_info
+    print -Pn "\e]0;zsh %(1j,%j job%(2j|s|); ,)%~\a"
+
 }
+
+_absolute_files () {
+  local expansion=$PREFIX$SUFFIX; expansion=${(e)expansion}
+  if [[ "${expansion%%/#}" != "${expansion:a}" ]]; then
+    PREFIX="\$PWD/$PREFIX"
+  fi
+  _files "$@";
+}
+
 zstyle ':vcs_info:*' check-for-changes true
 
 # set up the prompt (with git branch name)
 setopt PROMPT_SUBST
 
 # format the vcs_info_msg_0_ variable
-zstyle ':vcs_info:git:*' formats '%F{magenta}%f%K{magenta}%F{16} %b%f%k%F{magenta}%f'
+zstyle ':vcs_info:git:*' formats '%F{yellow}%f%K{yellow}%F{16} %b%f%k%F{yellow}%f'
 
 # prompt
-export PS1="%F{13}%f%K{13}%F{16}%B%1~%b %# %f%k%F{13}%f "
+export PS1="%F{blue}%f%K{blue}%F{16}%B%1~%b %# %f%k%F{blue}%f "
 export PS2="%F{012}~%f "
 export RPROMPT='${vcs_info_msg_0_} %(?,%F{green}:%)%f,%F{11}%?%f %F{red}:(%f)'
 

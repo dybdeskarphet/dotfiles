@@ -7,19 +7,19 @@ killall picom > /dev/null
 killall conky > /dev/null
 
 # set wallpaper
-$HOME/.config/feh/.fehbg &
+"$HOME"/.config/feh/.fehbg &
 
 # start picom and log errors
-picom --config $HOME/.config/picom/picom.conf --log-level ERROR --log-file $HOME/.config/picom/picom.log &
+picom --config "$HOME"/.config/picom/picom.conf --log-level ERROR --log-file "$HOME"/.cache/picom.log &
 
 # start duns and log
-dunst -conf $HOME/.config/dunst/config.ini -verbosity warn 2>&1 | tee $HOME/.config/dunst/dunst.log &
+dunst -conf "$HOME"/.config/dunst/config.ini -verbosity warn 2>&1 | tee "$HOME"/.cache/dunst.log &
 
 # start polybar
-polybar --log=error --config=$HOME/.config/polybar/config.ini <your username> 2>&1 | tee $HOME/.config/polybar/polybar.log &
+polybar --log=error --config="$HOME"/.config/polybar/config.ini <your username> 2>&1 | tee "$HOME"/.cache/polybar.log &
 
 # start gestures daemon
 # libinput-gestures -c $HOME/.config/libinput-gestures/libinput-gestures.conf 2>&1 | tee $HOME/.config/libinput-gestures/libinput-gestures.log &
 
 # start conky
-sleep 0.5 && conky 2>&1 | tee $HOME/.config/conky/conky.log &
+sleep 0.5 && conky 2>&1 | tee "$HOME"/.cache/conky.log &
