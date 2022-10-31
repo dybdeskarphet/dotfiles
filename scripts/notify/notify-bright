@@ -1,0 +1,14 @@
+#!/bin/bash
+
+notify_bright() {
+	dunstify -h int:value:$(xbacklight -getf | sed 's/[.].*//g') -u LOW -i $1 -r 64983 -t 3000 "parlaklık $(xbacklight -getf | sed 's/[.].*//g')%" 
+
+}
+
+case $1 in
+	down) xbacklight -dec 10 && notify_bright display-brightness-low ;;
+	up) xbacklight -inc 10 && notify_bright display-brightness-full	;;
+	full) xbacklight -set 100 -steps 10 && notify_bright display-brightness-full ;;
+	off) xbacklight -set 1 -steps 10 && notify_bright display-brightness-low ;;
+	*) notify_bright display-brightness-full ;;
+esac

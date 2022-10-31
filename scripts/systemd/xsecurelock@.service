@@ -1,0 +1,12 @@
+[Unit]
+Description=Lock X session using slock for user %i
+Before=sleep.target
+
+[Service]
+User=%i
+Environment=DISPLAY=:0
+EnvironmentFile=/home/<your username>/.config/systemd/env/env_xsecurelock
+ExecStart=/usr/bin/xsecurelock
+
+[Install]
+WantedBy=sleep.target

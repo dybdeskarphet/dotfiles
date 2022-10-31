@@ -1,0 +1,10 @@
+[Unit]
+Description=Backs up files every thirty minutes
+Requires=backupDrive.service
+
+[Timer]
+Unit=backupDrive.service
+OnCalendar=*:0,30
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,46 @@
+#!/bin/bash
+battery_details="watch -p -t -n 0.5 upower -i /org/freedesktop/UPower/devices/battery_BAT0"
+accent=$(cat $HOME/.cache/polybar-accent.dat)
+
+temp="watch -p -t -n 0.5 'sensors'"
+htop_mem="htop -t --sort-key PERCENT_MEM"
+htop_cpu="htop -t --sort-key PERCENT_CPU"
+
+wifi_menu="sudo wifi-menu; zsh"
+wifi_name="<b>ağ ismi:</b> $(iwgetid -r)"
+ip_address="<b>ip adresi:</b> $(ip -4 addr show wlp2s0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')"
+termwin="urxvt -e zsh -c"
+
+bt_show() {
+if [ $(bluetoothctl show | grep "Powered: yes" | wc -c) -eq 0 ]
+then
+  echo "%{F#66ffffff}"
+else
+  if [ $(echo info | bluetoothctl | grep 'Device' | wc -c) -eq 0 ]
+  then 
+    echo "%{F$accent} %{F#ffffff}..."
+  fi
+  echo "%{F$accent}  %{F#FFFFFF}$(bluetoothctl info | grep Name | sed "s/Name: //g ; s/^[ \t]*//")"
+fi
+}
+
+bt_toggle() {
+	if [ $(bluetoothctl show | grep "Powered: yes" | wc -c) -eq 0 ]
+	then
+		bluetoothctl power on
+	else
+		bluetoothctl power off
+	fi
+}
+
+case $1 in
+	battery) $termwin "$battery_details" ;;
+	bluetooth_show) bt_show ;;
+	bluetooth_toggle) bt_toggle ;;
+	date) $termwin "LANG=tr_TR.UTF-8 cal -y && zsh" ;;
+	htop_cpu) $termwin "$htop_cpu" ;;
+	htop_mem) $termwin "$htop_mem" ;;
+	network_info) dunstify -r 9324 -i wireless-icon -t 5000 "ağ bilgileri" "$wifi_name"$'\n'"$ip_address" ;;
+	temp) $termwin "$temp" ;;
+	wifi_menu) $termwin "$wifi_menu" ;;
+esac

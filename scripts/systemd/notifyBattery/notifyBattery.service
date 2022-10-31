@@ -1,0 +1,13 @@
+[Unit]
+Description=Notify when the battery is low
+Wants=notifyBattery.timer
+
+[Service]
+User=<your username>
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=/home/<your username>/.Xauthority
+Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+ExecStart=/home/<your username>/code/sh/notify/notify-battery
+
+[Install]
+WantedBy=multi-user.target

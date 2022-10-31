@@ -1,0 +1,119 @@
+#
+# HOT HOTKEYS
+#
+
+alt + Return
+	urxvtc
+
+alt + p
+	dmenu_run -l 4 -p "başlat:"
+
+super + w
+	passmenu --type
+
+super + p
+	arandr
+
+alt + w
+	firefox 
+
+alt + Escape
+	pkill -USR1 -x sxhkd && dunstify -i dialog-information --urgency=LOW --replace=864 "sxhkd yenilendi!"
+
+#
+# BSPWM HOTKEYS
+#
+
+# quit/restart bspwm
+super + alt + {q,r}
+	bspc {quit,wm -r && sleep 1 && dunstify -i dialog-information --urgency=LOW --replace=876 "bspwm yenilendi"}
+
+# close or kill
+alt + {_,shift + }q
+	bspc node -{c,k}
+
+# set the window state
+alt + {t,shift + t,s,f}
+	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+
+# focus the node in the given direction
+alt + {_,shift + }{h,j,k,l}
+	bspc node -{f,s} {west,south,north,east}
+
+# focus or send to the given desktop
+alt + {_,shift + }{1-9,0}
+	bspc {desktop -f, node -d} '^{1-9,10}'
+
+# expand a window by moving one of its side outward
+super + alt + {h,j,k,l}
+	bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+
+# contract a window by moving one of its side inward
+super + alt + shift + {h,j,k,l}
+	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+
+# move a floating window
+super + {Left,Down,Up,Right}
+	bspc node -v {-20 0,0 20,0 -20,20 0}
+ 
+#
+# MOUSE KEYS
+#
+
+super + m
+	dunstify --urgency=LOW -i mouse --replace=643 "fare moduna girildi." "fare modundan çıkmak için [x] tuşuna bas" && keym && dunstify -i mouse --urgency=LOW --replace=643 "fare modundan çıkıldı."
+
+#
+# FN KEYS
+#
+
+XF86ScreenSaver
+	xset dpms force suspend && xsecurelock
+
+XF86AudioLowerVolume
+	notify-vol down
+
+XF86AudioRaiseVolume
+	notify-vol up
+
+XF86AudioMute
+	notify-vol toggle
+
+alt + F2
+	notify-vol off
+
+alt + F3
+	notify-vol full
+
+XF86MonBrightnessUp
+	notify-bright up
+
+XF86MonBrightnessDown
+	notify-bright down
+
+alt + F6
+	notify-bright full
+
+alt + F5
+	notify-bright off
+
+super + shift + s
+	screenshot select
+
+Print
+	screenshot full
+
+XF86Launch4
+	bund -t
+
+XF86Calculator
+	urxvt -e zsh -c "python"
+#
+# DUNST HOTKEYS
+#
+
+ctrl + space
+	dunstctl close
+
+ctrl + h
+	dunstctl history-pop
