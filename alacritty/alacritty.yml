@@ -1,0 +1,116 @@
+#import:
+#  - /path/to/alacritty.yml
+
+#env:
+#TERM: alacritty
+
+window:
+  padding:
+    x: 20
+    y: 20
+
+  decorations: none
+  opacity: 0.90
+  startup_mode: Windowed
+  dynamic_title: true
+
+  scrolling:
+    history: 10000
+    #multiplier: 3
+
+font:
+  normal:
+    family: monospace_font
+    style: Regular
+
+  bold:
+    family: monospace_font
+    style: Bold
+
+  italic:
+    family: monospace_font
+    style: Italic
+
+  bold_italic:
+    family: monospace
+    style: Bold Italic
+
+  size: 10.0
+  draw_bold_text_with_bright_colors: true
+
+  #offset:
+  #  x: 0
+  #  y: 0
+
+  #glyph_offset:
+  #  x: 0
+  #  y: 0
+
+  #builtin_box_drawing: true
+
+colors:
+  # Default colors
+  primary:
+    background: '0x000000'
+    foreground: '0xffffff'
+
+  # Normal colors
+  normal:
+    black:   '0x646e5b'
+    red:     '0xdb7464'
+    green:   '0x94d1a6'
+    yellow:  '0xdbd560'
+    blue:    '0x69b2d6'
+    magenta: '0xa073d6'
+    cyan:    '0x69e1d3'
+    white:   '0x9ea894'
+
+  # Bright colors
+  bright:
+    black:   '0x88927e'
+    red:     '0xdba08f'
+    green:   '0xc9e8d3'
+    yellow:  '0xdbda8b'
+    blue:    '0x95a9d6'
+    magenta: '0xb59fd6'
+    cyan:    '0x95e1d2'
+    white:   '0xc9d0c2'
+
+
+  cursor:
+    text: CellBackground
+    cursor: CellForeground
+
+  selection:
+    text: CellBackground
+    background: CellForeground
+
+  transparent_background_colors: false
+
+cursor:
+  style:
+    shape: Block
+    blinking: On
+
+  blink_interval: 500
+
+key_bindings:
+    # (Windows, Linux, and BSD only)
+  - { key: V,        mods: Control|Shift, action: Paste            }
+  - { key: C,        mods: Control|Shift, action: Copy             }
+  - { key: Insert,   mods: Shift,         action: PasteSelection   }
+  - { key: Key0,     mods: Control,       action: ResetFontSize    }
+  - { key: Equals,   mods: Control,       action: IncreaseFontSize }
+  - { key: Minus,    mods: Control,       action: DecreaseFontSize }
+
+  - { key: Left,    mods: Alt,       chars: "\x1bb" }
+  - { key: Right,     mods: Alt,       chars: "\x1bf" }
+
+  - { key: Paste,                    action: Paste                            }
+  - { key: Copy,                     action: Copy                             }
+  - { key: L,         mods: Control, action: ClearLogNotice                   }
+  - { key: L,         mods: Control, chars: "\x0c"                            }
+  - { key: PageUp,    mods: Shift,   action: ScrollPageUp,   mode: ~Alt       }
+  - { key: PageDown,  mods: Shift,   action: ScrollPageDown, mode: ~Alt       }
+  - { key: Home,      mods: Shift,   action: ScrollToTop,    mode: ~Alt       }
+  - { key: End,       mods: Shift,   action: ScrollToBottom, mode: ~Alt       }

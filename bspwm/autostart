@@ -1,30 +1,31 @@
 #!/bin/sh
 # kill all already running autostart programs
+killall conky > /dev/null
+killall dunst > /dev/null
+killall mpris-proxy > /dev/null
 killall picom > /dev/null
 killall polybar > /dev/null
-killall dunst > /dev/null
-killall picom > /dev/null
-killall conky > /dev/null
 
 # set wallpaper
 "$HOME"/.config/feh/.fehbg &
 
 # create a log directory for autostarted apps
-[ -d ~/.cache/autostart ] || mkdir ~/.cache/autostart
+[ -d ~/.cache/logs ] || mkdir ~/.cache/logs
+[ -d ~/.cache/logs/autostart ] || mkdir ~/.cache/logs/autostart
 
 # start picom and log errors
-picom --config "$HOME"/.config/picom/picom.conf --log-level ERROR --log-file "$HOME"/.cache/autostart/picom.log &
+picom --config "$HOME"/.config/picom/picom.conf --log-level ERROR --log-file "$HOME"/.cache/logs/autostart/picom.log &
 
 # start duns and log
-dunst -conf "$HOME"/.config/dunst/config.ini -verbosity warn 2>&1 | tee "$HOME"/.cache/autostart/dunst.log &
+dunst -conf "$HOME"/.config/dunst/config.ini -verbosity warn 2>&1 | tee "$HOME"/.cache/logs/autostart/dunst.log &
 
 # start polybar
-polybar --log=error --config="$HOME"/.config/polybar/config.ini main 2>&1 | tee "$HOME"/.cache/autostart/polybar.log &
+polybar --log=error --config="$HOME"/.config/polybar/config.ini main 2>&1 | tee "$HOME"/.cache/logs/autostart/polybar.log &
 
 # start bluetooth controls
-mpris-proxy 2>&1 | tee "$HOME"/.cache/autostart/mpris-proxy.log &
+mpris-proxy 2>&1 | tee "$HOME"/.cache/logs/autostart/mpris-proxy.log &
 
 # start gestures daemon
 # libinput-gestures -c $HOME/.config/libinput-gestures/libinput-gestures.conf 2>&1 | tee $HOME/.cache/autostart/libinput-gestures.log &
 
-grep "accent =" $HOME/.config/polybar/config.ini | grep -o "\#......" > "$HOME"/.cache/polybar-accent.dat
+grep "accent =" "$HOME"/.config/polybar/config.ini | grep -o "\#......" > "$HOME"/.cache/logs/polybar-accent.dat &

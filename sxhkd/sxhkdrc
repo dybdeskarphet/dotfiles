@@ -15,7 +15,7 @@ super + p
 	arandr
 
 alt + w
-	firefox 
+	chromium 
 
 alt + Escape
 	pkill -USR1 -x sxhkd && dunstify -i dialog-information --urgency=LOW --replace=864 "sxhkd yenilendi!"

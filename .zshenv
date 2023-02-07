@@ -15,13 +15,14 @@ export XDG_STATE_HOME=$HOME/.local/state
 # change dir 
 export ADB_KEYS_PATH=$XDG_DATA_HOME/android
 export GNUPGHOME=$XDG_CONFIG_HOME/gnupg
-export ZDOTDIR=$XDG_CONFIG_HOME/zsh
-export LESSHISTFILE=$XDG_CONFIG_HOME/less/history
-export PASSWORD_STORE_DIR="$XDG_DATA_HOME/password-store"
-export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc-2.0"
-export RXVT_SOCKET="$XDG_RUNTIME_DIR"/urxvtd
-export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
+export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc-2.0"
+export LESSHISTFILE=$XDG_CONFIG_HOME/less/history
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
+export PASSWORD_STORE_DIR="$XDG_DATA_HOME/password-store"
+export RXVT_SOCKET="$XDG_RUNTIME_DIR"/urxvtd
+export WGETRC="$XDG_CONFIG_HOME/wgetrc"
+export ZDOTDIR=$XDG_CONFIG_HOME/zsh
 
 # history files
 export HISTFILE=$ZDOTDIR/.zsh_history

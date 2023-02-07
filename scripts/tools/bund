@@ -1,6 +1,6 @@
 #!/bin/bash
 
-bundle_name="bund"
+bundle_name="$(basename "$0")"
 input_2="$2"
 input_3="$3"
 input_4="$4"
@@ -147,6 +147,7 @@ ffsend_qr() {
 }
 
 
+
 forest_invitation(){
 
 	declare -a emoji_list
@@ -214,11 +215,47 @@ forest_invitation(){
 	[[ -f ./.ocr.txt ]] && rm ./.ocr.txt
 }
 
+sun_state() {
+# First obtain a location code from: https://weather.codes/search/
+
+# Insert your location. For example TUXX0033is a location code for Çorum, Türkiye
+location="TUXX0033"
+tmpfile=/tmp/$location.out
+infofile=$HOME/.cache/logs/$location-sun.info
+
+# Obtain sunrise and sunset raw data from weather.com
+wget -q "https://weather.com/weather/today/l/$location" -O "$tmpfile"
+
+SUNR=$(grep SunriseSunset "$tmpfile" | grep -oE '((1[0-2]|0?[1-9]):([0-5][0-9]) ?([AaPp][Mm]))' | head -1)
+SUNS=$(grep SunriseSunset "$tmpfile" | grep -oE '((1[0-2]|0?[1-9]):([0-5][0-9]) ?([AaPp][Mm]))' | tail -1)
+
+sunrise=$(date --date="$SUNR" +%R)
+sunset=$(date --date="$SUNS" +%R)
+
+# Use $sunrise and $sunset variables to fit your needs. Example:
+cat << EOF > $infofile
+$sunrise
+$sunset
+EOF
+
+echo "$sunrise - $sunset"
+}
+
+image_square(){
+
+	if [[ "$input_2" = "" ]]; then
+		printf '%b\n' "\e[31m! \e[0myou missed an argument.\n\e[1musage:\e[0m $bundle_name -s <image-path>"
+	elif convert "$input_2" -gravity center -crop $(identify -format "%[fx:min(w,h)]x%[fx:min(w,h)]+0+0" "$input_2") +repage squared-"$input_2"; then
+		printf '%s\n' "Squared!"
+	fi
+}
+
 print_usage(){
 	printf '\n%b\n' "  \e[1mBUNDLE OF OFTUSED TOOLS\e[0m"
 
 	printf '\n%b\n' "\e[1mINFO COMMANDS\e[0m"
 	printf '%b\n' "  $bundle_name {-C --colors2}                                        show colors in different backgrounds"
+	printf '%b\n' "  $bundle_name {-S --sun-state}                                      show the sunrise-sunset time for Çorum"
 	printf '%b\n' "  $bundle_name {-c --colors}                                         show colors"
 	printf '%b\n' "  $bundle_name {-h --help}                                           print this message"
 	printf '%b\n' "  $bundle_name {-w --weather} <city>                                 show the weather for the specified city"
@@ -236,6 +273,7 @@ print_usage(){
 	printf '%b\n' "                                                             (random color if hex is empty)"
 	printf '%b\n' "  $bundle_name {-i --image-to-clipboard}                             pipe an image to clipboard"
 	printf '%b\n\n' "  $bundle_name {-p --wrff}                                           resize an image for 1560x720 screens"
+	printf '%b\n\n' "  $bundle_name {-s --square}                                         resize the image as 1:1"
 	exit 1
 }
 
@@ -247,8 +285,10 @@ case $1 in
 	--image-to-clipboard | -i) image_to_clipboard ;;
 	--polybar-toggle | -t) polybar_toggle ;;
 	--powersave | -P) powersave ;;
-	--search-for-word | -s) searchforword ;;
+	--search-for-word | -e) searchforword ;;
 	--solid-wallpaper | -W) solid_wallpaper ;;
+	--square | -s) image_square;;
+	--sun-state | -S) sun_state;;
 	--weather | -w) weather ;;
 	--wrff | -p) resize_for_phone ;;
 	*) print_usage ;;

@@ -1,6 +1,6 @@
 #!/bin/bash
 battery_details="watch -p -t -n 0.5 upower -i /org/freedesktop/UPower/devices/battery_BAT0"
-accent=$(cat $HOME/.cache/polybar-accent.dat)
+accent=$(cat $HOME/.cache/logs/polybar-accent.dat)
 
 temp="watch -p -t -n 0.5 'sensors'"
 htop_mem="htop -t --sort-key PERCENT_MEM"
@@ -9,7 +9,7 @@ htop_cpu="htop -t --sort-key PERCENT_CPU"
 wifi_menu="sudo wifi-menu; zsh"
 wifi_name="<b>ağ ismi:</b> $(iwgetid -r)"
 ip_address="<b>ip adresi:</b> $(ip -4 addr show wlp2s0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')"
-termwin="urxvt -e zsh -c"
+termwin="alacritty -e zsh -c"
 
 bt_show() {
 if [ $(bluetoothctl show | grep "Powered: yes" | wc -c) -eq 0 ]

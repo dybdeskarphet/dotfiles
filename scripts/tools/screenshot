@@ -1,5 +1,6 @@
 #!/bin/bash
 
+[ -d $HOME/.img/ss/null ] || mkdir $HOME/.img/ss/null
 dest="$HOME/img/ss/null/$(date +'%Y-%m-%d_%H.%M.%S').png"
 
 selection_screenshot() {

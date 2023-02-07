@@ -51,8 +51,7 @@ alias bell='tput bel && ffplay -nodisp -autoexit -loglevel error /usr/share/soun
 alias sensors="sensors | sed 's/.*hwmon.*/Wi-fi adapter:/g; s/.*k10.*/CPU/g'"
 
 # ffsend
-alias ff='bundle -f'
-alias ffc='ffsend upload -c'
+alias ff='bund -f'
 
 # clipboard
 alias toclipboard='xclip -sel clip'
@@ -61,16 +60,7 @@ alias ixio="curl -F 'f:1=<-' ix.io"
 # help command to man zsh
 alias help="man zsh"
 
-# adb shell
-alias ads="adb shell"
-
-# run kt
-kt() { kotlinc "$1" && kotlin $(echo $1 | sed "s/\.kt/Kt\.class/g ; s/^\(.\)/\U\1/g"); }
-
-# sudo to plz
-alias please="sudo"
-
-# turkish call
+# turkish calendar
 alias cal="LANG=tr_TR.UTF-8 cal"
 
 #    .     ..
@@ -105,10 +95,10 @@ zstyle ':vcs_info:*' check-for-changes true
 setopt PROMPT_SUBST
 
 # format the vcs_info_msg_0_ variable
-zstyle ':vcs_info:git:*' formats '%F{red}%f%K{red}%F{16} %b%f%k%F{red}%f'
+zstyle ':vcs_info:git:*' formats '%F{yellow}%f%K{yellow}%F{16} %b%f%k%F{yellow}%f'
 
 # prompt
-export PS1="%F{green}%f%K{green}%F{16}%B%1~%b  %# %f%k%F{green}%f "
+export PS1="%F{green}%f%K{green}%F{16}%B%1~%b  %# %f%k%F{green}%f "
 export PS2="%F{012}~%f "
 export RPROMPT='${vcs_info_msg_0_} %(?,%F{green}:%)%f,%F{11}%?%f %F{red}:(%f)'
 
