@@ -1,6 +1,6 @@
 #!/bin/sh
 # kill all already running autostart programs
-killall conky > /dev/null
+# killall conky > /dev/null
 killall dunst > /dev/null
 killall mpris-proxy > /dev/null
 killall picom > /dev/null
@@ -28,4 +28,9 @@ mpris-proxy 2>&1 | tee "$HOME"/.cache/logs/autostart/mpris-proxy.log &
 # start gestures daemon
 # libinput-gestures -c $HOME/.config/libinput-gestures/libinput-gestures.conf 2>&1 | tee $HOME/.cache/autostart/libinput-gestures.log &
 
+# conky
+# sleep 0.5 && conky 2>&1 | tee "$HOME"/.cache/logs/autostart/conky.log &
+
 grep "accent =" "$HOME"/.config/polybar/config.ini | grep -o "\#......" > "$HOME"/.cache/logs/polybar-accent.dat &
+grep "^bottom =" $HOME/.config/polybar/config.ini | sed 's/bottom = //g' > "$HOME"/.cache/logs/polybar-position.dat &
+bund -S &

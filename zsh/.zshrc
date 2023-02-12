@@ -100,7 +100,7 @@ zstyle ':vcs_info:git:*' formats '%F{yellow}%f%K{yellow}%F{16} %b%f%k%F{ye
 # prompt
 export PS1="%F{green}%f%K{green}%F{16}%B%1~%b  %# %f%k%F{green}%f "
 export PS2="%F{012}~%f "
-export RPROMPT='${vcs_info_msg_0_} %(?,%F{green}:%)%f,%F{11}%?%f %F{red}:(%f)'
+export RPROMPT='${vcs_info_msg_0_} %(?,%F{green}%f,%F{11}%?%f %F{red}%f) %D{%K:%M:%S}'
 
 # line editing
 bindkey -e

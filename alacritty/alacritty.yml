@@ -9,8 +9,9 @@ window:
     x: 20
     y: 20
 
+  dynamic_padding: false
   decorations: none
-  opacity: 0.90
+  opacity: 1.00
   startup_mode: Windowed
   dynamic_title: true
 
@@ -47,35 +48,33 @@ font:
   #  y: 0
 
   #builtin_box_drawing: true
-
 colors:
   # Default colors
   primary:
-    background: '0x000000'
-    foreground: '0xffffff'
+    background: '0x151515'
+    foreground: '0xd7d0c7'
 
   # Normal colors
   normal:
-    black:   '0x646e5b'
-    red:     '0xdb7464'
-    green:   '0x94d1a6'
-    yellow:  '0xdbd560'
-    blue:    '0x69b2d6'
-    magenta: '0xa073d6'
-    cyan:    '0x69e1d3'
-    white:   '0x9ea894'
+    black:   '0x101010'
+    red:     '0xe84f4f'
+    green:   '0x68d69d'
+    yellow:  '0xe1aa5d'
+    blue:    '0x7dc1cf'
+    magenta: '0x9b64fb'
+    cyan:    '0x6d878d'
+    white:   '0xdddddd'
 
   # Bright colors
   bright:
-    black:   '0x88927e'
-    red:     '0xdba08f'
-    green:   '0xc9e8d3'
-    yellow:  '0xdbda8b'
-    blue:    '0x95a9d6'
-    magenta: '0xb59fd6'
-    cyan:    '0x95e1d2'
-    white:   '0xc9d0c2'
-
+    black:   '0x404040'
+    red:     '0xd23d3d'
+    green:   '0x47ba87'
+    yellow:  '0xf39d21'
+    blue:    '0x4e9fb1'
+    magenta: '0x8542ff'
+    cyan:    '0x42717b'
+    white:   '0xdddddd'
 
   cursor:
     text: CellBackground

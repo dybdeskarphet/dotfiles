@@ -9,6 +9,9 @@ htop_cpu="htop -t --sort-key PERCENT_CPU"
 wifi_menu="sudo wifi-menu; zsh"
 wifi_name="<b>ağ ismi:</b> $(iwgetid -r)"
 ip_address="<b>ip adresi:</b> $(ip -4 addr show wlp2s0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')"
+signal_level=$(iwconfig wlp2s0 | grep -o "Signal level.*dBm"| grep -Eo '[0-9]{1,4}')
+signal_percentage=$(((90-$signal_level)*100/60))
+signal_message="<b>sinyal seviyesi:</b> \%$signal_percentage"
 termwin="alacritty -e zsh -c"
 
 bt_show() {
@@ -40,7 +43,7 @@ case $1 in
 	date) $termwin "LANG=tr_TR.UTF-8 cal -y && zsh" ;;
 	htop_cpu) $termwin "$htop_cpu" ;;
 	htop_mem) $termwin "$htop_mem" ;;
-	network_info) dunstify -r 9324 -i wireless-icon -t 5000 "ağ bilgileri" "$wifi_name"$'\n'"$ip_address" ;;
+	network_info) dunstify -r 9324 -i wireless-icon -t 5000 "ağ bilgileri" "$wifi_name"$'\n'"$ip_address\n$signal_message" ;;
 	temp) $termwin "$temp" ;;
 	wifi_menu) $termwin "$wifi_menu" ;;
 esac

@@ -23,16 +23,8 @@ require('packer').startup(function()
 	use { 'nvim-telescope/telescope.nvim', tag = '0.1.0', requires = { {'nvim-lua/plenary.nvim'} } }
 	use { 'neoclide/coc.nvim', branch = 'release' }
 	use 'kyazdani42/nvim-web-devicons'
-	use 'sainnhe/sonokai'
 	use 'romgrk/barbar.nvim'
-	use({ "iamcco/markdown-preview.nvim", run = "cd app && npm install", setup = function() vim.g.mkdp_filetypes = { "markdown" } end, ft = { "markdown" }, })
-	use({
-		'rose-pine/neovim',
-		as = 'rose-pine',
-		config = function()
-			require("rose-pine").setup()
-		end
-	})
+	use "cpea2506/one_monokai.nvim"
 	use {
 		'nvim-tree/nvim-tree.lua',
 		requires = {
@@ -47,6 +39,10 @@ require('packer').startup(function()
             		ts_update()
         	end,
     	}
+	use {
+	  'nvim-lualine/lualine.nvim',
+	  requires = { 'kyazdani42/nvim-web-devicons', opt = true }
+	}
 end)
 
 
@@ -58,7 +54,6 @@ vim.opt.termguicolors = true
 
 vim.g["indentLine_char"] = "╎"
 vim.g["mkdp_browser"] = "/usr/bin/chromium"
-cmd([[colorscheme sonokai]])
 
 require("nvim-tree").setup{
 	open_on_setup = true,
@@ -100,6 +95,7 @@ vim.api.nvim_create_autocmd("WinClosed", {
 	end,
 	nested = true
 })
+
 
 -- Plugin Keymaps
 cmd([[
@@ -174,31 +170,51 @@ create_command("W", "call WriteCreatingDirs()", { bang = true })
 --      888       888   888  888    .o  888   888   888  888    .o 
 --     o888o     o888o o888o `Y8bod8P' o888o o888o o888o `Y8bod8P' 
 --
--- Status
+-- Theme
+require("one_monokai").setup({
+    colors = {
+        bg = "#1B1D1F",
+    },
+})
 
-cmd([[
-function! GitBranch()
-return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
-endfunction
-
-function! StatuslineGit()
-let l:branchname = GitBranch()
-return strlen(l:branchname) > 0?'  '.l:branchname.' ':''
-endfunction
-]])
-
-local slStr = {
-	"  %f",
-	"   ",
-	" %l/%L",
-	"    ",
-	" %p%%",
-	"   ",
-	"%y %m",
-	"%=",
-	" %{&fileencoding?&fileencoding:&encoding}",
-	"  ",
-	"%{StatuslineGit()}",
+-- Statusline
+require('lualine').setup {
+  options = {
+    icons_enabled = true,
+    theme = 'onedark',
+    component_separators = { left = '', right = ''},
+    section_separators = { left = '', right = ''},
+    disabled_filetypes = {
+      statusline = {},
+      winbar = {},
+    },
+    ignore_focus = {},
+    always_divide_middle = true,
+    globalstatus = false,
+    refresh = {
+      statusline = 1000,
+      tabline = 1000,
+      winbar = 1000,
+    }
+  },
+  sections = {
+    lualine_a = {'mode'},
+    lualine_b = {'branch', 'diff', 'diagnostics'},
+    lualine_c = {'filename'},
+    lualine_x = {'encoding', 'fileformat', 'filetype'},
+    lualine_y = {'progress'},
+    lualine_z = {'location'}
+  },
+  inactive_sections = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = {'filename'},
+    lualine_x = {'location'},
+    lualine_y = {},
+    lualine_z = {}
+  },
+  tabline = {},
+  winbar = {},
+  inactive_winbar = {},
+  extensions = {}
 }
-
-o.statusline = table.concat(slStr)

@@ -1,0 +1,13 @@
+[Unit]
+Description=Change wallpaper based on sunrise-sunset time
+Wants=wallpaperTheme.timer
+
+[Service]
+User=skarphet
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=/home/<your username>/.Xauthority
+Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+ExecStart=/home/<your username>/code/sh/tools/bund -S && /home/<your username>/.config/feh/.fehbg
+
+[Install]
+WantedBy=multi-user.target
