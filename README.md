@@ -8,4 +8,4 @@
   - [Irish Penny](https://www.k-type.com/fonts/irish-penny/)
 
 ## Screenshots
-<img src="ss_night.png" alt="list_dark" width="480" height="540"> <img src="ss_day.png" alt="list_dark" width="480" height="540">
+<img src="ss_night.png" alt="list_dark" width="384" height="432"> <img src="ss_day.png" alt="list_dark" width="384" height="432">
