@@ -5,7 +5,6 @@
 - Download the fonts:
   - [JetBrains Mono Nerd Font](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/JetBrainsMono/Ligatures/Regular/complete)
   - [Readex Pro](https://fonts.google.com/specimen/Readex+Pro)
-  - [Irish Penny](https://www.k-type.com/fonts/irish-penny/)
 
 ## Screenshots
 <img src="ss_night.png" alt="list_dark" width="384" height="432"> <img src="ss_day.png" alt="list_dark" width="384" height="432">
