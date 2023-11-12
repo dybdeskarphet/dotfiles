@@ -4,11 +4,11 @@ first_input="$1"
 second_input="$2"
 
 select_screencast() {
-	ffmpeg -framerate 60 -f x11grab $(slop -f '-video_size %wx%h -i :0.0+%x,%y') /home/<your username>/vid/sc/$(date +'%Y-%m-%d_%H.%M.%S').mp4
+	ffmpeg -framerate 60 -f x11grab $(slop -f '-video_size %wx%h -i :0.0+%x,%y') /home/username/vid/sc/$(date +'%Y-%m-%d_%H.%M.%S').mp4
 }
 
 fullscreen_screencast() {
-	ffmpeg -video_size 1920x1080 -framerate 60 -f x11grab -i :0.0 /home/<your username>/vid/sc/$(date +'%Y-%m-%d_%H.%M.%S').mp4
+	ffmpeg -video_size 1920x1080 -framerate 60 -f x11grab -i :0.0 /home/your username/vid/sc/$(date +'%Y-%m-%d_%H.%M.%S').mp4
 }
 
 print_usage() {

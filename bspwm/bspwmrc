@@ -53,4 +53,4 @@ xinput set-prop "touchpad name" "libinput Accel Profiles Available" 1 0
 xset b 0
 
 # autostart
-. /home/skarphet/.config/bspwm/autostart
+. /home/username/.config/bspwm/autostart

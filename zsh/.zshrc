@@ -38,10 +38,8 @@ alias sd='shutdown now'
 alias stfu='shutdown now'
 alias hibernate='systemctl hibernate'
 alias suspend='systemctl suspend'
-alias lock='xset dpms force suspend && xsecurelock'
+alias lock='xset dpms force suspend'
 alias uefi='systemctl reboot --firmware-setup'
-
-alias esupport='sudo dmidecode -t system | grep Serial | sed "s/.*:\ //g"'
 
 alias b='tput bel && ffplay -nodisp -autoexit -loglevel error /usr/share/sounds/freedesktop/stereo/complete.oga'
 
@@ -66,6 +64,7 @@ alias daktilo="daktilo --device pipewire"
 #  __|_  _ ||
 # _) [ )(/,||
 #
+
 # completion
 autoload -U compinit; compinit
 zstyle ':completion:*' menu select

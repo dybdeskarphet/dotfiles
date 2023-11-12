@@ -1,11 +1,12 @@
 #!/bin/bash
-sunrise=$(head -n 1 $HOME/.cache/logs/TUXX0033-sun.info)
-sunset=$(tail -n 1 $HOME/.cache/logs/TUXX0033-sun.info)
-now=$(date +%s)
+# sunrise=$(head -n 1 $HOME/.cache/logs/TUXX0033-sun.info)
+# sunset=$(tail -n 1 $HOME/.cache/logs/TUXX0033-sun.info)
+# now=$(date +%s)
+# 
+# if [[ $now -gt $(date --date="$sunrise" +%s) ]] && [[ $now -lt $(date --date="$sunset" +%s) ]]; then
+# 	feh --no-fehbg --bg-fill '/home/username/img/.wallpaper/day.png'
+# else
+# 	feh --no-fehbg --bg-fill '/home/username/img/.wallpaper/night.png'
+# fi
 
-if [[ $now -gt $(date --date="$sunrise" +%s) ]] && [[ $now -lt $(date --date="$sunset" +%s) ]]; then
-	feh --no-fehbg --bg-fill '/home/skarphet/img/.wallpaper/day.png'
-else
-	feh --no-fehbg --bg-fill '/home/skarphet/img/.wallpaper/night.png'
-fi
-
+feh --no-fehbg --bg-fill '/home/username/img/.wallpaper'
