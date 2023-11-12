@@ -1,13 +1,19 @@
 #!/bin/sh
+
+# run once and never kill
+pgrep -x sxhkd > /dev/null || sxhkd 2>&1 | tee "$HOME"/.cache/logs/autostart/sxhkd.log &
+pgrep -x playerctld > /dev/null || playerctld daemon 2>&1 | tee "$HOME"/.cache/logs/autostart/playerctld.log &
+pgrep -x clipmenud > /dev/null || clipmenud 2>&1 | tee "$HOME"/.cache/logs/autostart/clipmenud.log &
+
 # kill all already running autostart programs
 # killall conky > /dev/null
-killall dunst > /dev/null
-killall mpris-proxy > /dev/null
 killall picom > /dev/null
+killall dunst > /dev/null
 killall polybar > /dev/null
+killall mpris-proxy > /dev/null
 
 # set wallpaper
-"$HOME"/.config/feh/.fehbg &
+"$HOME"/.config/feh/.fehbg
 
 # create a log directory for autostarted apps
 [ -d ~/.cache/logs ] || mkdir ~/.cache/logs
@@ -16,7 +22,7 @@ killall polybar > /dev/null
 # start picom and log errors
 picom --config "$HOME"/.config/picom/picom.conf --log-level ERROR --log-file "$HOME"/.cache/logs/autostart/picom.log &
 
-# start duns and log
+# start dunst and log
 dunst -conf "$HOME"/.config/dunst/config.ini -verbosity warn 2>&1 | tee "$HOME"/.cache/logs/autostart/dunst.log &
 
 # start polybar
@@ -25,12 +31,8 @@ polybar --log=error --config="$HOME"/.config/polybar/config.ini main 2>&1 | tee 
 # start bluetooth controls
 mpris-proxy 2>&1 | tee "$HOME"/.cache/logs/autostart/mpris-proxy.log &
 
-# start gestures daemon
-# libinput-gestures -c $HOME/.config/libinput-gestures/libinput-gestures.conf 2>&1 | tee $HOME/.cache/autostart/libinput-gestures.log &
-
 # conky
-# sleep 0.5 && conky 2>&1 | tee "$HOME"/.cache/logs/autostart/conky.log &
+# sleep 0.5 && conky -c $HOME/.config/conky/conky.conf 2>&1 | tee "$HOME"/.cache/logs/autostart/conky.log &
 
-grep "accent =" "$HOME"/.config/polybar/config.ini | grep -o "\#......" > "$HOME"/.cache/logs/polybar-accent.dat &
-grep "^bottom =" $HOME/.config/polybar/config.ini | sed 's/bottom = //g' > "$HOME"/.cache/logs/polybar-position.dat &
-bund -S &
+grep "accent =" "$HOME"/.config/polybar/config.ini | grep -o "#......" > "$HOME"/.cache/logs/polybar-accent.dat &
+grep "^bottom =" "$HOME"/.config/polybar/config.ini | sed 's/bottom = //g' > "$HOME"/.cache/logs/polybar-position.dat &

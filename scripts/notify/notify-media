@@ -1,0 +1,37 @@
+#!/bin/bash
+
+notify_bright() {
+	dunstify -h int:value:$(xbacklight -getf | sed 's/[.].*//g') -u LOW -i $1 -r 64983 -t 3000 "backlight $(xbacklight -getf | sed 's/[.].*//g')%"
+
+}
+
+dunstify_vol() {
+	dunstify -h int:value:$(pamixer --get-volume) -i $1 -r 92030 -t 3000 "volume $(pamixer --get-volume-human)"
+}
+
+case $1 in
+volume)
+	case $2 in
+	up) pamixer -i 5 && dunstify_vol audio-volume-high ;;
+	down) pamixer -d 5 && dunstify_vol audio-volume-low ;;
+	full) pamixer --set-volume 100 && dunstify_vol audio-volume-high ;;
+	off) pamixer --set-volume 0 && dunstify_vol audio-volume-low ;;
+	toggle)
+		case $(pamixer --get-volume-human) in
+		muted) pamixer -t && dunstify_vol audio-volume-high ;;
+		*) pamixer -t && dunstify -h int:value:$(pamixer --get-volume) -i audio-volume-muted -r 92030 -t 3000 "muted" ;;
+		esac
+		;;
+	esac
+	;;
+backlight)
+	case $2 in
+	down) xbacklight -dec 10 && notify_bright display-brightness-low ;;
+	up) xbacklight -inc 10 && notify_bright display-brightness-full ;;
+	full) xbacklight -set 100 -steps 10 && notify_bright display-brightness-full ;;
+	off) xbacklight -set 1 -steps 10 && notify_bright display-brightness-low ;;
+	*) notify_bright display-brightness-full ;;
+	esac
+
+	;;
+esac

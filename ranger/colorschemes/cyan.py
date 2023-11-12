@@ -1,3 +1,6 @@
+# Ranger theme
+# Mod of Spacecolors
+
 from ranger.gui.colorscheme import ColorScheme
 from ranger.gui.color import *
 

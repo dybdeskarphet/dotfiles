@@ -1,41 +1,56 @@
 #!/bin/sh
-pgrep -x sxhkd > /dev/null || sxhkd 2>&1 | tee "$HOME"/.cache/autostart/sxhkd.log &
-# pgrep -x urxvtd > /dev/null || urxvtd -f 2>&1 | tee "$HOME"/.cache/autostart/urxvtd.log &
 
-# workspace names
+# TWEAKS 
+
+# workspaces
 bspc monitor -d 1 2 3 4 5 6 7 8 9 10
 
-# basic settings
-bspc config window_gap		10
-bspc config split_ratio		.52
-bspc config gapless_monocle	true
-bspc config top_padding 	26
-bspc config bottom_padding      0
-bspc config focus_follows_pointer true
+# border
 bspc config border_width	1
-bspc config normal_border_color		\#5b814b
-bspc config focused_border_color	\#72a15e
+bspc config focused_border_color	\#feac56
+bspc config normal_border_color		\#bb6a32
 
-# no beep
-xset b 0
+# etc
+bspc config focus_follows_pointer true
+bspc config gapless_monocle	true
+bspc config split_ratio		.52
+bspc config window_gap		10
 
 # mouse settings
-bspc config pointer_modifier mod1
 bspc config pointer_action1 move
 bspc config pointer_action2 resize_corner
-#
-# Change it according to your own touchpad
-#
-# xinput set-prop "MSFT0001:00 04F3:31BE Touchpad" "libinput Tapping Enabled" 1
-# xinput set-prop "MSFT0001:00 04F3:31BE Touchpad" "libinput Tapping Enabled Default" 1
-# xinput set-prop "MSFT0001:00 04F3:31BE Touchpad" "libinput Accel Profile Enabled" 1 0
-# xinput set-prop "MSFT0001:00 04F3:31BE Touchpad" "libinput Accel Profile Enabled Default" 1 0
-# xinput set-prop "MSFT0001:00 04F3:31BE Touchpad" "libinput Accel Profiles Available" 1 0
+bspc config pointer_modifier mod1
 
-# rules
+# auto-position the horizontal gap
+if [ "$(cat $HOME/.cache/logs/polybar-position.dat)" = "true" ]
+then
+	bspc config top_padding 	0
+	bspc config bottom_padding      31
+	sed -Ei 's/offset =.*/offset = 11x11/g' "$HOME"/.config/dunst/config.ini
+else
+	bspc config top_padding 	31
+	bspc config bottom_padding      0
+	sed -Ei 's/offset =.*/offset = 11x36/g' "$HOME"/.config/dunst/config.ini
+fi
+
+# window rules
+bspc rule -a 'Dragon-drop:*' state=floating sticky=on 
 bspc rule -a '*:zbar' state=floating focus=on
 bspc rule -a 'jetbrains-studio:*:win0' state=floating focus=on
-bspc rule -a '*:dragon' state=floating sticky=on 
+bspc rule -a 'Localsend_app' state=tiled focus=on
+bspc rule -a 'discord:discord:*' sticky=on
 
-# startup
-. /home/<your username>/.config/bspwm/autostart
+# mouse settings
+xinput set-prop "touchpad name" "libinput Tapping Enabled" 1
+xinput set-prop "touchpad name" "libinput Tapping Enabled Default" 1
+xinput set-prop "touchpad name" "libinput Disable While Typing Enabled" 0
+xinput set-prop "touchpad name" "libinput Disable While Typing Enabled Default" 0
+xinput set-prop "touchpad name" "libinput Accel Profile Enabled" 1 0
+xinput set-prop "touchpad name" "libinput Accel Profile Enabled Default" 1 0
+xinput set-prop "touchpad name" "libinput Accel Profiles Available" 1 0
+
+# no beep in terminal
+xset b 0
+
+# autostart
+. /home/skarphet/.config/bspwm/autostart

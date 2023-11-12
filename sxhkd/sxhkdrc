@@ -3,34 +3,43 @@
 #
 
 alt + Return
-	urxvtc
+	alacritty
 
 alt + p
-	dmenu_run -l 4 -p "başlat:"
+	rofi -show run -display-run "başlat:"	
 
 super + w
-	passmenu --type
+	rofi-pass --last-used
 
 super + p
 	arandr
 
 alt + w
-	chromium 
+	thorium-browser 
 
 alt + Escape
-	pkill -USR1 -x sxhkd && dunstify -i dialog-information --urgency=LOW --replace=864 "sxhkd yenilendi!"
+	bund -r
+
+ctrl + alt + shift + t
+	bund -o 
+
+ctrl + alt + j
+	bund -q
+
+alt + v
+	clipmenu
+
 
 #
 # BSPWM HOTKEYS
 #
 
 # quit/restart bspwm
-super + alt + {q,r}
-	bspc {quit,wm -r && sleep 1 && dunstify -i dialog-information --urgency=LOW --replace=876 "bspwm yenilendi"}
-
+super + alt + q
+	bspc quit
 # close or kill
 alt + {_,shift + }q
-	bspc node -{c,k}
+	bspc node -{c,k} && [[ -z "$(bspc query --nodes --node any.local)" ]] && bspc desktop -f last.occupied
 
 # set the window state
 alt + {t,shift + t,s,f}
@@ -55,13 +64,16 @@ super + alt + shift + {h,j,k,l}
 # move a floating window
 super + {Left,Down,Up,Right}
 	bspc node -v {-20 0,0 20,0 -20,20 0}
- 
+
 #
 # MOUSE KEYS
 #
 
 super + m
 	dunstify --urgency=LOW -i mouse --replace=643 "fare moduna girildi." "fare modundan çıkmak için [x] tuşuna bas" && keym && dunstify -i mouse --urgency=LOW --replace=643 "fare modundan çıkıldı."
+
+super + h	
+	dunstify --urgency=LOW -i mouse --replace=643 "sağ tık!" "" && xdotool key Menu
 
 #
 # FN KEYS
@@ -71,43 +83,56 @@ XF86ScreenSaver
 	xset dpms force suspend && xsecurelock
 
 XF86AudioLowerVolume
-	notify-vol down
+	notify-media volume down
 
 XF86AudioRaiseVolume
-	notify-vol up
+	notify-media volume up
 
 XF86AudioMute
-	notify-vol toggle
+	notify-media volume toggle
 
-alt + F2
-	notify-vol off
+XF86AudioPlay
+	playerctl play-pause
 
-alt + F3
-	notify-vol full
+XF86AudioStop
+	playerctl stop
+
+XF86AudioNext
+	playerctl next
+
+XF86AudioPrev
+	playerctl previous
+
+alt + XF86AudioLowerVolume
+	notify-media volume off
+
+alt + XF86AudioRaiseVolume
+	notify-media volume full
 
 XF86MonBrightnessUp
-	notify-bright up
+	notify-media backlight up
 
 XF86MonBrightnessDown
-	notify-bright down
+	notify-media backlight down
 
-alt + F6
-	notify-bright full
+alt + XF86MonBrightnessUp
+	notify-media backlight full
 
-alt + F5
-	notify-bright off
+alt + XF86MonBrightnessDown
+	notify-media backlight off
 
 super + shift + s
-	screenshot select
+	screenshot full
 
 Print
-	screenshot full
+	screenshot select
 
 XF86Launch4
 	bund -t
 
 XF86Calculator
-	urxvt -e zsh -c "python"
+	rofi -show calc
+
 #
 # DUNST HOTKEYS
 #
@@ -117,3 +142,7 @@ ctrl + space
 
 ctrl + h
 	dunstctl history-pop
+
+ctrl + alt + h
+	bund -d
+
