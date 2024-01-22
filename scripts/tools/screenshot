@@ -1,32 +1,53 @@
 #!/bin/bash
 
-[ -d $HOME/.img/ss/null ] || mkdir $HOME/.img/ss/null
+[ -d $HOME/img/ss/null ] || mkdir $HOME/img/ss/null
 dest="$HOME/img/ss/null/$(date +'%Y-%m-%d_%H.%M.%S').png"
 
 selection_screenshot() {
-	if maim --hidecursor --select --color=0,0,0,0.6 --highlight $dest
-	then
+	if maim --hidecursor --select --color=0,0,0,0.6 --highlight $dest; then
 		last_file=$(ls -t $HOME/img/ss/null | head -1)
-		dunstify -I "$HOME/img/ss/null/$last_file" --urgency=LOW "peynir" "ekran görüntüsü alındı."
-		ffplay -nodisp -autoexit /usr/share/sounds/freedesktop/stereo/device-added.oga
+		ffplay -nodisp -autoexit /usr/share/sounds/freedesktop/stereo/device-added.oga &
 		sleep 0.1
-		xclip -selection clipboard -t image/png -i $HOME/img/ss/null/$last_file
+
+		if [[ -n $(zbarimg -q --raw $HOME/img/ss/null/$last_file | xclip -selection clipboard -f) ]]; then
+			dunstify -I "$HOME/img/ss/null/$last_file" --urgency=LOW "qr kod kopyalandı!"
+		else
+			ACTION=$(dunstify --action="open,Open it with feh" --action="dragon,Open it with dragon-drop" -I "$HOME/img/ss/null/$last_file" --urgency=LOW "peynir" "ekran görüntüsü alındı.")
+			xclip -selection clipboard -t image/png -i $HOME/img/ss/null/$last_file
+		fi
 	fi
 
+	case "$ACTION" in
+	"open")
+		feh "$dest"
+		;;
+	"dragon")
+		dragon-drop "$dest"
+		;;
+	esac
 }
 
-full_screenshot(){
-	if maim --hidecursor $dest
-	then
+full_screenshot() {
+	if maim --hidecursor $dest; then
 		last_file=$(ls -t $HOME/img/ss/null | head -1)
-		dunstify -I "$HOME/img/ss/null/$last_file" --urgency=LOW "peynir" "ekran görüntüsü alındı."
-		ffplay -nodisp -autoexit /usr/share/sounds/freedesktop/stereo/device-added.oga
+		ffplay -nodisp -autoexit /usr/share/sounds/freedesktop/stereo/device-added.oga &
 		sleep 0.1
+
+		ACTION=$(dunstify --action="open,Open it with feh" --action="dragon,Open it with dragon-drop" -I "$HOME/img/ss/null/$last_file" --urgency=LOW "peynir" "ekran görüntüsü alındı.")
 		xclip -selection clipboard -t image/png -i $HOME/img/ss/null/$last_file
 	fi
+
+	case "$ACTION" in
+	"open")
+		feh "$dest"
+		;;
+	"dragon")
+		dragon-drop "$dest"
+		;;
+	esac
 }
 
 case $1 in
-	select) selection_screenshot ;;
-	full) full_screenshot ;;
+select) selection_screenshot ;;
+full) full_screenshot ;;
 esac

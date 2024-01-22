@@ -1,0 +1,29 @@
+alt + Return
+	alacritty
+
+alt + p
+	rofi -show run -show-icons -display-run "başlat:"	
+
+super + w
+	rofi-pass --last-used
+
+super + p
+	arandr
+
+alt + w
+	chromium
+
+alt + Escape
+	bund -r
+
+ctrl + alt + shift + t
+	bund -o 
+
+ctrl + alt + j
+	bund -q
+
+alt + v
+	clipmenu
+
+alt + shift + Return
+	workspaces

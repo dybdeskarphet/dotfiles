@@ -1,0 +1,85 @@
+#!/bin/bash
+
+selection=$(echo -e "👨🏻‍💻 frontend workspaces\n📜 translation workspace" | rofi -dmenu -p "start")
+
+frontend_workspace() {
+    # Setting rules for opening applications in specific workspaces
+    project_rofi="$(echo -e "🪙 wincoi\n📽 filmer" | rofi -dmenu)"
+
+    launch() {
+    dunstify -r 2903 -i reload "workspace automation" "frontend workspace ($project_rofi) is getting prepared"
+
+    bspc rule -a VSCodium desktop='^1' state=tiled -o
+    bspc rule -a scrcpy desktop='^1' state=pseudo_tiled -o
+    bspc rule -a Alacritty desktop='^2' -o
+    bspc rule -a Chromium desktop='^3' -o
+
+    # Opening applications
+    scrcpy --no-audio &
+    sleep 1
+    codium "$project_selection" &
+    alacritty -e zsh -c "cd \"$project_selection\" && zsh" &
+    chromium --new-window "https://chat.openai.com/" "$project_url" &
+
+    sleep 3
+    codium_id=$(xdotool search --class VSCodium)
+    echo "Codium ID: $codium_id"
+
+    if [ -n "$codium_id" ]; then
+        bspc node $codium_id -z left -520 0
+    else
+        echo "Codium window not found"
+    fi
+
+    sleep 1
+    bspc rule -r VSCodium
+    bspc rule -r scrcpy
+    bspc rule -r Alacritty
+    bspc rule -r Chromium
+
+    }
+
+    case $project_rofi in
+    "🪙 wincoi")
+        project_selection="code/git/commercial/wincoi-mobile"
+        project_url="https://github.com/wincoiTech/wincoi-mobile"
+        launch
+        ;;
+    "📽 filmer")
+        project_selection="code/git/personal projects/filmer"
+        project_url="https://github.com/dybdeskarphet/filmer"
+        launch
+        ;;
+    esac
+}
+
+translation_workspace() {
+  dunstify -r 2903 -i reload "workspace automation" "translation workspace is getting prepared"
+
+  dunstify -r 2904 -i reload "workspace automation" "setting the workspace rules..."
+  bspc rule -a VSCodium desktop='^1' state=tiled -o
+  bspc rule -a Chromium desktop='^2' state=tiled -o
+  bspc rule -a Zathura desktop='^3' state=tiled -o
+  dunstify -r 2904 -i reload "workspace automation" "workspace rules are set."
+
+  sleep 2
+
+  codium "$HOME/doc/wiki" "$HOME/doc/notes/todo/translation/archwiki.md" &
+  chromium --new-window "https://wiki.archlinux.org/title/User:Dybdeskarphet/Maintaining" "https://www.deepl.com/translator" "https://tureng.com/en/turkish-english" &
+  zathura "$HOME/doc/book/cs/Bilişim Terimleri Sözlüğü (TSE).pdf" & 
+
+  sleep 1
+
+  bspc rule -r VSCodium 
+  bspc rule -r Chromium 
+  bspc rule -r Zathura
+}
+
+case $selection in
+"👨🏻‍💻 frontend workspaces")
+    frontend_workspace && dunstify -r 2903 -i success "workspace automation" "frontend ($project_rofi) workspace is prepared"
+    ;;
+"📜 translation workspace")
+    translation_workspace && dunstify -r 2903 -i success "workspace automation" "translation workspace is prepared"
+    ;;
+esac

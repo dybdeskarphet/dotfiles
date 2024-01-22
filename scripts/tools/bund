@@ -129,7 +129,7 @@ solid_wallpaper() {
 
 	case $input_2 in
 	pc)
-		convert -size 1920x1080 xc:"$color_code" PNG:./.wallpaper
+		convert -size 1920x1080 xc:"$color_code" PNG:"$HOME/img/.wallpaper"
 		$HOME/.config/feh/.fehbg
 		;;
 	phone) convert -size 1080x2340 xc:"$color_code" ./wallpaper.png ;;
@@ -262,7 +262,8 @@ reload_menu() {
 		dunstify -i reload --urgency=LOW --replace=876 "bspwm yenilendi" "pencere yöneticisi ve diğer tüm başlangıç uygulamaları yenilendi."
 		;;
 	"reload sxhkd")
-		pkill -USR1 -x sxhkd
+		killall sxhkd > /dev/null
+		sxhkd -c "$HOME"/.config/sxhkd/sxhkdrc.apps "$HOME"/.config/sxhkd/sxhkdrc.bspwm "$HOME"/.config/sxhkd/sxhkdrc.dunst "$HOME"/.config/sxhkd/sxhkdrc.fn "$HOME"/.config/sxhkd/sxhkdrc.mouse 2>&1 | tee "$HOME"/.cache/logs/autostart/sxhkd.log &
 		dunstify -i reload --urgency=LOW --replace=864 "sxhkd yenilendi" "kısayol tuşları yapılandırma dosyası yenilendi."
 		;;
 	"reload polybar")
@@ -328,6 +329,7 @@ print_usage() {
 	printf '%b\n' "  $bundle_name {-c --colors}                                         show colors"
 	printf '%b\n' "  $bundle_name {-h --help}                                           print this message"
 	printf '%b\n' "  $bundle_name {-w --weather} <city>                                 show the weather for the specified city"
+	printf '%b\n' "  $bundle_name {-l --list-passwords}                                 list network passwords from NetworkManager"
 
 	printf '\n%b\n' "\e[1mACTION COMMANDS\e[0m"
 
@@ -352,6 +354,17 @@ print_usage() {
 	exit 1
 }
 
+list_passwords() {
+  echo "Listing passwords in NetworkManager:"
+  sudo find /etc/NetworkManager/system-connections/ -type f -exec sh -c '
+    network_name=$(grep -hE "^\s*ssid=" "$1" | awk -F= "{print \$2}")
+    password=$(grep -hE "^\s*psk=" "$1" | awk -F= "{print \$2}")
+    if [ -n "$password" ]; then
+      echo -e "\033[1m${network_name}\033[0m\n${password}\n"
+    fi
+  ' sh {} \;
+}
+
 case $1 in
 --colors | -c) colors ;;
 --colors2 | -C) colors_match ;;
@@ -369,5 +382,6 @@ case $1 in
 --weather | -w) weather ;;
 --wrff | -p) resize_for_phone ;;
 --caps2esc | -o) caps2esc_toggle ;;
+--list-passwords | -l) list_passwords ;;
 *) print_usage ;;
 esac

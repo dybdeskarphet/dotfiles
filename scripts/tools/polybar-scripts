@@ -1,5 +1,6 @@
 #!/bin/bash
 accent=$(cat $HOME/.cache/logs/polybar-accent.dat)
+foreground=$(cat $HOME/.cache/logs/polybar-foreground.dat)
 termwin="alacritty -e zsh -c"
 
 bt_show() {
@@ -7,9 +8,9 @@ bt_show() {
 		echo "%{F#66ffffff}󰂲"
 	else
 		if [ $(bluetoothctl devices Connected | wc -c) -eq 0 ]; then
-			echo "%{F$accent}󰂯%{F#ffffff}"
+			echo "%{F$accent}󰂯%{F$foreground}"
 		else
-			echo "%{F$accent}󰂱  %{F#FFFFFF}$(bluetoothctl info | grep Name | sed "s/Name: //g ; s/^[ \t]*//")"
+			echo "%{F$accent}󰂱 %{F$foreground} $(bluetoothctl info | grep Name | sed "s/Name: //g ; s/^[ \t]*//")"
 		fi
 	fi
 }
@@ -24,9 +25,9 @@ bt_toggle() {
 
 sync_icon() {
 	if systemctl is-active --quiet backupDrive.service; then
-		echo "%{F$accent}󰘿%{F#ffffff}"
+		echo "%{F$accent}󰘿%{F$foreground}"
 	elif [[ -f /tmp/not-recognized.backup ]]; then
-		echo "%{F#66ffffff}󰅤%{F#ffffff}"
+		echo "%{F#66ffffff}󰅤%{F$foreground}"
 	else
 		echo
 	fi
@@ -63,6 +64,14 @@ check_updates() {
 	fi
 }
 
+copy_date() {
+	if date +"%F" | xclip -sel clip; then
+		dunstify -r 9326 -i clipboard -t 5000 "tarih panoya kopyalandı!"
+	else
+		dunstify -r 9326 -i clipboard -t 5000 "tarih kopyalanırken hata ile karşılaşıldı!"
+	fi
+}
+
 case $1 in
 battery) $termwin "watch -p -t -n 0.5 upower -i /org/freedesktop/UPower/devices/battery_BAT0" ;;
 bluetooth_show) bt_show ;;
@@ -70,6 +79,7 @@ sync_icon) sync_icon ;;
 do_not_disturb) do_not_disturb ;;
 sync_icon_click) $termwin "nvim ~/code/sh/tools/backup" ;;
 bluetooth_toggle) bt_toggle ;;
+copy_date) copy_date ;;
 date) alacritty -o font.size=13 -e zsh -c "LANG=tr_TR.UTF-8 cal -y && zsh" ;;
 htop_cpu) $termwin "htop -t --sort-key PERCENT_CPU" ;;
 htop_mem) $termwin "htop -t --sort-key PERCENT_MEM" ;;
@@ -87,5 +97,5 @@ disk_info)
 temp) $termwin "watch -p -t -n 0.5 'sensors'" ;;
 wifi_menu) $termwin "printf '%b\n\n' '\e[1mEnter your password to connect to a wireless network:\e[0m' && sudo nmtui; zsh" ;;
 check_updates) check_updates ;;
-open_update_screen) $termwin "printf '%b\n\n' '\e[1mEnter your password to update Pacman/AUR packages:\e[0m' && sudo yay -Syu; zsh" ;;
+open_update_screen) $termwin "printf '%b\n\n' '\e[1mEnter your password to update Pacman/AUR packages:\e[0m' && sudo paru -Syu; zsh" ;;
 esac

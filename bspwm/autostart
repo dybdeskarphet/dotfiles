@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # run once and never kill
-pgrep -x sxhkd > /dev/null || sxhkd 2>&1 | tee "$HOME"/.cache/logs/autostart/sxhkd.log &
+pgrep -x sxhkd > /dev/null || sxhkd -c "$HOME"/.config/sxhkd/sxhkdrc.apps "$HOME"/.config/sxhkd/sxhkdrc.bspwm "$HOME"/.config/sxhkd/sxhkdrc.dunst "$HOME"/.config/sxhkd/sxhkdrc.fn "$HOME"/.config/sxhkd/sxhkdrc.mouse 2>&1 | tee "$HOME"/.cache/logs/autostart/sxhkd.log &
 pgrep -x playerctld > /dev/null || playerctld daemon 2>&1 | tee "$HOME"/.cache/logs/autostart/playerctld.log &
 pgrep -x clipmenud > /dev/null || clipmenud 2>&1 | tee "$HOME"/.cache/logs/autostart/clipmenud.log &
 
@@ -35,4 +35,5 @@ mpris-proxy 2>&1 | tee "$HOME"/.cache/logs/autostart/mpris-proxy.log &
 # sleep 0.5 && conky -c $HOME/.config/conky/conky.conf 2>&1 | tee "$HOME"/.cache/logs/autostart/conky.log &
 
 grep "accent =" "$HOME"/.config/polybar/config.ini | grep -o "#......" > "$HOME"/.cache/logs/polybar-accent.dat &
+grep "^foreground =" "$HOME"/.config/polybar/config.ini | grep -o "#......" > "$HOME"/.local/share/polybar/polybar-foreground.dat &
 grep "^bottom =" "$HOME"/.config/polybar/config.ini | sed 's/bottom = //g' > "$HOME"/.cache/logs/polybar-position.dat &
