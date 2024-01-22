@@ -20,7 +20,7 @@ This repository contains my personal dotfiles for configuring various programs a
 
 ## Screenshots
 
-<img src="ss.png" alt="1" width="384">
+<img src="screenshot.png" alt="1" width="384">
 
 ## Installation
 
