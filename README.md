@@ -22,6 +22,18 @@ This repository contains my personal dotfiles for configuring various programs a
 
 <img src="screenshot.png" alt="1" width="384">
 
+## Related Reddit Posts
+
+- [[bspwm] boring enough?](https://www.reddit.com/r/unixporn/comments/19d0jo0/bspwm_boring_enough/) (2024-01-22)
+- [[bspwm] sub hayırlı olsun rice'ı](https://www.reddit.com/r/archlinuxturkiye/comments/1923kdu/bspwm_sub_hay%C4%B1rl%C4%B1_olsun_rice%C4%B1/) (2024-01-09)
+- [[bspwm] i must not fear](https://www.reddit.com/r/unixporn/comments/qep42t/bspwm_i_must_not_fear/) (2021-10-24)
+- [[bspwm] greenery](https://www.reddit.com/r/unixporn/comments/ph3w4x/bspwm_greenery/) (2021-09-03)
+- [[bspwm] give me tips about my bar, i can't find anything to change about it](https://www.reddit.com/r/unixporn/comments/pcv5xf/bspwm_give_me_tips_about_my_bar_i_cant_find/) (2021-08-27)
+- [[bspwm] same rice? again?](https://www.reddit.com/r/unixporn/comments/p30ms3/bspwm_same_rice_again/) (2021-08-12)
+- [[bspwm] orange](https://www.reddit.com/r/unixporn/comments/nkl0fe/bspwm_orange/) (2021-05-25)
+- [[bspwm] same rice but blue](https://www.reddit.com/r/unixporn/comments/mz5lo4/bspwm_same_rice_but_blue/) (2021-04-26)
+- [[i3-gaps]](https://www.reddit.com/r/Linuxtr/comments/l5hq05/i3gaps/) (2021-01-26)
+
 ## Installation
 
 1. **Clone the repository:**
