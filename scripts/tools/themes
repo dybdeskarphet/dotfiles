@@ -1,0 +1,37 @@
+#!/bin/bash
+
+selection=$(echo -e "📽️ film mode\n💻 normal mode" | rofi -dmenu -p "start")
+
+film_mode() {
+  polybar_toggle=1
+  echo "${polybar_toggle}" >/tmp/polybar_toggle.dat
+
+  polybar-msg cmd hide
+  feh --no-fehbg --bg-fill "$HOME/img/wal/just-black.png"
+  bspc config bottom_padding 0
+  bspc config top_padding 0
+}
+
+normal_mode() {
+  polybar_toggle=0
+  echo "${polybar_toggle}" >/tmp/polybar_toggle.dat
+  polybar-msg cmd show &
+  feh --no-fehbg --bg-fill "$HOME/img/.wallpaper"
+
+  if [ "$(cat $HOME/.cache/logs/polybar-position.dat)" = "true" ]; then
+    bspc config top_padding 0
+    bspc config bottom_padding 26
+  else
+    bspc config top_padding 26
+    bspc config bottom_padding 0
+  fi
+}
+
+case $selection in
+"📽️ film mode")
+  film_mode && dunstify -r 2903 -i paint-palette "theme changed to film mode" "enjoy your movie! 🍿"
+  ;;
+"💻 normal mode")
+  normal_mode && dunstify -r 2903 -i paint-palette "theme changed back to normal" "back to default."
+  ;;
+esac
