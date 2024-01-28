@@ -1,22 +1,26 @@
 #!/bin/bash
 
-selection=$(echo -e "👨🏻‍💻 frontend workspaces\n📜 translation workspace" | rofi -dmenu -p "start")
+selection=$(echo -e "👨🏻‍💻 coding workspaces\n📜 translation workspace" | rofi -dmenu -p "start")
 
-frontend_workspace() {
+coding_workspaces() {
     # Setting rules for opening applications in specific workspaces
-    project_rofi="$(echo -e "🪙 wincoi\n📽 filmer" | rofi -dmenu)"
+    project_rofi="$(echo -e "🪙 wincoi\n📽 filmer\n🔢 learn backend" | rofi -dmenu)"
 
     launch() {
-    dunstify -r 2903 -i reload "workspace automation" "frontend workspace ($project_rofi) is getting prepared"
-
+    dunstify -t 30000 -r 2903 -i no-icon "workspace automation" "<i>$project_type development workspace ($project_rofi)</i> is getting prepared..."
+    dunstify -t 30000 -r 2903 -i no-icon "workspace automation" "<i>$project_type development workspace ($project_rofi)</i> is getting prepared:\n\n⌛ setting the workspace rules..."
     bspc rule -a VSCodium desktop='^1' state=tiled -o
     bspc rule -a scrcpy desktop='^1' state=pseudo_tiled -o
     bspc rule -a Alacritty desktop='^2' -o
     bspc rule -a Chromium desktop='^3' -o
+    dunstify -t 30000 -r 2903 -i no-icon "workspace automation" "<i>$project_type development workspace ($project_rofi)</i> is getting prepared:\n\n✅ workspace rules are set!\n⌛ apps are gettinge prepared..."
 
     # Opening applications
-    scrcpy --no-audio &
-    sleep 1
+    if [[ $project_type = "frontend" ]]; then
+      scrcpy --no-audio &
+      sleep 1
+    fi
+
     codium "$project_selection" &
     alacritty -e zsh -c "cd \"$project_selection\" && zsh" &
     chromium --new-window "https://chat.openai.com/" "$project_url" &
@@ -43,24 +47,36 @@ frontend_workspace() {
     "🪙 wincoi")
         project_selection="code/git/commercial/wincoi-mobile"
         project_url="https://github.com/wincoiTech/wincoi-mobile"
+        project_type="frontend"
         launch
         ;;
     "📽 filmer")
         project_selection="code/git/personal projects/filmer"
         project_url="https://github.com/dybdeskarphet/filmer"
+        project_type="frontend"
         launch
         ;;
+    "🔢 learn backend")
+        project_selection="code/git/learning/learn-backend"
+        project_url="https://github.com/dybdeskarphet/learn-backend"
+        project_type="backend"
+        launch
+        ;;
+    *)
+        exit 1
+        ;;
+  
     esac
 }
 
 translation_workspace() {
-  dunstify -r 2903 -i reload "workspace automation" "translation workspace is getting prepared"
+  dunstify -t 30000 -r 2903 -i no-icon "workspace automation" "<i>translation workspace</i> is getting prepared..."
 
-  dunstify -r 2904 -i reload "workspace automation" "setting the workspace rules..."
+  dunstify -t 30000 -r 2903 -i no-icon "workspace automation" "<i>translation workspace</i> is getting prepared:\n\n⌛ setting the workspace rules..."
   bspc rule -a VSCodium desktop='^1' state=tiled -o
   bspc rule -a Chromium desktop='^2' state=tiled -o
   bspc rule -a Zathura desktop='^3' state=tiled -o
-  dunstify -r 2904 -i reload "workspace automation" "workspace rules are set."
+  dunstify -t 30000 -r 2903 -i no-icon "workspace automation" "<i>translation workspace</i> is getting prepared:\n\n✅ workspace rules are set!\n⌛ apps are getting prepared..."
 
   sleep 2
 
@@ -76,10 +92,12 @@ translation_workspace() {
 }
 
 case $selection in
-"👨🏻‍💻 frontend workspaces")
-    frontend_workspace && dunstify -r 2903 -i success "workspace automation" "frontend ($project_rofi) workspace is prepared"
+"👨🏻‍💻 coding workspaces")
+    coding_workspaces
+    dunstify -t 3000 -r 2903 -i no-icon "workspace automation" "<i>$project_type workspace ($project_rofi)</i> is getting prepared:\n\n✅ workspace rules are set!\n✅ apps are prepared!"
     ;;
 "📜 translation workspace")
-    translation_workspace && dunstify -r 2903 -i success "workspace automation" "translation workspace is prepared"
+    translation_workspace
+    dunstify -t 3000 -r 2903 -i no-icon "workspace automation" "<i>translation workspace</i> is getting prepared:\n\n✅ workspace rules are set!\n✅ apps are prepared!"
     ;;
 esac
