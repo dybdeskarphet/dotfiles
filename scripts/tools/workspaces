@@ -1,49 +1,49 @@
 #!/bin/bash
 
-selection=$(echo -e "👨🏻‍💻 coding workspaces\n📜 translation workspace" | rofi -dmenu -p "start")
+selection=$(echo -e "👨🏻‍💻 coding\n📜 translation\n🔠 language learning" | rofi -dmenu -p "select workspace")
 
 coding_workspaces() {
     # Setting rules for opening applications in specific workspaces
-    project_rofi="$(echo -e "🪙 wincoi\n📽 filmer\n🔢 learn backend" | rofi -dmenu)"
+    project_rofi="$(echo -e "🪙 wincoi\n📽 filmer\n🔢 learn backend\n🎨 dotfiles" | rofi -dmenu -p 'select the environment')"
 
     launch() {
-    dunstify -t 30000 -r 2903 -i no-icon "workspace automation" "<i>$project_type development workspace ($project_rofi)</i> is getting prepared..."
-    dunstify -t 30000 -r 2903 -i no-icon "workspace automation" "<i>$project_type development workspace ($project_rofi)</i> is getting prepared:\n\n⌛ setting the workspace rules..."
-    bspc rule -a VSCodium desktop='^1' state=tiled -o
-    bspc rule -a scrcpy desktop='^1' state=pseudo_tiled -o
-    bspc rule -a Alacritty desktop='^2' -o
-    bspc rule -a Chromium desktop='^3' -o
-    dunstify -t 30000 -r 2903 -i no-icon "workspace automation" "<i>$project_type development workspace ($project_rofi)</i> is getting prepared:\n\n✅ workspace rules are set!\n⌛ apps are gettinge prepared..."
+        dunstify -t 30000 -r 2903 -i no-icon "workspace automation" "<i>$project_type development workspace ($project_rofi)</i> is getting prepared..."
+        dunstify -t 30000 -r 2903 -i no-icon "workspace automation" "<i>$project_type development workspace ($project_rofi)</i> is getting prepared:\n\n⌛ setting the workspace rules..."
+        bspc rule -a VSCodium desktop='^1' state=tiled -o
+        bspc rule -a scrcpy desktop='^1' state=pseudo_tiled -o
+        bspc rule -a Alacritty desktop='^2' -o
+        bspc rule -a Chromium desktop='^3' -o
+        dunstify -t 30000 -r 2903 -i no-icon "workspace automation" "<i>$project_type development workspace ($project_rofi)</i> is getting prepared:\n\n✅ workspace rules are set!\n⌛ apps are gettinge prepared..."
 
-    # Opening applications
-    if [[ $project_type = "frontend" ]]; then
-      scrcpy --no-audio &
-      sleep 1
-    fi
+        # Opening applications
+        if [[ $project_type = "frontend" ]]; then
+            scrcpy --no-audio &
+            sleep 1
+        fi
 
-    codium "$project_selection" &
-    alacritty -e zsh -c "cd \"$project_selection\" && zsh" &
-    chromium --new-window "https://chat.openai.com/" "$project_url" &
+        codium "$project_selection" &
+        alacritty -e zsh -c "cd \"$project_selection\" && zsh" &
+        chromium --new-window "https://chat.openai.com/" "$project_url" &
 
-    sleep 3
-    codium_id=$(xdotool search --class VSCodium)
-    echo "Codium ID: $codium_id"
+        sleep 3
+        codium_id=$(xdotool search --class VSCodium)
+        echo "Codium ID: $codium_id"
 
-    if [ -n "$codium_id" ]; then
-        bspc node $codium_id -z left -520 0
-    else
-        echo "Codium window not found"
-    fi
+        if [ -n "$codium_id" ]; then
+            bspc node "$codium_id" -z left -520 0
+        else
+            echo "Codium window not found"
+        fi
 
-    sleep 1
-    bspc rule -r VSCodium
-    bspc rule -r scrcpy
-    bspc rule -r Alacritty
-    bspc rule -r Chromium
+        sleep 1
 
+        bspc rule -r "VSCodium"
+        bspc rule -r "scrcpy"
+        bspc rule -r "Alacritty"
+        bspc rule -r "Chromium"
     }
 
-    case $project_rofi in
+    case "$project_rofi" in
     "🪙 wincoi")
         project_selection="code/git/commercial/wincoi-mobile"
         project_url="https://github.com/wincoiTech/wincoi-mobile"
@@ -62,42 +62,74 @@ coding_workspaces() {
         project_type="backend"
         launch
         ;;
+    "🎨 dotfiles")
+        project_selection="code/git/personal projects/dotfiles"
+        project_url="https://github.com/dybdeskarphet/dotfiles"
+        project_type="workspace related"
+        launch
+        ;;
     *)
         exit 1
         ;;
-  
     esac
 }
 
 translation_workspace() {
-  dunstify -t 30000 -r 2903 -i no-icon "workspace automation" "<i>translation workspace</i> is getting prepared..."
 
-  dunstify -t 30000 -r 2903 -i no-icon "workspace automation" "<i>translation workspace</i> is getting prepared:\n\n⌛ setting the workspace rules..."
-  bspc rule -a VSCodium desktop='^1' state=tiled -o
-  bspc rule -a Chromium desktop='^2' state=tiled -o
-  bspc rule -a Zathura desktop='^3' state=tiled -o
-  dunstify -t 30000 -r 2903 -i no-icon "workspace automation" "<i>translation workspace</i> is getting prepared:\n\n✅ workspace rules are set!\n⌛ apps are getting prepared..."
+    dunstify -t 30000 -r 2903 -i no-icon "workspace automation" "<i>translation workspace</i> is getting prepared..."
 
-  sleep 2
+    dunstify -t 30000 -r 2903 -i no-icon "workspace automation" "<i>translation workspace</i> is getting prepared:\n\n⌛ setting the workspace rules..."
+    bspc rule -a VSCodium desktop='^1' state=tiled -o
+    bspc rule -a Chromium desktop='^2' state=tiled -o
+    bspc rule -a Zathura desktop='^3' state=tiled -o
+    dunstify -t 30000 -r 2903 -i no-icon "workspace automation" "<i>translation workspace</i> is getting prepared:\n\n✅ workspace rules are set!\n⌛ apps are getting prepared..."
 
-  codium "$HOME/doc/wiki" "$HOME/doc/notes/todo/translation/archwiki.md" &
-  chromium --new-window "https://wiki.archlinux.org/title/User:Dybdeskarphet/Maintaining" "https://www.deepl.com/translator" "https://tureng.com/en/turkish-english" &
-  zathura "$HOME/doc/book/cs/Bilişim Terimleri Sözlüğü (TSE).pdf" & 
+    sleep 2
 
-  sleep 1
+    codium "$HOME/doc/wiki" "$HOME/doc/notes/todo/translation/archwiki.md" &
+    chromium --new-window "https://wiki.archlinux.org/title/User:Dybdeskarphet/Maintaining" "https://www.deepl.com/translator" "https://tureng.com/en/turkish-english" &
+    zathura "$HOME/doc/book/cs/Bilişim Terimleri Sözlüğü (TSE).pdf" &
 
-  bspc rule -r VSCodium 
-  bspc rule -r Chromium 
-  bspc rule -r Zathura
+    sleep 1
+
+    bspc rule -r "VSCodium"
+    bspc rule -r "Chromium"
+    bspc rule -r "Zathura"
+}
+
+language_learning_workspace() {
+    dunstify -t 30000 -r 2903 -i no-icon "workspace automation" "<i>language learning workspace</i> is getting prepared..."
+
+    dunstify -t 30000 -r 2903 -i no-icon "workspace automation" "<i>language learning workspace</i> is getting prepared:\n\n⌛ setting the workspace rules..."
+    bspc rule -a Chromium desktop='^1' state=tiled -o
+    bspc rule -a Anki desktop='^2' state=tiled -o
+    bspc rule -a VSCodium desktop='^3' state=tiled -o
+    dunstify -t 30000 -r 2903 -i no-icon "workspace automation" "<i>language learning workspace</i> is getting prepared:\n\n✅ workspace rules are set!\n⌛ apps are getting prepared..."
+
+    sleep 2
+
+    codium "$HOME/doc/notes/lang/chinese" "$HOME/doc/tex/lang/chinese" &
+    chromium --new-window "https://www.duolingo.com/learn" &
+    anki &
+
+    sleep 2
+
+    bspc rule -r Chromium
+    bspc rule -r anki
+    bspc rule -r VSCodium
 }
 
 case $selection in
-"👨🏻‍💻 coding workspaces")
+"👨🏻‍💻 coding")
     coding_workspaces
     dunstify -t 3000 -r 2903 -i no-icon "workspace automation" "<i>$project_type workspace ($project_rofi)</i> is getting prepared:\n\n✅ workspace rules are set!\n✅ apps are prepared!"
     ;;
-"📜 translation workspace")
+"📜 translation")
     translation_workspace
     dunstify -t 3000 -r 2903 -i no-icon "workspace automation" "<i>translation workspace</i> is getting prepared:\n\n✅ workspace rules are set!\n✅ apps are prepared!"
+    ;;
+"🔠 language learning")
+    language_learning_workspace
+    dunstify -t 3000 -r 2903 -i no-icon "workspace automation" "<i>language learning workspace</i> is getting prepared:\n\n✅ workspace rules are set!\n✅ apps are prepared!"
     ;;
 esac
