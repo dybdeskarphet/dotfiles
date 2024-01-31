@@ -36,7 +36,7 @@ coding_workspaces() {
         fi
 
         sleep 1
-
+kl
         bspc rule -r "VSCodium"
         bspc rule -r "scrcpy"
         bspc rule -r "Alacritty"
