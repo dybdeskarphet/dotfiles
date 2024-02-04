@@ -17,17 +17,17 @@ bt_show() {
 				percentage=$(echo "$device_info" | grep "Battery Percentage" | sed 's/.*(\(.*\))/\1/')
 				device_name=$(echo "$device_info" | grep Name | sed "s/Name: //g ; s/^[ \t]*//")
 				if [ $percentage -lt 20 ]; then
-					echo "%{F$accent}󰤾   %{F$foreground}$device_name" # Low battery
+					echo "%{F$accent}$percentage %{O-1}󰤾   %{F$foreground}$device_name"
 				elif [ $percentage -lt 40 ]; then
-					echo "%{F$accent}󰥀   %{F$foreground}$device_name" # Medium battery
+					echo "%{F$accent}$percentage %{O-1}󰥀   %{F$foreground}$device_name"
 				elif [ $percentage -lt 60 ]; then
-					echo "%{F$accent}󰥂   %{F$foreground}$device_name" # Medium battery
+					echo "%{F$accent}$percentage %{O-1}󰥂   %{F$foreground}$device_name"
 				elif [ $percentage -lt 80 ]; then
-					echo "%{F$accent}󰥃   %{F$foreground}$device_name" # Medium battery
+					echo "%{F$accent}$percentage %{O-1}󰥃   %{F$foreground}$device_name"
 				elif [ $percentage -lt 100 ]; then
-					echo "%{F$accent}󰥅   %{F$foreground}$device_name" # Medium battery
+					echo "%{F$accent}$percentage %{O-1}󰥅   %{F$foreground}$device_name"
 				elif [ $percentage -eq 100 ]; then
-					echo "%{F$accent}󰥈   %{F$foreground}$device_name" # Medium battery
+					echo "%{F$accent}$percentage %{O-1}󰥈   %{F$foreground}$device_name" 
 				fi
 			fi
 		fi
@@ -47,6 +47,18 @@ sync_icon() {
 		echo "%{F$accent}󰘿%{F$foreground}"
 	elif [[ -f /tmp/not-recognized.backup ]]; then
 		echo "%{F#66ffffff}󰅤%{F$foreground}"
+	else
+		echo
+	fi
+}
+
+mic_icon() {
+	CARD_INDEX=1
+	CONTROL_NAME='Capture'
+	mic_status=$(amixer -c $CARD_INDEX sget $CONTROL_NAME | grep -o "\[[a-z]*\]")
+
+	if [[ $mic_status == *"[off]" ]]; then
+		echo "%{F$accent}󰍭%{F$foreground}"
 	else
 		echo
 	fi
@@ -77,17 +89,17 @@ check_updates() {
 	updates=$((updates_arch + updates_aur))
 
 	if [ "$updates" -gt 0 ]; then
-		echo "%{F$accent}󱧕%{F#FFFFFF}  $updates"
+		echo "%{F$accent}󱧕%{F$foreground}  $updates"
 	else
 		echo ""
 	fi
 }
 
 copy_date() {
-	if date +"%F" | xclip -sel clip; then
-		dunstify -r 9326 -i clipboard -t 5000 "tarih panoya kopyalandı!"
+  if printf `date "+%F"` | xclip -sel clip; then
+    dunstify -r 9326 -i clipboard -t 5000 "tarih panoya kopyalandı!" "koplyanan tarih: '$(date +"%F")'"
 	else
-		dunstify -r 9326 -i clipboard -t 5000 "tarih kopyalanırken hata ile karşılaşıldı!"
+		dunstify -r 9326 -i clipboard -t 5000 "tarih kopyalanırken hata ile karşılaşıldı!" "scripti kontorl edin."
 	fi
 }
 
@@ -95,6 +107,7 @@ case $1 in
 battery) $termwin "watch -p -t -n 0.5 upower -i /org/freedesktop/UPower/devices/battery_BAT0" ;;
 bluetooth_show) bt_show ;;
 sync_icon) sync_icon ;;
+mic_icon) mic_icon ;;
 do_not_disturb) do_not_disturb ;;
 sync_icon_click) $termwin "nvim ~/code/sh/tools/backup" ;;
 bluetooth_toggle) bt_toggle ;;
