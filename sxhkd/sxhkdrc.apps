@@ -19,7 +19,7 @@ alt + Escape
 ctrl + alt + shift + t
 	bund -o 
 
-ctrl + alt + j
+alt + ctrl + shift + Escape
 	bund -q
 
 alt + v
@@ -27,3 +27,6 @@ alt + v
 
 alt + shift + Return
 	workspaces
+
+alt + shift + Escape
+  themes
