@@ -36,7 +36,7 @@ coding_workspaces() {
         fi
 
         sleep 1
-kl
+
         bspc rule -r "VSCodium"
         bspc rule -r "scrcpy"
         bspc rule -r "Alacritty"
@@ -60,6 +60,12 @@ kl
         project_selection="code/git/learning/learn-backend"
         project_url="https://github.com/dybdeskarphet/learn-backend"
         project_type="backend"
+        launch
+        ;;
+    "📈 learn data science")
+        project_selection="code/git/learning/learn-data-science"
+        project_url="https://github.com/dybdeskarphet/learn-data-science"
+        project_type="data"
         launch
         ;;
     "🎨 dotfiles")
@@ -87,7 +93,7 @@ translation_workspace() {
     sleep 2
 
     codium "$HOME/doc/wiki" "$HOME/doc/notes/todo/translation/archwiki.md" &
-    chromium --new-window "https://wiki.archlinux.org/title/User:Dybdeskarphet/Maintaining" "https://www.deepl.com/translator" "https://tureng.com/en/turkish-english" &
+    chromium --new-window "https://wiki.archlinux.org/title/User:Dybdeskarphet" "https://www.deepl.com/translator" "https://tureng.com/en/turkish-english" &
     zathura "$HOME/doc/book/cs/Bilişim Terimleri Sözlüğü (TSE).pdf" &
 
     sleep 1
