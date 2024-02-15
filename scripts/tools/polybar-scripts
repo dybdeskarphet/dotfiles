@@ -11,23 +11,28 @@ bt_show() {
 			echo "%{F$accent}󰂯%{F$foreground}" # No connected devices
 		else
 			device_info=$(bluetoothctl info)
+		  device_name=$(echo "$device_info" | grep Name | sed "s/Name: //g ; s/^[ \t]*//")
+      if [[ ${#device_name} -gt 10 ]]; then
+        device_name="${device_name:0:10}…"
+      else
+        :
+      fi
 			if [ $(echo "$device_info" | grep "Battery Percentage" | wc -c) -eq 0 ]; then
-				echo "%{F$accent}󰂱 %{F$foreground} $(echo "$device_info" | grep Name | sed "s/Name: //g ; s/^[ \t]*//")"
+				echo "%{F$accent}󰂱 %{F$foreground} ${device_name}"
 			else
 				percentage=$(echo "$device_info" | grep "Battery Percentage" | sed 's/.*(\(.*\))/\1/')
-				device_name=$(echo "$device_info" | grep Name | sed "s/Name: //g ; s/^[ \t]*//")
 				if [ $percentage -lt 20 ]; then
-					echo "%{F$accent}$percentage %{O-1}󰤾   %{F$foreground}$device_name"
+					echo "%{F$accent}$percentage %{O-1}󰤾   %{F$foreground}$device_name" # Low battery
 				elif [ $percentage -lt 40 ]; then
-					echo "%{F$accent}$percentage %{O-1}󰥀   %{F$foreground}$device_name"
+					echo "%{F$accent}$percentage %{O-1}󰥀   %{F$foreground}$device_name" # Medium battery
 				elif [ $percentage -lt 60 ]; then
-					echo "%{F$accent}$percentage %{O-1}󰥂   %{F$foreground}$device_name"
+					echo "%{F$accent}$percentage %{O-1}󰥂   %{F$foreground}$device_name" # Medium battery
 				elif [ $percentage -lt 80 ]; then
-					echo "%{F$accent}$percentage %{O-1}󰥃   %{F$foreground}$device_name"
+					echo "%{F$accent}$percentage %{O-1}󰥃   %{F$foreground}$device_name" # Medium battery
 				elif [ $percentage -lt 100 ]; then
-					echo "%{F$accent}$percentage %{O-1}󰥅   %{F$foreground}$device_name"
+					echo "%{F$accent}$percentage %{O-1}󰥅   %{F$foreground}$device_name" # Medium battery
 				elif [ $percentage -eq 100 ]; then
-					echo "%{F$accent}$percentage %{O-1}󰥈   %{F$foreground}$device_name" 
+					echo "%{F$accent}$percentage %{O-1}󰥈   %{F$foreground}$device_name" # Medium battery
 				fi
 			fi
 		fi
