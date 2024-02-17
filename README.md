@@ -24,6 +24,7 @@ This repository contains my personal dotfiles for configuring various programs a
 
 ## Related Reddit Posts
 
+- [[bspwm] oh the good old days (i wasn't even born yet)](https://www.reddit.com/r/unixporn/comments/1at1233/bspwm_oh_the_good_old_days_i_wasnt_even_born_yet/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button) - [archive](https://web.archive.org/web/20240217125536/https://old.reddit.com/r/unixporn/comments/1at1233/bspwm_oh_the_good_old_days_i_wasnt_even_born_yet/)
 - [[bspwm] mavi mavi masmavi](https://www.reddit.com/r/LinuxTurkey/s/XEvvz5FsnA) (2024-02-02) - [archive](https://web.archive.org/web/20240210011105/https://www.reddit.com/r/LinuxTurkey/comments/1ahegun/bspwm_mavi_mavi_masmavi/?share_id=NEjMQ2_aazNRAlrKfH-TD&utm_content=2&utm_medium=android_app&utm_name=androidcss&utm_source=share&utm_term=1&rdt=55197)
 - [[bspwm] boring enough?](https://www.reddit.com/r/unixporn/comments/19d0jo0/bspwm_boring_enough/) (2024-01-22) - [archive](https://web.archive.org/web/20240126230311/https://old.reddit.com/r/unixporn/comments/19d0jo0/bspwm_boring_enough/)
 - [[bspwm] sub hayırlı olsun rice'ı](https://www.reddit.com/r/archlinuxturkiye/comments/1923kdu/bspwm_sub_hay%C4%B1rl%C4%B1_olsun_rice%C4%B1/) (2024-01-09) - [archive](https://web.archive.org/web/20240126230850/https://old.reddit.com/r/archlinuxturkiye/comments/1923kdu/bspwm_sub_hay%C4%B1rl%C4%B1_olsun_rice%C4%B1/)
