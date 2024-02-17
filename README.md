@@ -20,7 +20,7 @@ This repository contains my personal dotfiles for configuring various programs a
 
 ## Screenshots
 
-<img src="screenshot.png" alt="1" width="384">
+<img src="ss.png" alt="1" width="384">
 
 ## Related Reddit Posts
 
@@ -56,7 +56,7 @@ This repository contains my personal dotfiles for configuring various programs a
 - Move `custom-icons` to `~/.local/share` for default script icons to work.
 - Default fonts are:
   - [JetBrains Mono Nerd Font](https://www.nerdfonts.com/font-downloads)
-  - [Readex Pro](https://fonts.google.com/specimen/Readex+Pro)
+  - [Levi Windows](https://www.dafont.com/leviwindows.font?text=All+your+base+belong+to+us.+Cancel+OK)
 
 ## License
 

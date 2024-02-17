@@ -1,16 +1,25 @@
 #!/bin/sh
 
+_px() {
+  pgrep -x "$@"
+}
+
+_ka() {
+  killall "$@"
+}
+
 # run once and never kill
-pgrep -x sxhkd > /dev/null || sxhkd -c "$HOME"/.config/sxhkd/sxhkdrc.apps "$HOME"/.config/sxhkd/sxhkdrc.bspwm "$HOME"/.config/sxhkd/sxhkdrc.dunst "$HOME"/.config/sxhkd/sxhkdrc.fn "$HOME"/.config/sxhkd/sxhkdrc.mouse 2>&1 | tee "$HOME"/.cache/logs/autostart/sxhkd.log &
-pgrep -x playerctld > /dev/null || playerctld daemon 2>&1 | tee "$HOME"/.cache/logs/autostart/playerctld.log &
-pgrep -x clipmenud > /dev/null || clipmenud 2>&1 | tee "$HOME"/.cache/logs/autostart/clipmenud.log &
+_px sxhkd > /dev/null || sxhkd -c "$HOME"/.config/sxhkd/sxhkdrc.apps "$HOME"/.config/sxhkd/sxhkdrc.bspwm "$HOME"/.config/sxhkd/sxhkdrc.dunst "$HOME"/.config/sxhkd/sxhkdrc.fn "$HOME"/.config/sxhkd/sxhkdrc.mouse 2>&1 | tee "$HOME"/.cache/logs/autostart/sxhkd.log &
+_px playerctld > /dev/null || playerctld daemon 2>&1 | tee "$HOME"/.cache/logs/autostart/playerctld.log &
+_px clipmenud > /dev/null || clipmenud 2>&1 | tee "$HOME"/.cache/logs/autostart/clipmenud.log &
 
 # kill all already running autostart programs
 # killall conky > /dev/null
-killall picom > /dev/null
-killall dunst > /dev/null
-killall polybar > /dev/null
-killall mpris-proxy > /dev/null
+_ka picom > /dev/null
+_ka dunst > /dev/null
+_ka polybar > /dev/null
+_ka mpris-proxy > /dev/null
+# pkill -f "bash /usr/bin/desknamer"
 
 # set wallpaper
 "$HOME"/.config/feh/.fehbg
@@ -20,6 +29,7 @@ killall mpris-proxy > /dev/null
 [ -d ~/.cache/logs/autostart ] || mkdir ~/.cache/logs/autostart
 
 # start picom and log errors
+# sed -i 's/corner-radius \= 0/corner-radius \= 17/g' $HOME/.config/picom/picom.conf 
 picom --config "$HOME"/.config/picom/picom.conf --log-level ERROR --log-file "$HOME"/.cache/logs/autostart/picom.log &
 
 # start dunst and log
@@ -31,9 +41,15 @@ polybar --log=error --config="$HOME"/.config/polybar/config.ini main 2>&1 | tee 
 # start bluetooth controls
 mpris-proxy 2>&1 | tee "$HOME"/.cache/logs/autostart/mpris-proxy.log &
 
+# desknamer
+# desknamer 2>&1 | tee "$HOME"/.cache/logs/autostart/desknamer.log &
+
 # conky
 # sleep 0.5 && conky -c $HOME/.config/conky/conky.conf 2>&1 | tee "$HOME"/.cache/logs/autostart/conky.log &
 
-grep "accent =" "$HOME"/.config/polybar/config.ini | grep -o "#......" > "$HOME"/.cache/logs/polybar-accent.dat &
+grep "accent =" "$HOME"/.config/polybar/config.ini | grep -o "#......" > "$HOME"/.local/share/polybar/polybar-accent.dat &
 grep "^foreground =" "$HOME"/.config/polybar/config.ini | grep -o "#......" > "$HOME"/.local/share/polybar/polybar-foreground.dat &
-grep "^bottom =" "$HOME"/.config/polybar/config.ini | sed 's/bottom = //g' > "$HOME"/.cache/logs/polybar-position.dat &
+grep "^bottom =" "$HOME"/.config/polybar/config.ini | sed 's/bottom = //g' > "$HOME"/.local/share/polybar/polybar-position.dat &
+
+# set internal mic boost to 0 (100 by default)
+amixer -c 1 sset "Internal Mic Boost" 0
