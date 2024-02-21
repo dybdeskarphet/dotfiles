@@ -35,10 +35,10 @@ _bc pointer_modifier mod1
 if [ "$(cat $HOME/.local/share/polybar/polybar-position.dat)" = "true" ]
 then
 	_bc top_padding 	0
-	_bc bottom_padding      26
+	_bc bottom_padding      29
 	sed -Ei 's/offset =.*/offset = 11x11/g' "$HOME"/.config/dunst/config.ini
 else
-	_bc top_padding 	26
+	_bc top_padding 	29
 	_bc bottom_padding      0
 	sed -Ei 's/offset =.*/offset = 11x36/g' "$HOME"/.config/dunst/config.ini
 fi
@@ -64,4 +64,5 @@ _xs "libinput Accel Profiles Available" 1 0
 xset b 0
 
 # autostart
+paplay --volume=35000 ~/.local/share/sounds/Chicago95/stereo/desktop-login.wav &
 . /home/skarphet/.config/bspwm/autostart
