@@ -7,7 +7,7 @@ red=     '0xd23d3d'
 green=   '0xa0cf5d'
 yellow=  '0xf39d21'
 blue=    '0x4e9fb1'
-magenta= '0x8542ff'
+magenta= '0xa87cb5'
 cyan=    '0x42717b'
 white=   '0xdddddd'
 
@@ -21,13 +21,13 @@ red=     '0xe84f4f'
 green=   '0xb8d68c'
 yellow=  '0xe1aa5d'
 blue=    '0x7dc1cf'
-magenta= '0x9b64fb'
+magenta= '0xce98c0'
 cyan=    '0x6d878d'
 white=   '0xdddddd'
 
 [colors.primary]
-background = "0x000000"
-foreground = "0xd7d0c7"
+background= '0x151515'
+foreground= '0xd7d0c7'
 
 [colors.selection]
 background = "CellForeground"

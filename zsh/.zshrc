@@ -88,9 +88,9 @@ _absolute_files () {
   _files "$@";
 }
 
-export PS1="%F{white}%f%K{white}%F{16}%B%1~%b  %# %f%k%F{white}%f "
+export PS1="%F{magenta}%f%K{magenta}%F{16}%B%1~%b  %#%f%k%F{magenta}%f "
 export PS2="%F{012}~%f "
-export RPROMPT='${vcs_info_msg_0_} %(?,%F{green}%f,%F{11}%?%f %F{red}%f) %D{%K:%M:%S}'
+export RPROMPT='${vcs_info_msg_0_} %(?,%F{green}%f,%F{yellow}%?%f %F{red}%f) %D{%K:%M:%S}'
 
 ## Key Bindings
 bindkey '\e\e[C' forward-word

@@ -16,7 +16,7 @@ _xs() {
 bspc monitor -d 1 2 3 4 5 6 7 8 9 10
 
 # border
-_bc border_width	1
+_bc border_width	0
 _bc focused_border_color	\#C0C0C0 
 _bc normal_border_color		\#999999
 
@@ -35,10 +35,10 @@ _bc pointer_modifier mod1
 if [ "$(cat $HOME/.local/share/polybar/polybar-position.dat)" = "true" ]
 then
 	_bc top_padding 	0
-	_bc bottom_padding      29
+	_bc bottom_padding      26
 	sed -Ei 's/offset =.*/offset = 11x11/g' "$HOME"/.config/dunst/config.ini
 else
-	_bc top_padding 	29
+	_bc top_padding 	26
 	_bc bottom_padding      0
 	sed -Ei 's/offset =.*/offset = 11x36/g' "$HOME"/.config/dunst/config.ini
 fi

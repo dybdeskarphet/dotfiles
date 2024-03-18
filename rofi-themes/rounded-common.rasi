@@ -5,7 +5,7 @@
  *******************************************************************************/
 
 * {
-    font:   "Roboto 12";
+    font:   "proportional_font 12";
 
     background-color:   transparent;
     text-color:         @fg0;
@@ -18,10 +18,10 @@
 window {
     location:       center;
     width:          480;
-    border: 2px;
-    border-radius:  0px;
+    border-radius:  24px;
+    border:         1px;
+    border-color:   @bg3;
     background-color:   @bg0;
-    border-color: @bg1;
 }
 
 mainbox {
@@ -30,10 +30,10 @@ mainbox {
 
 inputbar {
     background-color:   @bg1;
-    border-color:       @bg2;
+    border-color:       @bg3;
 
     border:         2px;
-    border-radius:  0px;
+    border-radius:  16px;
 
     padding:    8px 16px;
     spacing:    8px;
@@ -51,7 +51,7 @@ entry {
 
 message {
     margin:             12px 0 0;
-    border-radius:      0px;
+    border-radius:      16px;
     border-color:       @bg2;
     background-color:   @bg2;
 }
@@ -73,7 +73,7 @@ listview {
 element {
     padding:        8px 16px;
     spacing:        8px;
-    border-radius:  0px;
+    border-radius:  16px;
 }
 
 element normal active {
@@ -82,11 +82,10 @@ element normal active {
 
 element selected normal, element selected active {
     background-color:   @bg3;
-    text-color: @fg1;
 }
 
 element-icon {
-    size:           1.5em;
+    size:           1em;
     vertical-align: 0.5;
 }
 

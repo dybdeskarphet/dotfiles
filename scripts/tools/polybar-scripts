@@ -1,42 +1,38 @@
 #!/bin/bash
 accent=$(cat $HOME/.local/share/polybar/polybar-accent.dat)
-green="008000"
-red="800000"
-cyan="008080"
-yellow="808000"
 foreground=$(cat $HOME/.local/share/polybar/polybar-foreground.dat)
 termwin="alacritty -e zsh -c"
 
 bt_show() {
 	if [ $(bluetoothctl show | grep "Powered: yes" | wc -c) -eq 0 ]; then
-		echo "%{F#66$green}BT_OFF" # Bluetooth is off
+		echo "%{F#66$foreground}󰂲" # Bluetooth is off
 	else
 		if [ $(bluetoothctl devices Connected | wc -c) -eq 0 ]; then
-			echo "%{F#$green}BT_ON%{F$foreground}" # No connected devices
+			echo "%{F#$accent}󰂯%{F$foreground}" # No connected devices
 		else
 			device_info=$(bluetoothctl info)
 		  device_name=$(echo "$device_info" | grep Name | sed "s/Name: //g ; s/^[ \t]*//")
       if [[ ${#device_name} -gt 10 ]]; then
-        device_name="${device_name:0:10}... "
+        device_name="$(echo $device_name | sed 's/\B\w*//g;s/\s//g')"
       else
         :
       fi
 			if [ $(echo "$device_info" | grep "Battery Percentage" | wc -c) -eq 0 ]; then
-				echo "%{F#$green}BT %{F$foreground} ${device_name}"
+				echo "%{F#$accent}BT %{F$foreground} ${device_name}"
 			else
 				percentage=$(echo "$device_info" | grep "Battery Percentage" | sed 's/.*(\(.*\))/\1/')
 				if [ $percentage -lt 20 ]; then
-					echo "$percentage% %{F#$red}%{O-1}BT   %{F$foreground}$device_name" # Low battery
+					echo "%{F$accent}$percentage %{O-1}󰤾   %{F$foreground}$device_name" # Low battery
 				elif [ $percentage -lt 40 ]; then
-					echo "$percentage% %{F#$yellow}%{O-1}BT   %{F$foreground}$device_name" # Medium battery
+					echo "%{F$accent}$percentage %{O-1}󰥀   %{F$foreground}$device_name" # Medium battery
 				elif [ $percentage -lt 60 ]; then
-					echo "$percentage% %{F#$green}%{O-1}BT   %{F$foreground}$device_name" # Medium battery
+					echo "%{F$accent}$percentage %{O-1}󰥂   %{F$foreground}$device_name" # Medium battery
 				elif [ $percentage -lt 80 ]; then
-					echo "$percentage% %{F#$green}%{O-1}BT   %{F$foreground}$device_name" # Medium battery
+					echo "%{F$accent}$percentage %{O-1}󰥃   %{F$foreground}$device_name" # Medium battery
 				elif [ $percentage -lt 100 ]; then
-					echo "$percentage% %{F#$green}%{O-1}BT   %{F$foreground}$device_name" # Medium battery
+					echo "%{F$accent}$percentage %{O-1}󰥅   %{F$foreground}$device_name" # Medium battery
 				elif [ $percentage -eq 100 ]; then
-					echo "$percentage% %{F#$green}%{O-1}BT   %{F$foreground}$device_name" # Medium battery
+					echo "%{F$accent}$percentage %{O-1}󰥈   %{F$foreground}$device_name" # Medium battery
 				fi
 			fi
 		fi
@@ -53,9 +49,9 @@ bt_toggle() {
 
 sync_icon() {
 	if systemctl is-active --quiet backupDrive.service; then
-		echo "%{F$magenta}SYNCING%{F$foreground}"
+		echo "%{F$accent}󰘿%{F$foreground}"
 	elif [[ -f /tmp/not-recognized.backup ]]; then
-		echo "%{F#66$magenta}SYNC_OFF%{F$foreground}"
+		echo "%{F#66$foreground}󰅤%{F$foreground}"
 	else
 		echo
 	fi
@@ -67,7 +63,7 @@ mic_icon() {
 	mic_status=$(amixer -c $CARD_INDEX sget $CONTROL_NAME | grep -o "\[[a-z]*\]")
 
 	if [[ $mic_status == *"[off]" ]]; then
-		echo "%{F$accent}MIC_OFF%{F$foreground}"
+		echo "%{F$accent}󰍭%{F$foreground}"
 	else
 		echo
 	fi
@@ -75,7 +71,7 @@ mic_icon() {
 
 do_not_disturb() {
 	if [[ "$(dunstctl is-paused)" = "true" ]]; then
-		echo "DND "
+		echo "󰂛"
 	else
 		echo ""
 	fi
@@ -98,7 +94,7 @@ check_updates() {
 	updates=$((updates_arch + updates_aur))
 
 	if [ "$updates" -gt 0 ]; then
-		echo "%{F#$red}PKG_UP%{F$foreground}  $updates"
+		echo "%{F#$accent}󰏗%{F$foreground}  $updates"
 	else
 		echo ""
 	fi
