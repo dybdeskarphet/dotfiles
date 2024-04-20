@@ -30,3 +30,6 @@ alt + shift + Return
 
 alt + shift + Escape
   themes
+
+super + l
+  xset dpms force suspend && slock

@@ -9,17 +9,16 @@ _ka() {
 }
 
 # run once and never kill
-_px sxhkd > /dev/null || sxhkd -c "$HOME"/.config/sxhkd/sxhkdrc.apps "$HOME"/.config/sxhkd/sxhkdrc.bspwm "$HOME"/.config/sxhkd/sxhkdrc.dunst "$HOME"/.config/sxhkd/sxhkdrc.fn "$HOME"/.config/sxhkd/sxhkdrc.mouse 2>&1 | tee "$HOME"/.cache/logs/autostart/sxhkd.log &
-_px playerctld > /dev/null || playerctld daemon 2>&1 | tee "$HOME"/.cache/logs/autostart/playerctld.log &
-_px clipmenud > /dev/null || clipmenud 2>&1 | tee "$HOME"/.cache/logs/autostart/clipmenud.log &
+_px sxhkd >/dev/null || sxhkd -c "$HOME"/.config/sxhkd/sxhkdrc.apps "$HOME"/.config/sxhkd/sxhkdrc.bspwm "$HOME"/.config/sxhkd/sxhkdrc.dunst "$HOME"/.config/sxhkd/sxhkdrc.fn "$HOME"/.config/sxhkd/sxhkdrc.mouse >"$HOME"/.cache/logs/autostart/sxhkd.log 2>&1 &
+_px playerctld >/dev/null || playerctld daemon >"$HOME"/.cache/logs/autostart/playerctld.log 2>&1 &
+_px clipmenud >/dev/null || clipmenud >"$HOME"/.cache/logs/autostart/clipmenud.log 2>&1 &
 
 # kill all already running autostart programs
-# killall conky > /dev/null
-_ka picom > /dev/null
-_ka dunst > /dev/null
-_ka polybar > /dev/null
-_ka mpris-proxy > /dev/null
-# pkill -f "bash /usr/bin/desknamer"
+_ka picom >/dev/null
+_ka dunst >/dev/null
+_ka polybar >/dev/null
+_ka mpris-proxy >/dev/null
+_ka xcorners >/dev/null
 
 # set wallpaper
 "$HOME"/.config/feh/.fehbg
@@ -29,27 +28,25 @@ _ka mpris-proxy > /dev/null
 [ -d ~/.cache/logs/autostart ] || mkdir ~/.cache/logs/autostart
 
 # start picom and log errors
-# sed -i 's/corner-radius \= 0/corner-radius \= 17/g' $HOME/.config/picom/picom.conf 
+sed -i 's/corner-radius \= 0/corner-radius \= 17/g' "$HOME/.config/picom/picom.conf"
 picom --config "$HOME"/.config/picom/picom.conf --log-level ERROR --log-file "$HOME"/.cache/logs/autostart/picom.log &
 
 # start dunst and log
-dunst -conf "$HOME"/.config/dunst/config.ini -verbosity warn 2>&1 | tee "$HOME"/.cache/logs/autostart/dunst.log &
+# make the verbosity debug to see which icons are missing if a notificaation doesn't have an icon
+dunst -conf "$HOME"/.config/dunst/config.ini -verbosity warn >"$HOME"/.cache/logs/autostart/dunst.log 2>&1 &
+
+# start xcorners (screen corner radus)
+xcorners -b >"$HOME"/.cache/logs/autostart/xcorners.log 2>&1 &
 
 # start polybar
-polybar --log=error --config="$HOME"/.config/polybar/config.ini main 2>&1 | tee "$HOME"/.cache/logs/autostart/polybar.log &
+polybar --log=error --config="$HOME"/.config/polybar/config.ini main >"$HOME"/.cache/logs/autostart/polybar.log 2>&1 &
 
 # start bluetooth controls
-mpris-proxy 2>&1 | tee "$HOME"/.cache/logs/autostart/mpris-proxy.log &
+mpris-proxy >"$HOME"/.cache/logs/autostart/mpris-proxy.log 2>&1 &
 
-# desknamer
-# desknamer 2>&1 | tee "$HOME"/.cache/logs/autostart/desknamer.log &
-
-# conky
-# sleep 0.5 && conky -c $HOME/.config/conky/conky.conf 2>&1 | tee "$HOME"/.cache/logs/autostart/conky.log &
-
-grep "accent =" "$HOME"/.config/polybar/config.ini | grep -o "#......" > "$HOME"/.local/share/polybar/polybar-accent.dat &
-grep "^foreground =" "$HOME"/.config/polybar/config.ini | grep -o "#......" > "$HOME"/.local/share/polybar/polybar-foreground.dat &
-grep "^bottom =" "$HOME"/.config/polybar/config.ini | sed 's/bottom = //g' > "$HOME"/.local/share/polybar/polybar-position.dat &
+grep "accent =" "$HOME"/.config/polybar/config.ini | grep -o "#......" | sed "s/\#//g" >"$HOME"/.local/share/polybar/polybar-accent.dat &
+grep "^foreground =" "$HOME"/.config/polybar/config.ini | grep -o "#......" | sed "s/\#//g" >"$HOME"/.local/share/polybar/polybar-foreground.dat &
+grep "^bottom =" "$HOME"/.config/polybar/config.ini | sed 's/bottom = //g' >"$HOME"/.local/share/polybar/polybar-position.dat &
 
 # set internal mic boost to 0 (100 by default)
 amixer -c 1 sset "Internal Mic Boost" 0

@@ -9,4 +9,4 @@
 # 	feh --no-fehbg --bg-fill '/home/username/img/.wallpaper/night.png'
 # fi
 
-feh --no-fehbg --bg-fill '/home/username/img/.wallpaper'
+feh --no-fehbg --bg-fill '/home/skarphet/img/.wallpaper'

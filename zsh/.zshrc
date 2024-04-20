@@ -4,7 +4,7 @@
 ### Package Management
 alias inspac='paru -S'
 alias uppac='paru -Syu'
-alias upmirror='sudo reflector --verbose --latest 200 --sort age --save /etc/pacman.d/mirrorlist'
+alias upmirror='sudo reflector --verbose --latest 200 --sort rate --save /etc/pacman.d/mirrorlist'
 alias rmpac='sudo pacman -Rs'
 alias unspac='sudo pacman -Rcsn'
 alias lspac='pacman -Qqe'
@@ -16,7 +16,7 @@ alias sd='shutdown now'
 alias stfu='shutdown now'
 alias hibernate='systemctl hibernate'
 alias suspend='systemctl suspend'
-alias lock='xset dpms force suspend && xsecurelock'
+alias lock='xset dpms force suspend && slock'
 alias uefi='systemctl reboot --firmware-setup'
 alias esupport='sudo dmidecode -t system | grep Serial | sed "s/.*:\ //g"'
 alias toclipboard='xclip -sel clip'
@@ -29,6 +29,8 @@ alias grep='grep --color=auto'
 ### Navigation and File Management
 alias r='ranger --choosedir=$HOME/.config/ranger/.rangerdir; LASTDIR=`cat $HOME/.config/ranger/.rangerdir`; echo "$LASTDIR" >> $HOME/.config/ranger/.dir_history; cd "$LASTDIR"'
 alias ls='lsd'
+alias cd='z'
+alias cdi='zi'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
@@ -36,11 +38,14 @@ alias lsdu='du -mh --max-depth 1 | sort -rh | sed "s/\.\///g"'
 alias notes='codium ~/doc/notes ~/doc/notes/todo.md'
 alias ls="g -icons"
 alias trash="gtrash"
+alias emptytrash="gtrash prune --day 0"
+alias trash-empty="gtrash prune --day 0"
+alias trash-restore="gtrash restore"
 
 ### Applications with workarounds and shortcuts
-alias dcn="discord & disown && exit"
-alias scr="scrcpy --no-audio & disown && exit"
-alias code="codium"
+alias scr="scrcpy --keyboard=uhid --no-audio & disown && exit"
+alias tty-clock="termdown.py -f larry3d -z -Z "%H:%M""
+alias watchsync="watch -d grep -e Dirty: -e Writeback: /proc/meminfo"
 
 ### Editor and Git Aliases
 alias vim="nvim"
@@ -88,7 +93,7 @@ _absolute_files () {
   _files "$@";
 }
 
-export PS1="%F{magenta}%f%K{magenta}%F{16}%B%1~%b  %#%f%k%F{magenta}%f "
+export PS1="%F{green}%f%K{green}%F{16}%B%1~%b  %#%f%k%F{green}%f "
 export PS2="%F{012}~%f "
 export RPROMPT='${vcs_info_msg_0_} %(?,%F{green}%f,%F{yellow}%?%f %F{red}%f) %D{%K:%M:%S}'
 
@@ -102,5 +107,5 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 
 ## Additional Configurations
 setopt correct
-
-# End of .zshrc
+setopt interactive_comments
+ZSH_HIGHLIGHT_STYLES[comment]="fg=yellow"

@@ -4,7 +4,7 @@ transparent_background_colors = false
 [colors.bright]
 black=   '0x404040'
 red=     '0xd23d3d'
-green=   '0xa0cf5d'
+green=   '0x77d484'
 yellow=  '0xf39d21'
 blue=    '0x4e9fb1'
 magenta= '0xa87cb5'
@@ -18,7 +18,7 @@ text = "CellBackground"
 [colors.normal]
 black=   '0x101010'
 red=     '0xe84f4f'
-green=   '0xb8d68c'
+green=   '0xb1e7b9'
 yellow=  '0xe1aa5d'
 blue=    '0x7dc1cf'
 magenta= '0xce98c0'

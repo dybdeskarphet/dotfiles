@@ -18,7 +18,7 @@ bt_show() {
         :
       fi
 			if [ $(echo "$device_info" | grep "Battery Percentage" | wc -c) -eq 0 ]; then
-				echo "%{F#$accent}BT %{F$foreground} ${device_name}"
+				echo "%{F#$accent}󰂯 %{F$foreground} ${device_name}"
 			else
 				percentage=$(echo "$device_info" | grep "Battery Percentage" | sed 's/.*(\(.*\))/\1/')
 				if [ $percentage -lt 20 ]; then
@@ -108,9 +108,22 @@ copy_date() {
 	fi
 }
 
+song_playing() {
+player_status=$(playerctl status 2> /dev/null)
+
+if [ "$player_status" = "Playing" ]; then
+    echo "%{F#$accent} %{F$foreground} $(playerctl metadata title)" | awk -v len=40 '{ if (length($0) > len) print substr($0, 1, len-3) "..."; else print; }'
+elif [ "$player_status" = "Paused" ]; then
+    echo "%{F#$accent} %{F$foreground} $(playerctl metadata title)" | awk -v len=40 '{ if (length($0) > len) print substr($0, 1, len-3) "..."; else print; }'
+else
+    echo ""
+fi
+}
+
 case $1 in
 battery) $termwin "watch -p -t -n 0.5 upower -i /org/freedesktop/UPower/devices/battery_BAT0" ;;
 bluetooth_show) bt_show ;;
+song_playing) song_playing ;;
 sync_icon) sync_icon ;;
 mic_icon) mic_icon ;;
 do_not_disturb) do_not_disturb ;;

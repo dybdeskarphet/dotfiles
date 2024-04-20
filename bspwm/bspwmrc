@@ -9,22 +9,22 @@ _br() {
 }
 
 _xs() {
-  xinput set-prop "MSFT0001:00 04F3:31BE Touchpad" "$@"
+	xinput set-prop "MSFT0001:00 06CB:CE2D Touchpad" "$@"
 }
 
 # workspaces
 bspc monitor -d 1 2 3 4 5 6 7 8 9 10
 
 # border
-_bc border_width	0
-_bc focused_border_color	\#C0C0C0 
-_bc normal_border_color		\#999999
+_bc border_width 0
+_bc focused_border_color "#77d484"
+_bc normal_border_color "#37ae47"
 
 # etc
 _bc focus_follows_pointer true
-_bc gapless_monocle	true
-_bc split_ratio		.52
-_bc window_gap		10
+_bc gapless_monocle true
+_bc split_ratio .52
+_bc window_gap 10
 
 # mouse settings
 _bc pointer_action1 move
@@ -32,24 +32,22 @@ _bc pointer_action2 resize_corner
 _bc pointer_modifier mod1
 
 # auto-position the horizontal gap
-if [ "$(cat $HOME/.local/share/polybar/polybar-position.dat)" = "true" ]
-then
-	_bc top_padding 	0
-	_bc bottom_padding      26
+if [ "$(cat $HOME/.local/share/polybar/polybar-position.dat)" = "true" ]; then
+	_bc top_padding 0
+	_bc bottom_padding 25
 	sed -Ei 's/offset =.*/offset = 11x11/g' "$HOME"/.config/dunst/config.ini
 else
-	_bc top_padding 	26
-	_bc bottom_padding      0
+	_bc top_padding 25
+	_bc bottom_padding 0
 	sed -Ei 's/offset =.*/offset = 11x36/g' "$HOME"/.config/dunst/config.ini
 fi
 
 # window rules
-_br 'Dragon-drop:*' state=floating sticky=on 
+_br 'Dragon-drop:*' state=floating sticky=on
 _br '*:zbar' state=floating focus=on
 _br 'jetbrains-studio:*:win0' state=floating focus=on
 _br 'Localsend_app' state=tiled focus=on
 _br 'discord:discord:*' sticky=on
-_br 'firefox' sticky=on
 
 # mouse settings
 _xs "libinput Tapping Enabled" 1
@@ -64,5 +62,4 @@ _xs "libinput Accel Profiles Available" 1 0
 xset b 0
 
 # autostart
-paplay --volume=35000 ~/.local/share/sounds/Chicago95/stereo/desktop-login.wav &
 . /home/skarphet/.config/bspwm/autostart

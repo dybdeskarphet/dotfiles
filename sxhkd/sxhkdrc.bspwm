@@ -32,3 +32,6 @@ super + {Left,Down,Up,Right}
 # change orientation
 super + {_,shift + }e
 	bspc node '@parent' -R {_,-}90
+
+super + ctrl + {x,y,z}
+	bspc node -g {locked,sticky,private}
