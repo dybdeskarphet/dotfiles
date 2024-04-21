@@ -59,7 +59,7 @@ This repository contains my personal dotfiles for configuring various programs a
 - Move `custom-icons` to `~/.local/share` for default script icons to work.
 - Default fonts are:
   - [JetBrains Mono Nerd Font](https://www.nerdfonts.com/font-downloads)
-  - [Levi Windows](https://www.dafont.com/leviwindows.font?text=All+your+base+belong+to+us.+Cancel+OK)
+  - [Readex Pro](https://fonts.google.com/specimen/Readex+Pro)
 
 ## License
 
