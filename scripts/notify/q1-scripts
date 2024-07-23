@@ -10,40 +10,6 @@ BLUETOOTH_NOTIFY_ICON_BATTERY_EMPTY="bluetooth-battery-low"
 BLUETOOTH_NOTIFICATION_ID=87874
 BLUETOOTH_NOTIFICATION_DURATION=10000
 
-BLUETOOTH_NOTIFICATION_COUNTER_FILE="/tmp/bluetooth-battery-counter.dat"
-BLUETOOTH_NOTIFICATION_LIMIT=3
-
-PC_NOTIFICATION_COUNTER_FILE="/tmp/pc-battery-counter.dat"
-PC_NOTIFICATION_LIMIT=3
-
-increment_counter() {
-    if [ -e "$1" ]; then
-        counter=$(<"$1")
-        echo $((counter + 1)) > "$1"
-    else
-        echo "1" > "$1"
-    fi
-}
-
-check_counter_limit() {
-    if [ -e "$1" ]; then
-        counter=$(<"$1")
-        if [ $counter -ge $2 ]; then
-            return 1 # Counter limit reached
-        else
-            return 0 # Counter limit not reached
-        fi
-    else
-        return 0 # Counter file not found, continue showing notifications
-    fi
-}
-
-delete_counter_file() {
-    if [ -e "$1" ]; then
-        rm "$1"
-    fi
-}
-
 pc_battery() {
     # Function to send notification
     notify_battery() {
@@ -56,31 +22,23 @@ pc_battery() {
 
     if [[ $bat_status = "Charging" || $bat_status = "Full" ]]; then
         if [[ $capacity -gt 90 ]]; then
-            # Check if the counter limit is reached
-            if check_counter_limit "$PC_NOTIFICATION_COUNTER_FILE" $PC_NOTIFICATION_LIMIT; then
                 notify_battery "$PC_NOTIFY_ICON_BATTERY_FULL" "pil %90'in üstünde" "cihazınızı şarjdan çıkarabilirsiniz."
-            fi
-
-            # Increment the counter
-            increment_counter "$PC_NOTIFICATION_COUNTER_FILE"
         fi
-        return
-    else
-      delete_counter_file "$PC_NOTIFICATION_COUNTER_FILE" 
     fi
 
-
     # Handle low battery status
+    if [[ ! $bat_status = "Charging" ]]; then
     if [[ $capacity -lt 15 ]]; then
-        if [[ $capacity -gt 10 ]]; then
-            notify_battery "$PC_NOTIFY_ICON_BATTERY_EMPTY" "pil %15'in altında" "cihazınızı şarja takmanız tavsiye edilir."
+        if [[ $capacity -gt 1 ]]; then
+            notify_battery "$PC_NOTIFY_ICON_BATTERY_EMPTY" "pil %$capacity" "cihazınızı şarja takmanız tavsiye edilir."
         elif [[ $capacity -gt 5 ]]; then
-            notify_battery "$PC_NOTIFY_ICON_BATTERY_EMPTY" "pil düşük!" "cihaz birkaç dakika içinde kapanabilir." -u critical
+            notify_battery "$PC_NOTIFY_ICON_BATTERY_EMPTY" "pil %$capacity" "cihaz birkaç dakika içinde kapanabilir." -u critical
         else
-            notify_battery "$PC_NOTIFY_ICON_BATTERY_EMPTY" "pil neredeyse boş!" "cihazınız birazdan kapanacak!" -u critical
+            notify_battery "$PC_NOTIFY_ICON_BATTERY_EMPTY" "pil %$capacity" "cihazınız birazdan kapanacak!" -u critical
             ffplay -nodisp -autoexit /usr/share/sounds/freedesktop/stereo/dialog-warning.oga
             xbacklight -set 20
         fi
+    fi
     fi
 }
 
@@ -88,9 +46,6 @@ bluetooth_battery() {
     notify_battery() {
         dunstify -t "$BLUETOOTH_NOTIFICATION_DURATION" -r "$BLUETOOTH_NOTIFICATION_ID" -i "$1" "$2" "$3"
     }
-
-    # Check if the counter limit is reached
-    if check_counter_limit "$BLUETOOTH_NOTIFICATION_COUNTER_FILE" $BLUETOOTH_NOTIFICATION_LIMIT; then
         device_info=$(bluetoothctl info)
         percentage=$(echo "$device_info" | grep "Battery Percentage" | sed 's/.*(\(.*\))/\1/')
 
@@ -100,10 +55,7 @@ bluetooth_battery() {
             elif [[ $percentage -gt 0 ]]; then
                 notify_battery "$BLUETOOTH_NOTIFY_ICON_BATTERY_EMPTY" "bluetooth cihaz pili düşük!" "bluetooth cihaz birkaç dakika içinde kapanabilir." -u critical
             fi
-        else
-          delete_counter_file "$BLUETOOTH_NOTIFICATION_COUNTER_FILE"
         fi
-    fi
 }
 
 pc_battery

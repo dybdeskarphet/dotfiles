@@ -1,0 +1,80 @@
+#!/bin/bash
+termwin="alacritty -e zsh -c"
+
+sync_icon() {
+  total="$(cat /tmp/total_backup.dat 2>/dev/null)"
+  current="$(cat /tmp/current_backup.dat 2>/dev/null)"
+  # uncomment this if you want to show it as a percentage
+  # percentage="$(echo "$current/$total*100" | bc -l | cut -d '.' -f 1)%"
+	if systemctl is-active --quiet backupDrive.service; then
+    # uncomment this if you want to show it as a percentage
+    # echo "%{F$accent}󰘿  %{F$foreground}$percentage"
+    echo "󰘿  <span foreground=\"#ffffff\">${current:=0}</span> <span foreground=\"#6fd07c\">/</span> <span foreground=\"#ffffff\">${total}</span>"
+	elif [[ -f /tmp/not-recognized.backup ]]; then
+		echo "󰅤"
+	else
+		echo
+	fi
+}
+
+mic_icon() {
+	CARD_INDEX=1
+	CONTROL_NAME='Capture'
+	mic_status=$(amixer -c $CARD_INDEX sget $CONTROL_NAME | grep -o "\[[a-z]*\]")
+
+	if [[ $mic_status == *"[off]" ]]; then
+		echo "%{B#$accent}%{F#000000}  󰍭  %{B- F-}%{O-9}"
+	else
+		echo
+	fi
+}
+
+do_not_disturb() {
+	if [[ "$(dunstctl is-paused)" = "true" ]]; then
+		echo "󰂛"
+	else
+		echo ""
+	fi
+}
+
+check_updates() {
+	if ! updates_arch=$(checkupdates 2>/dev/null | wc -l); then
+		updates_arch=0
+	fi
+
+	if ! updates_aur=$(paru -Qum 2>/dev/null | wc -l); then
+		# if ! updates_aur=$(paru -Qum 2> /dev/null | wc -l); then
+		# if ! updates_aur=$(cower -u 2> /dev/null | wc -l); then
+		# if ! updates_aur=$(trizen -Su --aur --quiet | wc -l); then
+		# if ! updates_aur=$(pikaur -Qua 2> /dev/null | wc -l); then
+		# if ! updates_aur=$(rua upgrade --printonly 2> /dev/null | wc -l); then
+		updates_aur=0
+	fi
+
+	updates=$((updates_arch + updates_aur))
+
+	if [ "$updates" -gt 0 ]; then
+		echo "󰏗 <span foreground=\"#ffffff\">$updates</span>"
+	else
+		echo ""
+	fi
+}
+
+copy_date() {
+	if printf $(date "+%F") | xclip -sel clip; then
+		dunstify -r 9326 -i clipboard -t 5000 "tarih panoya kopyalandı!" "koplyanan tarih: '$(date +"%F")'"
+	else
+		dunstify -r 9326 -i clipboard -t 5000 "tarih kopyalanırken hata ile karşılaşıldı!" "scripti kontorl edin."
+	fi
+}
+
+case $1 in
+sync_icon) sync_icon ;;
+mic_icon) mic_icon ;;
+do_not_disturb) do_not_disturb ;;
+sync_icon_click) $termwin "watch -c -n 0.5 tail -n 50 $HOME/.cache/logs/backupDrive.log" ;;
+copy_date) copy_date ;;
+wifi_menu) $termwin "printf '%b\n\n' '\e[1mEnter your password to connect to a wireless network:\e[0m' && sudo nmtui; zsh" ;;
+check_updates) check_updates ;;
+open_update_screen) $termwin "printf '%b\n\n' '\e[1mEnter your password to update Pacman/AUR packages:\e[0m' && sudo paru -Syu; zsh" ;;
+esac

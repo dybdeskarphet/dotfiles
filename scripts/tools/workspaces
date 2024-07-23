@@ -4,40 +4,50 @@ selection=$(echo -e "👨🏻‍💻 coding\n📜 translation\n🔠 language lea
 
 coding_workspaces() {
     # Setting rules for opening applications in specific workspaces
-    project_rofi="$(echo -e "🪙 wincoi\n📽 filmer\n🔢 learn backend\n🎨 dotfiles" | rofi -dmenu -p 'select the environment')"
+    project_rofi="$(echo -e "🪙 wincoi\n📽 filmer\n📖 teknikceviri\n🔢 learn backend\n🎨 dotfiles\n📈 learn data science\n🔒 privacy-redirector\n🔴 rust\n🏗️ learn dsa" | rofi -dmenu -p 'select the environment')"
 
     launch() {
-        dunstify -t 30000 -r 2903 -i no-icon "workspace automation" "<i>$project_type development workspace ($project_rofi)</i> is getting prepared..."
-        dunstify -t 30000 -r 2903 -i no-icon "workspace automation" "<i>$project_type development workspace ($project_rofi)</i> is getting prepared:\n\n⌛ setting the workspace rules..."
-        bspc rule -a VSCodium desktop='^1' state=tiled -o
+        bspc rule -a Code desktop='^1' state=tiled -o
         bspc rule -a scrcpy desktop='^1' state=pseudo_tiled -o
-        bspc rule -a Alacritty desktop='^2' -o
-        bspc rule -a Chromium desktop='^3' -o
-        dunstify -t 30000 -r 2903 -i no-icon "workspace automation" "<i>$project_type development workspace ($project_rofi)</i> is getting prepared:\n\n✅ workspace rules are set!\n⌛ apps are gettinge prepared..."
+        n
+        
+        if [[ $project_type = "learn" ]]; then
+          bspc rule -a Chromium desktop='^2' -o
+          bspc rule -a Alacritty desktop='^3' -o
+        else
+          bspc rule -a Chromium desktop='^3' -o
+          bspc rule -a Alacritty desktop='^2' -o
+        fi
 
         # Opening applications
         if [[ $project_type = "frontend" ]]; then
-            scrcpy --no-audio &
-            sleep 1
+          scrcpy --keyboard=uhid --no-audio &
+          sleep 1
         fi
 
-        codium "$project_selection" &
-        alacritty -e zsh -c "cd \"$project_selection\" && zsh" &
-        chromium --new-window "https://chat.openai.com/" "$project_url" &
+        code "$project_selection" &
+
+        if [[ $project_type = "dsa" ]]; then
+          alacritty -e zsh -c "cd \"$learning_directory\" && zsh" &
+        else
+          alacritty -e zsh -c "cd \"$project_selection\" && zsh" &
+        fi
+
+        chromium --new-window "https://chat.openai.com/" "$project_url" "$learning_url" &
 
         sleep 3
-        codium_id=$(xdotool search --class VSCodium)
-        echo "Codium ID: $codium_id"
+        code_id=$(xdotool search --class Code)
+        echo "Code ID: $code_id"
 
-        if [ -n "$codium_id" ]; then
-            bspc node "$codium_id" -z left -520 0
+        if [ -n "$code_id" ]; then
+            bspc node "$code_id" -z left -520 0
         else
-            echo "Codium window not found"
+            echo "Code window not found"
         fi
 
         sleep 1
 
-        bspc rule -r "VSCodium"
+        bspc rule -r "Code"
         bspc rule -r "scrcpy"
         bspc rule -r "Alacritty"
         bspc rule -r "Chromium"
@@ -56,22 +66,47 @@ coding_workspaces() {
         project_type="frontend"
         launch
         ;;
+    "📖 teknikceviri")
+        project_selection="code/git/personal projects/teknikceviri"
+        project_url="https://github.com/dybdeskarphet/teknikceviri"
+        project_type="frontend"
+        launch
+        ;;
     "🔢 learn backend")
         project_selection="code/git/learning/learn-backend"
         project_url="https://github.com/dybdeskarphet/learn-backend"
-        project_type="backend"
+        project_type="learn"
         launch
         ;;
     "📈 learn data science")
         project_selection="code/git/learning/learn-data-science"
         project_url="https://github.com/dybdeskarphet/learn-data-science"
-        project_type="data"
+        project_type="learn"
+        launch
+        ;;
+    "🏗️ learn dsa")
+        project_selection="code/git/learning/learn-dsa"
+        project_url="https://github.com/dybdeskarphet/learn-dsa"
+        learning_url="https://www.udemy.com/course/master-the-coding-interview-data-structures-algorithms/learn/lecture"
+        project_type="learn"
         launch
         ;;
     "🎨 dotfiles")
         project_selection="code/git/personal projects/dotfiles"
         project_url="https://github.com/dybdeskarphet/dotfiles"
         project_type="workspace related"
+        launch
+        ;;
+    "🔒 privacy-redirector")
+        project_selection="code/git/personal projects/privacy-redirector"
+        project_url="https://github.com/dybdeskarphet/privacy-redirector"
+        project_type="userscript"
+        launch
+        ;;
+    "🔴 rust")
+        project_selection="code/git/learning/learn-rust"
+        project_url="https://github.com/dybdeskarphet/learn-rust"
+        project_type="learn"
         launch
         ;;
     *)
@@ -82,39 +117,32 @@ coding_workspaces() {
 
 translation_workspace() {
 
-    dunstify -t 30000 -r 2903 -i no-icon "workspace automation" "<i>translation workspace</i> is getting prepared..."
-
-    dunstify -t 30000 -r 2903 -i no-icon "workspace automation" "<i>translation workspace</i> is getting prepared:\n\n⌛ setting the workspace rules..."
-    bspc rule -a VSCodium desktop='^1' state=tiled -o
+    bspc rule -a Code desktop='^1' state=tiled -o
     bspc rule -a Chromium desktop='^2' state=tiled -o
     bspc rule -a Zathura desktop='^3' state=tiled -o
-    dunstify -t 30000 -r 2903 -i no-icon "workspace automation" "<i>translation workspace</i> is getting prepared:\n\n✅ workspace rules are set!\n⌛ apps are getting prepared..."
-
-    sleep 2
-
-    codium "$HOME/doc/wiki" "$HOME/doc/notes/todo/translation/archwiki.md" &
-    chromium --new-window "https://wiki.archlinux.org/title/User:Dybdeskarphet" "https://www.deepl.com/translator" "https://tureng.com/en/turkish-english" &
-    zathura "$HOME/doc/book/cs/Bilişim Terimleri Sözlüğü (TSE).pdf" &
 
     sleep 1
 
-    bspc rule -r "VSCodium"
+    code "$HOME/doc/wiki" "$HOME/doc/notes/todo/translation/archwiki.md" &
+    chromium --new-window "https://wiki.archlinux.org/title/User:Dybdeskarphet" "https://www.deepl.com/translator" "https://tureng.com/en/turkish-english" &
+    zathura $HOME/doc/book/cs/Bilişim\ Terimleri\ Sözlüğü\ \(TSE\).pdf
+
+    sleep 2
+
+    bspc rule -r "Code"
     bspc rule -r "Chromium"
     bspc rule -r "Zathura"
 }
 
 language_learning_workspace() {
-    dunstify -t 30000 -r 2903 -i no-icon "workspace automation" "<i>language learning workspace</i> is getting prepared..."
 
-    dunstify -t 30000 -r 2903 -i no-icon "workspace automation" "<i>language learning workspace</i> is getting prepared:\n\n⌛ setting the workspace rules..."
     bspc rule -a Chromium desktop='^1' state=tiled -o
     bspc rule -a Anki desktop='^2' state=tiled -o
-    bspc rule -a VSCodium desktop='^3' state=tiled -o
-    dunstify -t 30000 -r 2903 -i no-icon "workspace automation" "<i>language learning workspace</i> is getting prepared:\n\n✅ workspace rules are set!\n⌛ apps are getting prepared..."
+    bspc rule -a Code desktop='^3' state=tiled -o
 
     sleep 2
 
-    codium "$HOME/doc/notes/lang/chinese" "$HOME/doc/tex/lang/chinese" &
+    code "$HOME/doc/notes/lang/chinese" "$HOME/doc/tex/lang/chinese" &
     chromium --new-window "https://www.duolingo.com/learn" &
     anki &
 
@@ -122,20 +150,17 @@ language_learning_workspace() {
 
     bspc rule -r Chromium
     bspc rule -r anki
-    bspc rule -r VSCodium
+    bspc rule -r Code
 }
 
 case $selection in
 "👨🏻‍💻 coding")
     coding_workspaces
-    dunstify -t 3000 -r 2903 -i no-icon "workspace automation" "<i>$project_type workspace ($project_rofi)</i> is getting prepared:\n\n✅ workspace rules are set!\n✅ apps are prepared!"
     ;;
 "📜 translation")
     translation_workspace
-    dunstify -t 3000 -r 2903 -i no-icon "workspace automation" "<i>translation workspace</i> is getting prepared:\n\n✅ workspace rules are set!\n✅ apps are prepared!"
     ;;
 "🔠 language learning")
     language_learning_workspace
-    dunstify -t 3000 -r 2903 -i no-icon "workspace automation" "<i>language learning workspace</i> is getting prepared:\n\n✅ workspace rules are set!\n✅ apps are prepared!"
     ;;
 esac

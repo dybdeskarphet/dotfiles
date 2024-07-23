@@ -4,23 +4,19 @@ This repository contains my personal dotfiles for configuring various programs a
 
 ## Programs and Tools
 
-- **Window Manager**: [bspwm](https://github.com/baskerville/bspwm)
+- **Compositor**: [Hyprland](https://hyprland.org/)
 - **Terminal**: [Alacritty](https://github.com/alacritty/alacritty)
 - **Notification Daemon**: [Dunst](https://dunst-project.org/)
 - **Version Control**: [Git](https://git-scm.com/)
-- **Wallpaper Setter**: [feh](https://feh.finalrewind.org/)
-- **Media Player**: [mpv](https://mpv.io/)
-- **Text Editor**: [Neovim](https://neovim.io/)
-- **Compositor**: [Picom](https://github.com/yshui/picom)
-- **Status Bar**: [Polybar](https://github.com/polybar/polybar)
+- **Wallpaper Setter**: [Hyprpaper](https://github.com/hyprwm/hyprpaper)
+- **Status Bar**: [Waybar](https://github.com/polybar/polybar)
 - **File Manager**: [Ranger](https://github.com/ranger/ranger)
-- **Application Launcher**: [Rofi](https://github.com/davatorium/rofi)
-- **Hotkey Daemon**: [sxhkd](https://github.com/baskerville/sxhkd)
+- **Application Launcher**: [lbonn/rofi](https://github.com/lbonn/rofi)
 - **Shell**: [Zsh](https://www.zsh.org/)
 
 ## Screenshots
 
-<img src="ss.png" alt="1" width="384">
+<img src="screenshot.png" alt="1" width="384">
 
 ## Related Reddit Posts
 
@@ -56,7 +52,7 @@ This repository contains my personal dotfiles for configuring various programs a
 
 ## Additional Notes
 
-- Move `custom-icons` to `~/.local/share` for default script icons to work.
+- Move `dunst-icons` to `~/.local/share` for default script icons to work.
 - Default fonts are:
   - [JetBrains Mono Nerd Font](https://www.nerdfonts.com/font-downloads)
   - [Readex Pro](https://fonts.google.com/specimen/Readex+Pro)

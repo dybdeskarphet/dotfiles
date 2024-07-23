@@ -8,6 +8,9 @@ export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 export CM_LAUNCHER='rofi'
 export ROFI_PASS_CONFIG="$HOME/.config/rofi-pass/config"
 
+# Themeing
+export QT_STYLE_OVERRIDE=kvantum
+
 # xdg dirs
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
