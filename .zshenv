@@ -10,6 +10,7 @@ export ROFI_PASS_CONFIG="$HOME/.config/rofi-pass/config"
 
 # Themeing
 export QT_STYLE_OVERRIDE=kvantum
+export SUDO_PROMPT="$(tput bold)$(tput setaf 5)$(tput setab 5)$(tput setaf 0)sudo$(tput sgr0)$(tput bold)$(tput setaf 5) $(tput setaf 7)password for %u:$(tput sgr0) "
 
 # xdg dirs
 export XDG_CONFIG_HOME=$HOME/.config

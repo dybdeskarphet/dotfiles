@@ -2,67 +2,85 @@
 
 ## Aliases
 ### Package Management
-alias inspac='paru -S'
-alias uppac='paru -Syu'
-alias upmirror='sudo reflector --verbose --latest 200 --sort rate --save /etc/pacman.d/mirrorlist'
-alias rmpac='sudo pacman -Rs'
-alias unspac='sudo pacman -Rcsn'
-alias lspac='pacman -Qqe'
 alias clpac='sudo pacman -Qtdq | sudo pacman -Rns -'
 alias findpac='sudo pacman -Qs'
+alias inspac='paru -S'
+alias lspac='pacman -Qqe'
+alias rmpac='sudo pacman -Rs'
+alias unspac='sudo pacman -Rcsn'
+alias upmirror='sudo reflector --verbose --protocol https --latest 50 --sort rate --download-timeout 60 --save /etc/pacman.d/mirrorlist'
+alias uppac='paru -Syu'
+alias mkps='makepkg --printsrcinfo > .SRCINFO'
+alias mkpc='makepkg -g >> PKGBUILD'
 
 ### System and Utility Commands
-alias sd='shutdown now'
-alias stfu='shutdown now'
-alias hibernate='systemctl hibernate'
-alias suspend='systemctl suspend'
-alias lock='xset dpms force suspend && slock'
-alias uefi='systemctl reboot --firmware-setup'
-alias esupport='sudo dmidecode -t system | grep Serial | sed "s/.*:\ //g"'
-alias toclipboard='xclip -sel clip'
-alias ixio="curl -F 'f:1=<-' ix.io"
-alias help="man zsh"
 alias cal="LANG=tr_TR.UTF-8 cal"
-alias sensors="sensors | sed 's/.*hwmon.*/Wi-fi adapter:/g; s/.*k10.*/CPU:/g; s/amdgpu.*/GPU:/g; s/nvme.*/SSD:/g; s/vddgfx/GFX Core Voltage/g; s/vddnb/NB Voltage/g;'"
 alias grep='grep --color=auto'
+alias help="man zsh"
+alias hibernate='systemctl hibernate && slock'
+alias ixio="curl -F 'f:1=<-' ix.io"
+alias to0x0="0x0 -"
+alias lock='xset dpms force suspend && slock'
+alias {stfu,sd}='shutdown now'
+alias suspend='systemctl suspend && slock'
+alias toclipboard='xclip -selection c'
+alias uefi='systemctl reboot --firmware-setup'
+alias lsserv='systemctl list-unit-files --state=enabled'
+alias sudo='sudo -v; sudo '
 
 ### Navigation and File Management
-alias r='ranger --choosedir=$HOME/.config/ranger/.rangerdir; LASTDIR=`cat $HOME/.config/ranger/.rangerdir`; echo "$LASTDIR" >> $HOME/.config/ranger/.dir_history; cd "$LASTDIR"'
-alias ls='lsd'
-alias cd='z'
-alias cdi='zi'
-alias ..='cd ..'
-alias ...='cd ../..'
+# alias unrar="unrar-free"
+function r() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		builtin cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
+}
+alias y='r'
 alias ....='cd ../../..'
+alias ...='cd ../..'
+alias ..='cd ..'
+alias ls="lsd --color=auto"
 alias lsdu='du -mh --max-depth 1 | sort -rh | sed "s/\.\///g"'
-alias notes='codium ~/doc/notes ~/doc/notes/todo.md'
-alias ls="g -icons"
-alias trash="gtrash"
-alias emptytrash="gtrash prune --day 0"
+alias rm="rm -i"
 alias trash-empty="gtrash prune --day 0"
 alias trash-restore="gtrash restore"
+alias trash="gtrash"
 
 ### Applications with workarounds and shortcuts
 alias scr="scrcpy --keyboard=uhid --no-audio & disown && exit"
 alias tty-clock="termdown.py -f larry3d -z -Z "%H:%M""
-alias watchsync="watch -d grep -e Dirty: -e Writeback: /proc/meminfo"
+alias watchsync="sudo watch -d grep -e Dirty: -e Writeback: /proc/meminfo"
+alias watchprog="sudo watch -n 0.1 progress"
+alias termux="adb forward tcp:8022 tcp:8022 && adb forward tcp:8080 tcp:8080 && ssh localhost -p 8022"
+alias godsays='curl "https://godsays.xyz/"'
+alias cr='cargo run'
+alias screenkey='screenkey -s large --scr 1 -p bottom --geometry 200x150+10-1020'
+alias udiskie-dmenu='UDISKIE_DMENU_LAUNCHER="rofi" udiskie-dmenu -matching regex -dmenu -i -no-custom -multi-select'
+
+### Open with devour
+alias feh='devour feh'
+alias mpv='devour mpv'
+alias zathura='devour zathura'
+alias gimp='devour gimp'
+alias kdenlive='devour kdenlive'
+alias alacrittynvim='devour alacrittynvim'
 
 ### Editor and Git Aliases
-alias vim="nvim"
-alias svim="sudo nvim"
-alias vi="nvim"
 alias gita='git add .'
-alias gitd='git diff HEAD'
 alias gitc='git commit -S'
+alias gitd='git diff HEAD'
 alias gitp='git push'
+alias svim="sudo nvim"
+alias {vi,vim}="nvim"
 
 ### Bell in Terminal
-alias bell='tput bel && ffplay -nodisp -autoexit -loglevel error /usr/share/sounds/freedesktop/stereo/complete.oga'
-alias b='tput bel && ffplay -nodisp -autoexit -loglevel error /usr/share/sounds/freedesktop/stereo/complete.oga'
+alias {bell,b}='tput bel && paplay /usr/share/sounds/freedesktop/stereo/complete.oga'
 
 ### Easy Exit
-alias q='exit'
-alias :q='exit'
+alias {q,:q,Q,qq}='exit'
 
 ## Completion and Autoloads
 autoload -U compinit; compinit
@@ -93,7 +111,7 @@ _absolute_files () {
   _files "$@";
 }
 
-export PS1="%F{green}%f%K{green}%F{16}%B%1~%b  %#%f%k%F{green}%f "
+export PS1="%F{green}%f%K{green}%F{#151515}%B%1~%b  %#%f%k%F{green}%f "
 export PS2="%F{012}~%f "
 export RPROMPT='${vcs_info_msg_0_} %(?,%F{green}%f,%F{yellow}%?%f %F{red}%f) %D{%K:%M:%S}'
 
@@ -104,8 +122,9 @@ bindkey -e
 
 ## External Script Sources
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/share/zsh/plugins/zsh-fzf-plugin/fzf.plugin.zsh
 
 ## Additional Configurations
 setopt correct
 setopt interactive_comments
-ZSH_HIGHLIGHT_STYLES[comment]="fg=yellow"
+ZSH_HIGHLIGHT_STYLES[comment]="fg=#ffffb3"

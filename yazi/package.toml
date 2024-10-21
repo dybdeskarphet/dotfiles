@@ -1,0 +1,5 @@
+[plugin]
+deps = [{ use = "dedukun/relative-motions", rev = "89d0cb9" }, { use = "lpnh/fg", rev = "43fb735" }, { use = "yazi-rs/plugins:git", rev = "5e65389" }, { use = "Reledia/hexyl", rev = "f845ea5" }, { use = "AnirudhG07/rich-preview", rev = "9bcf154" }]
+
+[flavor]
+deps = []

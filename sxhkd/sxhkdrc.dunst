@@ -1,0 +1,9 @@
+ctrl + space
+	dunstctl close
+
+ctrl + h
+	dunstctl history-pop
+
+ctrl + alt + h
+	key-scripts -d
+

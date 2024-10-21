@@ -3,164 +3,87 @@
 selection=$(echo -e "👨🏻‍💻 coding\n📜 translation\n🔠 language learning" | rofi -dmenu -p "select workspace")
 
 coding_workspaces() {
-    # Setting rules for opening applications in specific workspaces
-    project_rofi="$(echo -e "🪙 wincoi\n📽 filmer\n📖 teknikceviri\n🔢 learn backend\n🎨 dotfiles\n📈 learn data science\n🔒 privacy-redirector\n🔴 rust\n🏗️ learn dsa" | rofi -dmenu -p 'select the environment')"
+  # Setting rules for opening applications in specific workspaces
+  project_rofi="$(echo -e "🦀 learn rust\n🌈 mcfetch\n🎨 dotfiles\n📈 learn data science\n🔒 privacy-redirector\n🏗️ learn dsa" | rofi -dmenu -p 'select the environment')"
+  lazygit_ws=4
+  terminal_ws=3
+  browser_ws=2
+  code_ws=1
 
-    launch() {
-        bspc rule -a Code desktop='^1' state=tiled -o
-        bspc rule -a scrcpy desktop='^1' state=pseudo_tiled -o
-        n
-        
-        if [[ $project_type = "learn" ]]; then
-          bspc rule -a Chromium desktop='^2' -o
-          bspc rule -a Alacritty desktop='^3' -o
-        else
-          bspc rule -a Chromium desktop='^3' -o
-          bspc rule -a Alacritty desktop='^2' -o
-        fi
+  launch() {
+    bspc desktop -f $code_ws && alacrittynvim --working-directory="$HOME/$project_selection" -e /bin/zsh -c "nvim; zsh" &
+    sleep 0.3
+    bspc desktop -f $browser_ws && chromium --new-window https://chat.openai.com/ $project_url $extra_url &
+    sleep 1.5
+    bspc desktop -f $terminal_ws && alacritty --working-directory="$project_selection" -e zsh &
+    sleep 0.3
+    bspc desktop -f $lazygit_ws && alacritty --working-directory="$project_selection" -e zsh -c "lazygit; zsh" &
+    sleep 0.3
+    bspc desktop -f $code_ws
+  }
 
-        # Opening applications
-        if [[ $project_type = "frontend" ]]; then
-          scrcpy --keyboard=uhid --no-audio &
-          sleep 1
-        fi
-
-        code "$project_selection" &
-
-        if [[ $project_type = "dsa" ]]; then
-          alacritty -e zsh -c "cd \"$learning_directory\" && zsh" &
-        else
-          alacritty -e zsh -c "cd \"$project_selection\" && zsh" &
-        fi
-
-        chromium --new-window "https://chat.openai.com/" "$project_url" "$learning_url" &
-
-        sleep 3
-        code_id=$(xdotool search --class Code)
-        echo "Code ID: $code_id"
-
-        if [ -n "$code_id" ]; then
-            bspc node "$code_id" -z left -520 0
-        else
-            echo "Code window not found"
-        fi
-
-        sleep 1
-
-        bspc rule -r "Code"
-        bspc rule -r "scrcpy"
-        bspc rule -r "Alacritty"
-        bspc rule -r "Chromium"
-    }
-
-    case "$project_rofi" in
-    "🪙 wincoi")
-        project_selection="code/git/commercial/wincoi-mobile"
-        project_url="https://github.com/wincoiTech/wincoi-mobile"
-        project_type="frontend"
-        launch
-        ;;
-    "📽 filmer")
-        project_selection="code/git/personal projects/filmer"
-        project_url="https://github.com/dybdeskarphet/filmer"
-        project_type="frontend"
-        launch
-        ;;
-    "📖 teknikceviri")
-        project_selection="code/git/personal projects/teknikceviri"
-        project_url="https://github.com/dybdeskarphet/teknikceviri"
-        project_type="frontend"
-        launch
-        ;;
-    "🔢 learn backend")
-        project_selection="code/git/learning/learn-backend"
-        project_url="https://github.com/dybdeskarphet/learn-backend"
-        project_type="learn"
-        launch
-        ;;
-    "📈 learn data science")
-        project_selection="code/git/learning/learn-data-science"
-        project_url="https://github.com/dybdeskarphet/learn-data-science"
-        project_type="learn"
-        launch
-        ;;
-    "🏗️ learn dsa")
-        project_selection="code/git/learning/learn-dsa"
-        project_url="https://github.com/dybdeskarphet/learn-dsa"
-        learning_url="https://www.udemy.com/course/master-the-coding-interview-data-structures-algorithms/learn/lecture"
-        project_type="learn"
-        launch
-        ;;
-    "🎨 dotfiles")
-        project_selection="code/git/personal projects/dotfiles"
-        project_url="https://github.com/dybdeskarphet/dotfiles"
-        project_type="workspace related"
-        launch
-        ;;
-    "🔒 privacy-redirector")
-        project_selection="code/git/personal projects/privacy-redirector"
-        project_url="https://github.com/dybdeskarphet/privacy-redirector"
-        project_type="userscript"
-        launch
-        ;;
-    "🔴 rust")
-        project_selection="code/git/learning/learn-rust"
-        project_url="https://github.com/dybdeskarphet/learn-rust"
-        project_type="learn"
-        launch
-        ;;
-    *)
-        exit 1
-        ;;
-    esac
+  case "$project_rofi" in
+  "📈 learn data science")
+    project_selection="code/git/learning/learn-data-science"
+    project_url="https://github.com/dybdeskarphet/learn-data-science"
+    launch
+    ;;
+  "🏗️ learn dsa")
+    project_selection="code/git/learning/learn-dsa"
+    project_url="https://github.com/dybdeskarphet/learn-dsa"
+    extra_url="https://www.udemy.com/course/master-the-coding-interview-data-structures-algorithms/learn/lecture"
+    launch
+    ;;
+  "🎨 dotfiles")
+    project_selection="code/git/personal/dotfiles"
+    project_url="https://github.com/dybdeskarphet/dotfiles"
+    launch
+    ;;
+  "🔒 privacy-redirector")
+    project_selection="code/git/personal/privacy-redirector"
+    project_url="https://github.com/dybdeskarphet/privacy-redirector"
+    launch
+    ;;
+  "🌈 mcfetch")
+    project_selection="code/git/personal/mcfetch"
+    project_url="https://github.com/dybdeskarphet/mcfetch"
+    code_ws=1
+    terminal_ws=3
+    lazygit_ws=3
+    browser_ws=2
+    launch
+    ;;
+  "🦀 learn rust")
+    project_selection="code/git/learning/learn-rust"
+    project_url="https://github.com/dybdeskarphet/learn-rust"
+    extra_url="https://doc.rust-lang.org/stable/book/"
+    terminal_ws=2
+    browser_ws=1
+    lazygit_ws=2
+    launch
+    ;;
+  *)
+    exit 1
+    ;;
+  esac
 }
 
 translation_workspace() {
-
-    bspc rule -a Code desktop='^1' state=tiled -o
-    bspc rule -a Chromium desktop='^2' state=tiled -o
-    bspc rule -a Zathura desktop='^3' state=tiled -o
-
-    sleep 1
-
-    code "$HOME/doc/wiki" "$HOME/doc/notes/todo/translation/archwiki.md" &
-    chromium --new-window "https://wiki.archlinux.org/title/User:Dybdeskarphet" "https://www.deepl.com/translator" "https://tureng.com/en/turkish-english" &
-    zathura $HOME/doc/book/cs/Bilişim\ Terimleri\ Sözlüğü\ \(TSE\).pdf
-
-    sleep 2
-
-    bspc rule -r "Code"
-    bspc rule -r "Chromium"
-    bspc rule -r "Zathura"
-}
-
-language_learning_workspace() {
-
-    bspc rule -a Chromium desktop='^1' state=tiled -o
-    bspc rule -a Anki desktop='^2' state=tiled -o
-    bspc rule -a Code desktop='^3' state=tiled -o
-
-    sleep 2
-
-    code "$HOME/doc/notes/lang/chinese" "$HOME/doc/tex/lang/chinese" &
-    chromium --new-window "https://www.duolingo.com/learn" &
-    anki &
-
-    sleep 2
-
-    bspc rule -r Chromium
-    bspc rule -r anki
-    bspc rule -r Code
+  bspc desktop -f 1 && alacrittynvim --working-directory="$HOME" -e /bin/zsh -c "nvim $HOME/doc/wiki $HOME/doc/notes/todo/translation/archwiki.md; zsh" &
+  sleep 0.3
+  bspc desktop -f 3 && zathura "$HOME/doc/book/cs/Bilişim Terimleri Sözlüğü (TSE).pdf" &
+  sleep 1.0
+  bspc desktop -f 2 && alacritty -e zsh -c "fftor https://wiki.archlinux.org/title/User:Dybdeskarphet https://www.deepl.com/translator https://tureng.com/en/turkish-english" &
 }
 
 case $selection in
 "👨🏻‍💻 coding")
-    coding_workspaces
-    ;;
+  coding_workspaces
+  ;;
 "📜 translation")
-    translation_workspace
-    ;;
+  translation_workspace
+  ;;
 "🔠 language learning")
-    language_learning_workspace
-    ;;
+  language_learning_workspace
+  ;;
 esac

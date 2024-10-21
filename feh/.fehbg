@@ -1,12 +1,47 @@
 #!/bin/bash
-# sunrise=$(head -n 1 $HOME/.cache/logs/TUXX0033-sun.info)
-# sunset=$(tail -n 1 $HOME/.cache/logs/TUXX0033-sun.info)
-# now=$(date +%s)
-# 
-# if [[ $now -gt $(date --date="$sunrise" +%s) ]] && [[ $now -lt $(date --date="$sunset" +%s) ]]; then
-# 	feh --no-fehbg --bg-fill '/home/username/img/.wallpaper/day.png'
-# else
-# 	feh --no-fehbg --bg-fill '/home/username/img/.wallpaper/night.png'
-# fi
+feh --no-fehbg --bg-fill $HOME/img/.wallpaper
 
-feh --no-fehbg --bg-fill '/home/skarphet/img/.wallpaper'
+# [ -f /tmp/current_wallpaper.dat ]
+# 
+# set_wallpaper() {
+#     feh --no-fehbg --bg-fill "$1"
+# }
+# 
+# save_current_wallpaper() {
+#     echo "$1" > /tmp/current_wallpaper.dat
+# }
+# 
+# get_current_wallpaper() {
+#     cat /tmp/current_wallpaper.dat
+# }
+# 
+# current_hour=$(date +"%H")
+# 
+# day_wallpaper="$HOME/img/wal/gradient-green-2.png"
+# night_wallpaper="$HOME/img/wal/gradient-green-2-dark.png"
+# 
+# day_start_hour=6
+# day_end_hour=17 # 17:59
+# night_start_hour=18
+# night_end_hour=5 # 5:59
+# 
+# # check day time
+# if [ "$current_hour" -ge "$day_start_hour" ] && [ "$current_hour" -le "$day_end_hour" ]; then
+# 
+#     if [ "$(get_current_wallpaper)" != "$day_wallpaper" ]; then
+#         save_current_wallpaper "$day_wallpaper"
+#         echo "day wallpaper is saved"
+#         set_wallpaper "$day_wallpaper"
+#         echo "day wallpaper is set"
+#     fi
+# # check night time
+# elif [ "$current_hour" -ge "$night_start_hour" ] || [ "$current_hour" -le "$night_end_hour" ]; then
+#     # check if night wallpaper is already set
+# 
+#     if [ "$(get_current_wallpaper)" != "$night_wallpaper" ]; then
+#         set_wallpaper "$night_wallpaper"
+#         echo "night wallpaper is set"
+#         save_current_wallpaper "$night_wallpaper"
+#         echo "night wallpaper is saved"
+#     fi
+# fi

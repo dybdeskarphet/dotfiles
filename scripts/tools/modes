@@ -1,0 +1,92 @@
+#!/bin/bash
+
+selection=$(echo -e "📽️ movie mode\n💻 normal mode\n🦇 grayscale mode\n👓 blue light filter mode\n☀️ vibrant mode" | rofi -dmenu -p "switch to")
+
+movie_mode() {
+  bspc config border_width 0
+  bspc config bottom_padding 0
+  bspc config top_padding 0
+  bspc config window_gap 0
+
+  feh --no-fehbg --bg-fill "$HOME/img/wal/solid-black.png"
+
+  polybar_toggle=0
+  echo "${polybar_toggle}" >/tmp/polybar_toggle.dat
+  polybar-msg cmd hide
+}
+
+normal_mode() {
+  bspc wm -r
+  pkill picom
+  sleep 0.5
+  picom --config ~/.config/picom/picom.conf --log-level DEBUG --log-file "$HOME"/.cache/logs/autostart/picom.log &
+  polybar_toggle=1
+  echo "${polybar_toggle}" >/tmp/polybar_toggle.dat
+}
+
+grayscale_mode() {
+  if pgrep -x picom >/dev/null; then
+    pkill picom
+    sleep 0.5
+    picom --config ~/.config/picom/picom.conf --log-level DEBUG --log-file "$HOME"/.cache/logs/autostart/picom.log --use-damage --window-shader-fg ~/.config/picom/shaders/grayscale.frag &
+    if [[ ! -f /tmp/grayscale.png ]]; then
+      convert ~/img/.wallpaper -colorspace Gray -set colorspace sRGB /tmp/grayscale.png
+      feh --no-fehbg --bg-fill /tmp/grayscale.png
+    else
+      feh --no-fehbg --bg-fill /tmp/grayscale.png
+    fi
+  else
+    picom --config ~/.config/picom.conf --log-level DEBUG --log-file "$HOME"/.cache/logs/autostart/picom.log &
+  fi
+}
+
+bluelight_filter() {
+  if pgrep -x picom >/dev/null; then
+    pkill picom
+    sleep 0.5
+    picom --config ~/.config/picom/picom.conf --log-level DEBUG --log-file "$HOME"/.cache/logs/autostart/picom.log --use-damage --window-shader-fg ~/.config/picom/shaders/blfilter.frag &
+
+    if [[ ! -f /tmp/blue_light_filtered.png ]]; then
+      convert ~/img/.wallpaper -channel G -evaluate multiply 0.855 -channel B -evaluate multiply 0.725 +channel /tmp/blue_light_filtered.png
+      feh --no-fehbg --bg-fill /tmp/blue_light_filtered.png
+    else
+      feh --no-fehbg --bg-fill /tmp/blue_light_filtered.png
+    fi
+  else
+    picom --config ~/.config/picom.conf --log-level DEBUG --log-file "$HOME"/.cache/logs/autostart/picom.log &
+  fi
+}
+
+vibrant_mode() {
+  if pgrep -x picom >/dev/null; then
+    pkill picom
+    sleep 0.5
+    picom --config ~/.config/picom/picom.conf --log-level DEBUG --log-file "$HOME"/.cache/logs/autostart/picom.log --use-damage --window-shader-fg ~/.config/picom/shaders/vibrance.frag &
+    if [[ ! -f /tmp/blue_light_filtered.png ]]; then
+      convert ~/img/.wallpaper -modulate 100,115,100 /tmp/vibrant_image.png
+      feh --no-fehbg --bg-fill /tmp/vibrant_image.png
+    else
+      feh --no-fehbg --bg-fill /tmp/vibrant_image.png
+    fi
+  else
+    picom --config ~/.config/picom.conf --log-level DEBUG --log-file "$HOME"/.cache/logs/autostart/picom.log &
+  fi
+}
+
+case $selection in
+"📽️ movie mode")
+  movie_mode && dunstify -r 2903 -i paint-palette "movie" "enjoy your movie! 🍿"
+  ;;
+"💻 normal mode")
+  normal_mode && dunstify -r 2903 -i paint-palette "default" "back to default."
+  ;;
+"🦇 grayscale mode")
+  grayscale_mode && dunstify -r 2903 -i paint-palette "grayscale" "b&w forever."
+  ;;
+"👓 blue light filter mode")
+  bluelight_filter && dunstify -r 2903 -i paint-palette "blue light filter" "protect your eyes."
+  ;;
+"☀️ vibrant mode")
+  vibrant_mode && dunstify -r 2903 -i paint-palette "vibrant" "colorful colors."
+  ;;
+esac

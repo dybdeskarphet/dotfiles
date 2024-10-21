@@ -1,0 +1,38 @@
+alt + Return
+	alacritty
+
+alt + p
+	rofi -show run -show-icons -display-run "run"	
+
+super + w
+	rofi-pass --last-used
+
+super + p
+	arandr
+
+alt + w
+  chromium
+
+alt + Escape
+	key-scripts -r
+
+ctrl + alt + shift + t
+	bund -o 
+
+alt + ctrl + shift + Escape
+	key-scripts -q
+
+alt + v
+	clipmenu
+
+alt + shift + Return
+	workspaces
+
+alt + shift + Escape
+	modes
+
+super + l
+  xset dpms force suspend && slock
+
+Help
+  rfkill unblock all && dunstify "wi-fi and bluetooth unblocked"

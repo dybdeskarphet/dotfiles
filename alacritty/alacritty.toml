@@ -2,32 +2,32 @@
 transparent_background_colors = false
 
 [colors.bright]
-black=   '0x404040'
-red=     '0xd23d3d'
-green=   '0x77d484'
-yellow=  '0xf39d21'
-blue=    '0x4e9fb1'
-magenta= '0xa87cb5'
-cyan=    '0x42717b'
-white=   '0xdddddd'
+black = '0x404040'
+red = '0xd23d3d'
+green = '0x83c984'
+yellow = '0xf39d21'
+blue = '0x4e9fb1'
+magenta = '0xa87cb5'
+cyan = '0x42717b'
+white = '0xdddddd'
 
 [colors.cursor]
 cursor = "CellForeground"
 text = "CellBackground"
 
 [colors.normal]
-black=   '0x101010'
-red=     '0xe84f4f'
-green=   '0xb1e7b9'
-yellow=  '0xe1aa5d'
-blue=    '0x7dc1cf'
-magenta= '0xce98c0'
-cyan=    '0x6d878d'
-white=   '0xdddddd'
+black = '0x101010'
+red = '0xe84f4f'
+green = '0x9dd49e'
+yellow = '0xe1aa5d'
+blue = '0x7dc1cf'
+magenta = '0xce98c0'
+cyan = '0x6d878d'
+white = '0xf2f2f2'
 
 [colors.primary]
-background= '0x151515'
-foreground= '0xd7d0c7'
+background = '0x0d0d0d'
+foreground = '0xd7d0c7'
 
 [colors.selection]
 background = "CellForeground"

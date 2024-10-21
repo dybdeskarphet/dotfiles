@@ -1,0 +1,147 @@
+#!/bin/bash
+accent=$(cat $HOME/.local/share/polybar/polybar-accent.dat)
+foreground=$(cat $HOME/.local/share/polybar/polybar-foreground.dat)
+termwin="alacritty -e zsh -c"
+
+bt_show() {
+  if [ $(bluetoothctl show | grep "Powered: yes" | wc -c) -eq 0 ]; then
+    echo "%{F#66$foreground}󰂲" # Bluetooth is off
+  else
+    if [ $(bluetoothctl devices Connected | wc -c) -eq 0 ]; then
+      echo "%{F#$accent}󰂯%{F#$foreground}" # No connected devices
+    else
+      device_info=$(bluetoothctl info)
+      device_name=$(echo "$device_info" | grep Name | sed "s/Name: //g ; s/^[ \t]*//")
+      if [[ ${#device_name} -gt 10 ]]; then
+        device_name="$(echo $device_name | sed 's/\B\w*//g;s/\s//g')"
+      else
+        :
+      fi
+      if [ $(echo "$device_info" | grep "Battery Percentage" | wc -c) -eq 0 ]; then
+        echo "%{F#$accent}󰂯 %{F#$foreground} ${device_name}"
+      else
+        percentage=$(echo "$device_info" | grep "Battery Percentage" | sed 's/.*(\(.*\))/\1/')
+        if [ $percentage -lt 20 ]; then
+          echo "%{F#$accent}$percentage %{O-1}󰤾 %{F#$foreground}$device_name"
+        elif [ $percentage -lt 40 ]; then
+          echo "%{F#$accent}$percentage %{O-1}󰥀 %{F#$foreground}$device_name"
+        elif [ $percentage -lt 60 ]; then
+          echo "%{F#$accent}$percentage %{O-1}󰥂 %{F#$foreground}$device_name"
+        elif [ $percentage -lt 80 ]; then
+          echo "%{F#$accent}$percentage %{O-1}󰥃 %{F#$foreground}$device_name"
+        elif [ $percentage -lt 100 ]; then
+          echo "%{F#$accent}$percentage %{O-1}󰥅 %{F#$foreground}$device_name"
+        elif [ $percentage -eq 100 ]; then
+          echo "%{F#$accent}$percentage %{O-1}󰥈 %{F#$foreground}$device_name"
+        fi
+      fi
+    fi
+  fi
+}
+
+bt_toggle() {
+  if [ $(bluetoothctl show | grep "Powered: yes" | wc -c) -eq 0 ]; then
+    bluetoothctl power on
+  else
+    bluetoothctl power off
+  fi
+}
+
+sync_icon() {
+  total="$(cat /tmp/total_backup.dat 2>/dev/null)"
+  current="$(cat /tmp/current_backup.dat 2>/dev/null)"
+  # uncomment this if you want to show it as a percentage
+  # percentage="$(echo "$current/$total*100" | bc -l | cut -d '.' -f 1)%"
+  if systemctl is-active --quiet backupDrive.service; then
+    # uncomment this if you want to show it as a percentage
+    # echo "%{F$accent}󰘿  %{F$foreground}$percentage"
+    echo "%{F$accent}󰘿  %{F$foreground}${current:=0} %{F$accent}/ %{F$foreground}${total}%{F$foreground}"
+  elif [[ -f /tmp/not-recognized.backup ]]; then
+    echo "%{F#66$foreground}󰅤%{F$foreground}"
+  else
+    echo
+  fi
+}
+
+mic_icon() {
+  CARD_INDEX=1
+  CONTROL_NAME='Capture'
+  mic_status=$(amixer -c $CARD_INDEX sget $CONTROL_NAME | grep -o "\[[a-z]*\]")
+
+  if [[ $mic_status == *"[off]" ]]; then
+    echo "%{B#$accent}%{F#000000}  󰍭  %{B- F-}"
+  else
+    echo
+  fi
+}
+
+do_not_disturb() {
+  if [[ "$(dunstctl is-paused)" = "true" ]]; then
+    echo "  󰂛  "
+  else
+    echo ""
+  fi
+}
+
+check_updates() {
+  if ! updates_arch=$(checkupdates 2>/dev/null | wc -l); then
+    updates_arch=0
+  fi
+
+  if ! updates_aur=$(paru -Qum 2>/dev/null | wc -l); then
+    # if ! updates_aur=$(paru -Qum 2> /dev/null | wc -l); then
+    # if ! updates_aur=$(cower -u 2> /dev/null | wc -l); then
+    # if ! updates_aur=$(trizen -Su --aur --quiet | wc -l); then
+    # if ! updates_aur=$(pikaur -Qua 2> /dev/null | wc -l); then
+    # if ! updates_aur=$(rua upgrade --printonly 2> /dev/null | wc -l); then
+    updates_aur=0
+  fi
+
+  updates=$((updates_arch + updates_aur))
+
+  if [ "$updates" -gt 0 ]; then
+    echo "%{F#$accent}󰏗%{F$foreground}  $updates"
+  else
+    echo ""
+  fi
+}
+
+copy_date() {
+  if printf $(date "+%F") | xclip -sel clip; then
+    dunstify -r 9326 -i clipboard -t 5000 "tarih panoya kopyalandı!" "koplyanan tarih: '$(date +"%F")'"
+  else
+    dunstify -r 9326 -i clipboard -t 5000 "tarih kopyalanırken hata ile karşılaşıldı!" "scripti kontorl edin."
+  fi
+}
+
+network_info() {
+  dunstify -r 9123 -i wireless-icon "Ağ Bilgileri" "<b>Ağ ismi:</b> $(iwgetid -r)<br/><b>IP Adresi:</b> $(ip -4 addr show wlp2s0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
+"
+}
+
+case $1 in
+battery) $termwin "watch -p -t -n 0.5 upower -i /org/freedesktop/UPower/devices/battery_BAT0" ;;
+bluetooth_show) bt_show ;;
+sync_icon) sync_icon ;;
+mic_icon) mic_icon ;;
+do_not_disturb) do_not_disturb ;;
+sync_icon_click) $termwin "watch -c -n 0.5 tail -n 50 $HOME/.cache/logs/backupDrive.log" ;;
+bluetooth_toggle) bt_toggle ;;
+copy_date) copy_date ;;
+date) alacritty -o font.size=13 -e zsh -c "LANG=tr_TR.UTF-8 cal -3 && zsh" ;;
+htop_cpu) $termwin "htop -t --sort-key PERCENT_CPU" ;;
+htop_mem) $termwin "htop -t --sort-key PERCENT_MEM" ;;
+network_info) network_info ;;
+disk_info)
+  dunstify -r 9325 -i harddrive -t 15000 \
+    "disk kullanımı" \
+    "alan hesaplanıyor..."
+  dunstify -r 9325 -i harddrive -t 5000 \
+    "disk kullanımı" \
+    "<b>ev:</b> $(du -sh /home 2>/dev/null | sed 's/\s.*$//')"$'\n'"<b>kök:</b> $(du -sh / 2>/dev/null | sed 's/\s.*$//')"
+  ;;
+temp) $termwin "watch -p -t -n 0.5 'sensors'" ;;
+wifi_menu) $termwin "printf '%b\n\n' '\e[1mEnter your password to connect to a wireless network:\e[0m' && sudo nmtui; zsh" ;;
+check_updates) check_updates ;;
+open_update_screen) $termwin "printf '%b\n\n' '\e[1mEnter your password to update Pacman/AUR packages:\e[0m' && sudo paru -Syu; zsh" ;;
+esac
