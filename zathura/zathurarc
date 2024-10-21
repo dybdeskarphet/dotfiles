@@ -1,0 +1,11 @@
+# look
+set font "proportional_font 9"
+set recolor-keephue
+
+# copy text to main clipboard
+set selection-clipboard clipboard
+
+# f for fullscreen
+unmap f
+map f toggle_fullscreen
+map [fullscreen] f toggle_fullscreen

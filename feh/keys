@@ -1,0 +1,15 @@
+# zooming
+zoom_in		k Up
+zoom_out	j Down
+zoom_default	0
+zoom_fit	equal
+
+# image navigation
+next_img	h Right space
+prev_img	l Left BackSpace
+
+# menu navigation
+menu_parent h Left
+menu_child  l Right
+menu_down   j Down
+menu_up     k Up

@@ -1,0 +1,34 @@
+#!/bin/bash
+
+input_1="$1"
+
+read_qr() {
+	printf '%b\n' "\e[32mKodu kameraya göster.\e[0m"
+	zbarcam || printf '\n%b\n\n' "\e[31mhata: \e[0mzbar paketini yükle."
+}
+
+create_qr() {
+	if qrencode --foreground=000000 --background=ffffff -l M -s 20 -o /tmp/lastqr.png "$input_1"; then
+		feh --scale-down --image-bg=\#ffffff /tmp/lastqr.png
+	elif [[ $(command -v qrencode) = "" ]]; then
+		printf '\n%b\n\n' "\e[31mhata: \e[0mqrencode paketini yükle."
+	else
+		feh --scale-down --image-bg=\#ffffff /tmp/lastqr.png >/dev/null 2>&1
+	fi
+}
+
+print_usage() {
+	printf '\n%s\n' "qr {-r --read}    reads qr code from webcam"
+	printf '%s\n' "qr {-h --help}    shows this message"
+	printf '%s\n\n' "qr [text]         creates a qr code"
+
+}
+
+case $input_1 in
+-r | --read) read_qr ;;
+-h | --help)
+	print_usage
+	exit 1
+	;;
+*) create_qr ;;
+esac

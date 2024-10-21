@@ -1,0 +1,153 @@
+[colors]
+transparent_background_colors = false
+
+[colors.bright]
+black=   '0x404040'
+red=     '0xd23d3d'
+green=   '0x77d484'
+yellow=  '0xf39d21'
+blue=    '0x4e9fb1'
+magenta= '0xa87cb5'
+cyan=    '0x42717b'
+white=   '0xdddddd'
+
+[colors.cursor]
+cursor = "CellForeground"
+text = "CellBackground"
+
+[colors.normal]
+black=   '0x101010'
+red=     '0xe84f4f'
+green=   '0xb1e7b9'
+yellow=  '0xe1aa5d'
+blue=    '0x7dc1cf'
+magenta= '0xce98c0'
+cyan=    '0x6d878d'
+white=   '0xdddddd'
+
+[colors.primary]
+background= '0x151515'
+foreground= '0xd7d0c7'
+
+[colors.selection]
+background = "CellForeground"
+text = "CellBackground"
+
+[cursor]
+blink_interval = 500
+
+[cursor.style]
+blinking = "On"
+shape = "Block"
+
+[font]
+size = 10.0
+
+[font.bold]
+family = "monospace_font"
+style = "Bold"
+
+[font.bold_italic]
+family = "monospace"
+style = "Bold Italic"
+
+[font.italic]
+family = "monospace_font"
+style = "Italic"
+
+[font.normal]
+family = "monospace_font"
+style = "Regular"
+
+[[keyboard.bindings]]
+action = "Paste"
+key = "V"
+mods = "Control|Shift"
+
+[[keyboard.bindings]]
+action = "Copy"
+key = "C"
+mods = "Control|Shift"
+
+[[keyboard.bindings]]
+action = "PasteSelection"
+key = "Insert"
+mods = "Shift"
+
+[[keyboard.bindings]]
+action = "ResetFontSize"
+key = "Key0"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "IncreaseFontSize"
+key = "Equals"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "DecreaseFontSize"
+key = "Minus"
+mods = "Control"
+
+[[keyboard.bindings]]
+chars = "\u001Bb"
+key = "Left"
+mods = "Alt"
+
+[[keyboard.bindings]]
+chars = "\u001Bf"
+key = "Right"
+mods = "Alt"
+
+[[keyboard.bindings]]
+action = "Paste"
+key = "Paste"
+
+[[keyboard.bindings]]
+action = "Copy"
+key = "Copy"
+
+[[keyboard.bindings]]
+action = "ClearLogNotice"
+key = "L"
+mods = "Control"
+
+[[keyboard.bindings]]
+chars = "\f"
+key = "L"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "ScrollPageUp"
+key = "PageUp"
+mode = "~Alt"
+mods = "Shift"
+
+[[keyboard.bindings]]
+action = "ScrollPageDown"
+key = "PageDown"
+mode = "~Alt"
+mods = "Shift"
+
+[[keyboard.bindings]]
+action = "ScrollToTop"
+key = "Home"
+mode = "~Alt"
+mods = "Shift"
+
+[[keyboard.bindings]]
+action = "ScrollToBottom"
+key = "End"
+mode = "~Alt"
+mods = "Shift"
+
+[window]
+decorations = "None"
+dynamic_padding = true
+dynamic_title = true
+opacity = 1.0
+startup_mode = "Windowed"
+
+[window.padding]
+x = 20
+y = 20
