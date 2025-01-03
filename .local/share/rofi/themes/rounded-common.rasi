@@ -1,0 +1,92 @@
+/*******************************************************************************
+ * ROUNDED THEME FOR ROFI 
+ * User                 : LR-Tech               
+ * Theme Repo           : https://github.com/lr-tech/rofi-themes-collection
+ *******************************************************************************/
+
+* {
+    font:   "proportional_font Bold 13";
+
+    background-color:   transparent;
+    text-color:         @fg0;
+
+    margin:     0px;
+    padding:    0px;
+    spacing:    0px;
+}
+
+window {
+    location:       center;
+    width:          480;
+    border-radius:  30px;
+    border:         0px;
+    background-color:   @bg0;
+}
+
+mainbox {
+    padding:    20px;
+}
+
+inputbar {
+    children:   [ prompt, entry ];
+    background-color:   @bg1;
+    padding: 0;
+    border-radius:  16px;
+    spacing:    2px;
+}
+
+prompt {
+    font:   "proportional_font 13";
+    text-color: @fg4;
+    background-color: @bg3;
+    padding: 10px;
+}
+
+entry {
+  padding: 10px;
+}
+
+message {
+    margin:             12px 0 0;
+    border-radius:      16px;
+    border-color:       @bg2;
+    background-color:   @bg2;
+}
+
+textbox {
+    padding:    8px 24px;
+}
+
+listview {
+    background-color:   transparent;
+
+    margin:     12px 0 0;
+    lines:      8;
+    columns:    1;
+
+    fixed-height: false;
+}
+
+element {
+    padding:        8px 16px;
+    spacing:        8px;
+    border-radius:  16px;
+}
+
+element normal active {
+    text-color: @fg1 ;
+}
+
+element selected normal, element selected active {
+    background-color: @bg3;
+    text-color: @fg4;
+}
+
+element-icon {
+    size:           1em;
+    vertical-align: 0.5;
+}
+
+element-text {
+    text-color: inherit;
+}

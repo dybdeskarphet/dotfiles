@@ -6,44 +6,44 @@ dest="$HOME/img/ss/null/$(date +'%Y-%m-%d_%H.%M.%S').png"
 #  if grim -g "$(slurp -d -c '#309c3e80' -s '#23732d80' -b '#00000000')" $dest; then
 selection_screenshot() {
   if grim -g "$(slurp)" $dest; then
-		last_file=$(ls -t $HOME/img/ss/null | head -1)
-		sleep 0.1
+    last_file=$(ls -t $HOME/img/ss/null | head -1)
+    sleep 0.1
 
-		if [[ -n $(zbarimg -q --raw $HOME/img/ss/null/$last_file | xclip -selection clipboard -f) ]]; then
-			dunstify -I "$HOME/img/ss/null/$last_file" --urgency=LOW "qr kod kopyalandı!"
-		else
-			wl-copy < "$HOME/img/ss/null/$last_file"
-			ACTION=$(dunstify --action="open,Open it with feh" --action="dragon,Open it with dragon-drop" -I "$HOME/img/ss/null/$last_file" --urgency=LOW "peynir!" "ekran görüntüsü alındı.")
-		fi
-	fi
+    if [[ -n $(zbarimg -q --raw $HOME/img/ss/null/$last_file | wl-copy) ]]; then
+      dunstify -I "$HOME/img/ss/null/$last_file" --urgency=LOW "qr kod kopyalandı!"
+    else
+      wl-copy <$HOME/img/ss/null/$last_file
+      ACTION=$(dunstify --action="open,Open it with feh" --action="dragon,Open it with dragon-drop" -I "$HOME/img/ss/null/$last_file" --urgency=LOW "peynir!" "ekran görüntüsü alındı.")
+    fi
+  fi
 
-	case "$ACTION" in
-	"open")
-		feh "$dest"
-		;;
-	"dragon")
-		dragon-drop "$dest"
-		;;
-	esac
+  case "$ACTION" in
+  "open")
+    feh "$dest"
+    ;;
+  "dragon")
+    dragon-drop "$dest"
+    ;;
+  esac
 }
 
 full_screenshot() {
-	if grim $dest; then
-		last_file=$(ls -t $HOME/img/ss/null | head -1)
-		sleep 0.1
+  if grim $dest; then
+    last_file=$(ls -t $HOME/img/ss/null | head -1)
+    sleep 0.1
 
-	  wl-copy < "$HOME/img/ss/null/$last_file"
-		ACTION=$(dunstify --action="open,Open it with feh" --action="dragon,Open it with dragon-drop" -I "$HOME/img/ss/null/$last_file" --urgency=LOW "peynir!" "ekran görüntüsü alındı.")
-	fi
+    wl-copy <$HOME/img/ss/null/$last_file
+    ACTION=$(dunstify --action="open,Open it with feh" --action="dragon,Open it with dragon-drop" -I "$HOME/img/ss/null/$last_file" --urgency=LOW "peynir!" "ekran görüntüsü alındı.")
+  fi
 
-	case "$ACTION" in
-	"open")
-		feh "$dest"
-		;;
-	"dragon")
-		dragon-drop "$dest"
-		;;
-	esac
+  case "$ACTION" in
+  "open")
+    feh "$dest"
+    ;;
+  "dragon")
+    dragon-drop "$dest"
+    ;;
+  esac
 }
 
 case $1 in

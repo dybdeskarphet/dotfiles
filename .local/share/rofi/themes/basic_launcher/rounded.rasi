@@ -1,0 +1,98 @@
+/*******************************************************************************
+ * ROUNDED THEME FOR ROFI 
+ * User                 : LR-Tech               
+ * Theme Repo           : https://github.com/lr-tech/rofi-themes-collection
+ *******************************************************************************/
+
+@import "colors.rasi"
+
+* {
+    background-color:   transparent;
+    margin:     0px;
+    padding:    0px;
+    spacing:    0px;
+    text-color:         @textfg;
+}
+
+window {
+    border-radius:  12px;
+    border:         0px;
+    location:       center;
+    width:          800;
+}
+
+mainbox {
+    padding: 15px;
+}
+
+inputbar {
+    background-color:   @windowbg;
+    border-radius:  12px;
+    children:   [ prompt, entry ];
+    margin: 0 0 12px 0;
+    padding: 15px;
+    spacing:    2px;
+}
+
+prompt {
+    background-color: @colorbg;
+    border-radius: 8px;
+    font:   "proportional_font 13";
+    padding: 10px;
+    text-color: @fg4;
+}
+
+entry {
+  background-color:   @windowbg;
+  border-radius: 8px;
+  margin: 0 0 0 8px;
+  padding: 10px;
+}
+
+message {
+    background-color:   @windowbg;
+    border-color:       @windowbg;
+    border-radius:      12px;
+    margin: 0 0 12px 0;
+    padding: 10px;
+}
+
+textbox {
+    padding:    8px 24px;
+    background-color:   @windowbg;
+}
+
+listview {
+    background-color: @windowbg;
+    border-radius:  12px;
+    columns:    2;
+    fixed-height: false;
+    lines:      5;
+    padding: 15px;
+}
+
+element {
+    border-radius: 8px;
+    padding:        8px 16px;
+    spacing:        8px;
+}
+
+element normal active {
+    text-color: @fg1;
+}
+
+element selected normal, element selected active {
+    background-color: @colorbg;
+    text-color: @fg4;
+}
+
+element-icon {
+    size:           1.5em;
+    vertical-align: 0.5;
+}
+
+element-text {
+    text-color: inherit;
+    vertical-align: 0.5;
+    vertical-align: 0.5;
+}

@@ -1,61 +1,61 @@
 #!/bin/bash
 
 # Define constants
-PC_NOTIFY_ICON_BATTERY_FULL="battery-full"
-PC_NOTIFY_ICON_BATTERY_EMPTY="battery-empty"
+PC_NOTIFY_ICON_BATTERY_FULL="battery-level-100-symbolic"
+PC_NOTIFY_ICON_BATTERY_EMPTY="battery-level-10-symbolic"
 PC_NOTIFICATION_ID=87873
 PC_NOTIFICATION_DURATION=10000
 
-BLUETOOTH_NOTIFY_ICON_BATTERY_EMPTY="bluetooth-battery-low"
+BLUETOOTH_NOTIFY_ICON_BATTERY_EMPTY="battery-level-10-symbolic"
 BLUETOOTH_NOTIFICATION_ID=87874
 BLUETOOTH_NOTIFICATION_DURATION=10000
 
 pc_battery() {
-    # Function to send notification
-    notify_battery() {
-        dunstify -t "$PC_NOTIFICATION_DURATION" -r "$PC_NOTIFICATION_ID" -i "$1" "$2" "$3"
-    }
+  # Function to send notification
+  notify_battery() {
+    dunstify -a "ACPI" -t "$PC_NOTIFICATION_DURATION" -r "$PC_NOTIFICATION_ID" -i "$1" "$2" "$3"
+  }
 
-    # Read battery capacity and status
-    capacity=$(</sys/class/power_supply/BAT0/capacity)
-    bat_status=$(</sys/class/power_supply/BAT0/status)
+  # Read battery capacity and status
+  capacity=$(</sys/class/power_supply/BAT0/capacity)
+  bat_status=$(</sys/class/power_supply/BAT0/status)
 
-    if [[ $bat_status = "Charging" || $bat_status = "Full" ]]; then
-        if [[ $capacity -gt 90 ]]; then
-                notify_battery "$PC_NOTIFY_ICON_BATTERY_FULL" "pil %90'in üstünde" "cihazınızı şarjdan çıkarabilirsiniz."
-        fi
+  if [[ $bat_status = "Charging" || $bat_status = "Full" ]]; then
+    if [[ $capacity -gt 90 ]]; then
+      notify_battery "$PC_NOTIFY_ICON_BATTERY_FULL" "pil %$capacity" "cihazınızı şarjdan çıkarabilirsiniz."
     fi
+  fi
 
-    # Handle low battery status
-    if [[ ! $bat_status = "Charging" ]]; then
+  # Handle low battery status
+  if [[ ! $bat_status = "Charging" ]]; then
     if [[ $capacity -lt 15 ]]; then
-        if [[ $capacity -gt 1 ]]; then
-            notify_battery "$PC_NOTIFY_ICON_BATTERY_EMPTY" "pil %$capacity" "cihazınızı şarja takmanız tavsiye edilir."
-        elif [[ $capacity -gt 5 ]]; then
-            notify_battery "$PC_NOTIFY_ICON_BATTERY_EMPTY" "pil %$capacity" "cihaz birkaç dakika içinde kapanabilir." -u critical
-        else
-            notify_battery "$PC_NOTIFY_ICON_BATTERY_EMPTY" "pil %$capacity" "cihazınız birazdan kapanacak!" -u critical
-            ffplay -nodisp -autoexit /usr/share/sounds/freedesktop/stereo/dialog-warning.oga
-            xbacklight -set 20
-        fi
+      if [[ $capacity -gt 1 ]]; then
+        notify_battery "$PC_NOTIFY_ICON_BATTERY_EMPTY" "pil %$capacity" "cihazınızı şarja takmanız tavsiye edilir."
+      elif [[ $capacity -gt 5 ]]; then
+        notify_battery "$PC_NOTIFY_ICON_BATTERY_EMPTY" "pil %$capacity" "cihaz birkaç dakika içinde kapanabilir." -u critical
+      else
+        notify_battery "$PC_NOTIFY_ICON_BATTERY_EMPTY" "pil %$capacity" "cihazınız birazdan kapanacak!" -u critical
+        ffplay -nodisp -autoexit /usr/share/sounds/freedesktop/stereo/dialog-warning.oga
+        xbacklight -set 20
+      fi
     fi
-    fi
+  fi
 }
 
 bluetooth_battery() {
-    notify_battery() {
-        dunstify -t "$BLUETOOTH_NOTIFICATION_DURATION" -r "$BLUETOOTH_NOTIFICATION_ID" -i "$1" "$2" "$3"
-    }
-        device_info=$(bluetoothctl info)
-        percentage=$(echo "$device_info" | grep "Battery Percentage" | sed 's/.*(\(.*\))/\1/')
+  notify_battery() {
+    dunstify -a "Bluetooth" -t "$BLUETOOTH_NOTIFICATION_DURATION" -r "$BLUETOOTH_NOTIFICATION_ID" -i "$1" "$2" "$3"
+  }
+  device_info=$(bluetoothctl info)
+  percentage=$(echo "$device_info" | grep "Battery Percentage" | sed 's/.*(\(.*\))/\1/')
 
-        if [[ $percentage -lt 20 ]]; then
-            if [[ $percentage -gt 10 ]]; then
-                notify_battery "$BLUETOOTH_NOTIFY_ICON_BATTERY_EMPTY" "bluetooth cihaz pili %20'nin altında" "bluetooth cihazınızı şarja takmanız tavsiye edilir."
-            elif [[ $percentage -gt 0 ]]; then
-                notify_battery "$BLUETOOTH_NOTIFY_ICON_BATTERY_EMPTY" "bluetooth cihaz pili düşük!" "bluetooth cihaz birkaç dakika içinde kapanabilir." -u critical
-            fi
-        fi
+  if [[ $percentage -lt 20 ]]; then
+    if [[ $percentage -gt 10 ]]; then
+      notify_battery "$BLUETOOTH_NOTIFY_ICON_BATTERY_EMPTY" "bluetooth cihaz pili %20'nin altında" "bluetooth cihazınızı şarja takmanız tavsiye edilir."
+    elif [[ $percentage -gt 0 ]]; then
+      notify_battery "$BLUETOOTH_NOTIFY_ICON_BATTERY_EMPTY" "bluetooth cihaz pili düşük!" "bluetooth cihaz birkaç dakika içinde kapanabilir." -u critical
+    fi
+  fi
 }
 
 pc_battery

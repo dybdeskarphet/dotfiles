@@ -5,8 +5,8 @@ zoom_default	0
 zoom_fit	equal
 
 # image navigation
-next_img	h Right space
-prev_img	l Left BackSpace
+next_img	l Right space
+prev_img	h Left BackSpace
 
 # menu navigation
 menu_parent h Left

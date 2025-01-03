@@ -1,50 +1,73 @@
 #!/bin/bash
 
-selection=$(echo -e "👨🏻‍💻 coding\n📜 translation\n🔠 language learning" | rofi -dmenu -p "select workspace")
+selection=$(echo -e "    coding\n    studying\n󰗊    translation\n    language learning" | rofi -dmenu -p "󰾂  workspace")
 
 coding_workspaces() {
   # Setting rules for opening applications in specific workspaces
-  project_rofi="$(echo -e "🦀 learn rust\n🌈 mcfetch\n🎨 dotfiles\n📈 learn data science\n🔒 privacy-redirector\n🏗️ learn dsa" | rofi -dmenu -p 'select the environment')"
+  project_rofi="$(echo -e "󰌪  bilgiyolu\n   syncgdrive\n󱢺   shark\n   learn rust\n   mcfetch\n   dotfiles\n   learn data science\n  privacy-redirector\n󱘶  learn dsa" | rofi -dmenu -p '  project')"
   lazygit_ws=4
   terminal_ws=3
   browser_ws=2
   code_ws=1
 
   launch() {
-    bspc desktop -f $code_ws && alacrittynvim --working-directory="$HOME/$project_selection" -e /bin/zsh -c "nvim; zsh" &
+    if [[ $vscode_ws != "" ]]; then
+      hyprctl dispatch exec "[workspace ${vscode_ws}] code '$HOME/$project_selection'" &
+      sleep 1.2
+    else
+      hyprctl dispatch exec "[workspace ${code_ws}] alacrittynvim --working-directory='$HOME/$project_selection' -e /bin/zsh -c 'nvim; zsh'" &
+      sleep 0.3
+    fi
+
+    if [[ $scrcpy_ws != "" ]]; then
+      hyprctl dispatch exec "[workspace ${scrcpy_ws}] scrcpy --keyboard=uhid --no-audio" &
+      sleep 0.3
+    fi
+    hyprctl dispatch workspace $browser_ws
+    hyprctl dispatch exec "[workspace ${browser_ws}] zen-browser https://chat.openai.com/ $project_url $extra_url" &
+    sleep 1.3
+    hyprctl dispatch exec "[workspace ${terminal_ws}] alacritty --working-directory='$HOME/${project_selection}' -e zsh -c zsh" &
     sleep 0.3
-    bspc desktop -f $browser_ws && chromium --new-window https://chat.openai.com/ $project_url $extra_url &
-    sleep 1.5
-    bspc desktop -f $terminal_ws && alacritty --working-directory="$project_selection" -e zsh &
+    hyprctl dispatch exec "[workspace ${lazygit_ws}] alacritty --working-directory='$HOME/${project_selection}' -e zsh -c 'lazygit; zsh'" &
     sleep 0.3
-    bspc desktop -f $lazygit_ws && alacritty --working-directory="$project_selection" -e zsh -c "lazygit; zsh" &
-    sleep 0.3
-    bspc desktop -f $code_ws
+    hyprctl dispatch workspace $code_ws
   }
 
   case "$project_rofi" in
-  "📈 learn data science")
+  "󰌪  bilgiyolu")
+    project_selection="code/git/team/bilgiyolu"
+    project_url="https://github.com/dybdeskarphet/bilgiyolu"
+    vscode_ws=1
+    scrcpy_ws=1
+    launch
+    ;;
+  "   syncgdrive")
+    project_selection="code/git/personal/syncgdrive"
+    project_url="https://github.com/dybdeskarphet/syncgdrive"
+    launch
+    ;;
+  "   learn data science")
     project_selection="code/git/learning/learn-data-science"
     project_url="https://github.com/dybdeskarphet/learn-data-science"
     launch
     ;;
-  "🏗️ learn dsa")
+  "󱘶   learn dsa")
     project_selection="code/git/learning/learn-dsa"
     project_url="https://github.com/dybdeskarphet/learn-dsa"
     extra_url="https://www.udemy.com/course/master-the-coding-interview-data-structures-algorithms/learn/lecture"
     launch
     ;;
-  "🎨 dotfiles")
+  "   dotfiles")
     project_selection="code/git/personal/dotfiles"
     project_url="https://github.com/dybdeskarphet/dotfiles"
     launch
     ;;
-  "🔒 privacy-redirector")
+  "   privacy-redirector")
     project_selection="code/git/personal/privacy-redirector"
     project_url="https://github.com/dybdeskarphet/privacy-redirector"
     launch
     ;;
-  "🌈 mcfetch")
+  "   mcfetch")
     project_selection="code/git/personal/mcfetch"
     project_url="https://github.com/dybdeskarphet/mcfetch"
     code_ws=1
@@ -53,7 +76,16 @@ coding_workspaces() {
     browser_ws=2
     launch
     ;;
-  "🦀 learn rust")
+  "󱢺   shark")
+    project_selection="code/git/personal/shark"
+    project_url="https://github.com/dybdeskarphet/shark"
+    code_ws=1
+    terminal_ws=3
+    lazygit_ws=3
+    browser_ws=2
+    launch
+    ;;
+  "   learn rust")
     project_selection="code/git/learning/learn-rust"
     project_url="https://github.com/dybdeskarphet/learn-rust"
     extra_url="https://doc.rust-lang.org/stable/book/"
@@ -69,21 +101,86 @@ coding_workspaces() {
 }
 
 translation_workspace() {
-  bspc desktop -f 1 && alacrittynvim --working-directory="$HOME" -e /bin/zsh -c "nvim $HOME/doc/wiki $HOME/doc/notes/todo/translation/archwiki.md; zsh" &
+  hyprctl dispatch exec "[workspace 1] alacrittynvim --working-directory='${HOME}' -e /bin/zsh -c 'nvim ${$HOME}/doc/wiki ${HOME}/doc/notes/todo/translation/archwiki.md; zsh'" &
   sleep 0.3
-  bspc desktop -f 3 && zathura "$HOME/doc/book/cs/Bilişim Terimleri Sözlüğü (TSE).pdf" &
+  hyprctl dispatch exec "[workspace 3] zathura '${HOME}/doc/book/cs/Bilişim Terimleri Sözlüğü (TSE).pdf'" &
   sleep 1.0
-  bspc desktop -f 2 && alacritty -e zsh -c "fftor https://wiki.archlinux.org/title/User:Dybdeskarphet https://www.deepl.com/translator https://tureng.com/en/turkish-english" &
+  hyprctl dispatch exec "[workspace 2] alacritty -e zsh -c 'fftor https://wiki.archlinux.org/title/User:Dybdeskarphet https://www.deepl.com/translator https://tureng.com/en/turkish-english'" &
+}
+
+study_workspace() {
+  # Setting rules for opening applications in specific workspaces
+  project_rofi="$(echo -e "  matematik\n   ekonomi\n󰙨  fizik" | rofi -dmenu -p '  subject')"
+
+  launch() {
+    if [[ $note_ws != "" ]]; then
+      hyprctl dispatch exec "[workspace ${note_ws}] alacrittynvim --working-directory='${HOME}/${folder_selection}' -e /bin/zsh -c 'nvim; zsh'" &
+      sleep 0.3
+    fi
+
+    if [[ $obsidian_ws != "" ]]; then
+      hyprctl dispatch exec "[workspace ${obsidian_ws}] obsiopen uni"
+      sleep 1.5
+    fi
+
+    hyprctl dispatch exec "[workspace ${browser_ws}] zen-browser '${first_url}' ${second_url} https://chat.openai.com/" &
+    sleep 1.5
+
+    if [[ $anki_ws != "" ]]; then
+      hyprctl dispatch exec "[workspace ${anki_ws}] anki"
+      sleep 1.5
+    fi
+
+    if [[ $zathura_ws -ge 0 && $pdf_selection != "" ]]; then
+      hyprctl dispatch exec "[workspace ${zathura_ws}] zathura '${HOME}/${pdf_selection}'"
+      sleep 0.5
+    fi
+
+    hyprctl dispatch workspace $last_focus
+  }
+
+  case "$project_rofi" in
+  "  matematik")
+    folder_selection="doc/uni/matematik"
+    first_url="https://youtube.com/playlist?list=PLcNWqzWzYG2v5_R_uPyLRzGXSoYgjfd8C&si=QM50KjMRB2WAi2IX"
+    browser_ws=1
+    obsidian_ws=1
+    last_focus=1
+    launch
+    ;;
+  "󰙨  fizik")
+    folder_selection="doc/uni/fizik"
+    first_url="https://www.youtube.com/playlist?list=PLqNc_xpYGu778g0eFmqlEwD0W9lZeLaaw"
+    browser_ws=1
+    obsidian_ws=1
+    last_focus=1
+    launch
+    ;;
+  "   ekonomi")
+    folder_selection="doc/uni/ekonomi"
+    obsidian_ws=1
+    browser_ws=1
+    first_url="https://www.youtube.com/playlist?list=PL40PoTobr8ODwKlwCAM98P0z2KWcodmAM"
+    last_focus=1
+    launch
+    ;;
+  *)
+    exit 1
+    ;;
+  esac
 }
 
 case $selection in
-"👨🏻‍💻 coding")
+"    coding")
   coding_workspaces
   ;;
-"📜 translation")
+"󰗊    translation")
   translation_workspace
   ;;
-"🔠 language learning")
+"    language learning")
   language_learning_workspace
+  ;;
+"    studying")
+  study_workspace
   ;;
 esac

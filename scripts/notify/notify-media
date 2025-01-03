@@ -1,67 +1,88 @@
 #!/bin/bash
 
-notify_bright() {
-	dunstify -h int:value:$(xbacklight -getf | sed 's/[.].*//g') -u LOW -i $1 -r 64983 -t 3000 "backlight $(xbacklight -getf | sed 's/[.].*//g')%"
+dunstify_bl() {
+  current_level=$(xbacklight -get)
 
+  if [[ $current_level -ge 70 ]]; then
+    bl_icon="display-brightness-high-symbolic"
+  elif [[ $current_level -ge 40 ]]; then
+    bl_icon="display-brightness-medium-symbolic"
+  elif [[ $current_level -ge 20 ]]; then
+    bl_icon="display-brightness-low-symbolic"
+  else
+    bl_icon="display-brightness-off-symbolic"
+  fi
+
+  dunstify -a "Display" -h int:value:${current_level} -u LOW -i $bl_icon -r 64983 -t 3000 "backlight ${current_level}%"
 }
 
 dunstify_vol() {
-	dunstify -h int:value:$(pamixer --get-volume) -i $1 -r 92030 -t 3000 "volume $(pamixer --get-volume-human)"
+  current_volume=$(pamixer --get-volume)
+
+  if [[ $current_volume -gt 71 ]]; then
+    vol_icon="audio-volume-high"
+  elif [[ $current_volume -ge 30 ]]; then
+    vol_icon="audio-volume-medium"
+  else
+    vol_icon="audio-volume-low"
+  fi
+
+  dunstify -a "Media" -h int:value:${current_volume} -i $vol_icon -r 92030 -t 3000 "volume ${current_volume}%"
 }
 
 dunstify_mic() {
-	dunstify -i "$1" -r 92031 -t 3000 "$2"
+  dunstify -a "Media" -i "$1" -r 92031 -t 3000 "$2"
 }
 
 mic_toggle() {
-	CARD_INDEX=1
-	CONTROL_NAME='Capture'
+  CARD_INDEX=1
+  CONTROL_NAME='Capture'
 
-	amixer -c $CARD_INDEX sset $CONTROL_NAME toggle
+  amixer -c $CARD_INDEX sset $CONTROL_NAME toggle
 
-	# Get the updated status after toggling
-	mic_status=$(amixer -c $CARD_INDEX sget $CONTROL_NAME | grep -o "\[[a-z]*\]")
+  # Get the updated status after toggling
+  mic_status=$(amixer -c $CARD_INDEX sget $CONTROL_NAME | grep -o "\[[a-z]*\]")
 
-	# Display a notification based on the status change
-	if [[ $mic_status == *"[on]" ]]; then
-		dunstify_mic mic-unmuted "microphone is unmuted"
-	else
-		dunstify_mic mic-muted "microphone is muted"
-	fi
+  # Display a notification based on the status change
+  if [[ $mic_status == *"[on]" ]]; then
+    dunstify_mic microphone-sensitivity-high-symbolic "microphone is unmuted"
+  else
+    dunstify_mic microphone-sensitivity-muted-symbolic "microphone is muted"
+  fi
 }
 
 case $1 in
 volume)
-	case $2 in
-	up)
-		pamixer -i 5 && dunstify_vol audio-volume-high &
-		paplay /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga &
-		;;
-	down)
-		pamixer -d 5 && dunstify_vol audio-volume-low &
-		paplay /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga &
-		;;
-	full) pamixer --set-volume 100 && dunstify_vol audio-volume-high ;;
-	off) pamixer --set-volume 0 && dunstify_vol audio-volume-low ;;
-	toggle)
-		case $(pamixer --get-volume-human) in
-		muted) pamixer -t && dunstify_vol audio-volume-high ;;
-		*) pamixer -t && dunstify -h int:value:$(pamixer --get-volume) -i audio-volume-muted -r 92030 -t 3000 "muted" ;;
-		esac
-		;;
-	toggle-mic)
-		mic_toggle
-		;;
-	esac
-	;;
+  case $2 in
+  up)
+    pamixer -i 5 && dunstify_vol &
+    paplay /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga &
+    ;;
+  down)
+    pamixer -d 5 && dunstify_vol &
+    paplay /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga &
+    ;;
+  full) pamixer --set-volume 100 && dunstify_vol ;;
+  off) pamixer --set-volume 0 && dunstify_vol ;;
+  toggle)
+    case $(pamixer --get-volume-human) in
+    muted) pamixer -t && dunstify_vol ;;
+    *) pamixer -t && dunstify -a "Media" -h int:value:$(pamixer --get-volume) -i audio-volume-muted -r 92030 -t 3000 "muted" ;;
+    esac
+    ;;
+  toggle-mic)
+    mic_toggle
+    ;;
+  esac
+  ;;
 backlight)
-	case $2 in
-	down) xbacklight -dec 10 && notify_bright display-brightness-low ;;
-	up) xbacklight -inc 10 && notify_bright display-brightness-full ;;
-	full) xbacklight -set 100 -steps 10 && notify_bright display-brightness-full ;;
-	off) xbacklight -set 1 -steps 10 && notify_bright display-brightness-low ;;
-	*) notify_bright display-brightness-full ;;
-	esac
+  case $2 in
+  down) xbacklight -dec 10 && dunstify_bl ;;
+  up) xbacklight -inc 10 && dunstify_bl ;;
+  full) xbacklight -set 100 -steps 10 && dunstify_bl ;;
+  off) xbacklight -set 1 -steps 10 && dunstify_bl ;;
+  *) dunstify_bl ;;
+  esac
 
-	;;
+  ;;
 esac

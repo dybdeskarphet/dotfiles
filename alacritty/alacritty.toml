@@ -1,5 +1,27 @@
+[general]
+live_config_reload = true
+
+[window]
+decorations = "None"
+dynamic_padding = true
+dynamic_title = true
+opacity = 1.0
+startup_mode = "Windowed"
+resize_increments = false
+padding = { x = 20, y = 20 }
+
+[font]
+normal = { family = "monospace_font", style = "Regular" }
+bold = { family = "monospace_font", style = "Bold" }
+italic = { family = "monospace_font", style = "Italic" }
+bold_italic = { family = "monospace", style = "Bold Italic" }
+size = 10.0
+
 [colors]
 transparent_background_colors = false
+cursor = { cursor = "CellForeground", text = "CellBackground" }
+primary = { background = '0x0d0d0d', foreground = '0xd7d0c7' }
+selection = { background = "CellForeground", text = "CellBackground" }
 
 [colors.bright]
 black = '0x404040'
@@ -11,10 +33,6 @@ magenta = '0xa87cb5'
 cyan = '0x42717b'
 white = '0xdddddd'
 
-[colors.cursor]
-cursor = "CellForeground"
-text = "CellBackground"
-
 [colors.normal]
 black = '0x101010'
 red = '0xe84f4f'
@@ -25,129 +43,42 @@ magenta = '0xce98c0'
 cyan = '0x6d878d'
 white = '0xf2f2f2'
 
-[colors.primary]
-background = '0x0d0d0d'
-foreground = '0xd7d0c7'
+# [bell]
+# animation = "EaseOut"
+# duration = 500
+# color = "0x568f57"
+# command = { program = "paplay", args = [
+#   "/usr/share/sounds/freedesktop/stereo/complete.oga",
+# ] }
 
-[colors.selection]
-background = "CellForeground"
-text = "CellBackground"
+[selection]
+save_to_clipboard = false
+semantic_escape_chars = ",│`|:\"' ()[]{}<>\t"
 
 [cursor]
 blink_interval = 500
+style = { blinking = "On", shape = "Block" }
 
-[cursor.style]
-blinking = "On"
-shape = "Block"
+[mouse]
+hide_when_typing = false
+bindings = [{ mouse = "Right", mods = "Control", action = "Paste" }]
 
-[font]
-size = 10.0
-
-[font.bold]
-family = "monospace_font"
-style = "Bold"
-
-[font.bold_italic]
-family = "monospace"
-style = "Bold Italic"
-
-[font.italic]
-family = "monospace_font"
-style = "Italic"
-
-[font.normal]
-family = "monospace_font"
-style = "Regular"
-
-[[keyboard.bindings]]
-action = "Paste"
-key = "V"
-mods = "Control|Shift"
-
-[[keyboard.bindings]]
-action = "Copy"
-key = "C"
-mods = "Control|Shift"
-
-[[keyboard.bindings]]
-action = "PasteSelection"
-key = "Insert"
-mods = "Shift"
-
-[[keyboard.bindings]]
-action = "ResetFontSize"
-key = "Key0"
-mods = "Control"
-
-[[keyboard.bindings]]
-action = "IncreaseFontSize"
-key = "Equals"
-mods = "Control"
-
-[[keyboard.bindings]]
-action = "DecreaseFontSize"
-key = "Minus"
-mods = "Control"
-
-[[keyboard.bindings]]
-chars = "\u001Bb"
-key = "Left"
-mods = "Alt"
-
-[[keyboard.bindings]]
-chars = "\u001Bf"
-key = "Right"
-mods = "Alt"
-
-[[keyboard.bindings]]
-action = "Paste"
-key = "Paste"
-
-[[keyboard.bindings]]
-action = "Copy"
-key = "Copy"
-
-[[keyboard.bindings]]
-action = "ClearLogNotice"
-key = "L"
-mods = "Control"
-
-[[keyboard.bindings]]
-chars = "\f"
-key = "L"
-mods = "Control"
-
-[[keyboard.bindings]]
-action = "ScrollPageUp"
-key = "PageUp"
-mode = "~Alt"
-mods = "Shift"
-
-[[keyboard.bindings]]
-action = "ScrollPageDown"
-key = "PageDown"
-mode = "~Alt"
-mods = "Shift"
-
-[[keyboard.bindings]]
-action = "ScrollToTop"
-key = "Home"
-mode = "~Alt"
-mods = "Shift"
-
-[[keyboard.bindings]]
-action = "ScrollToBottom"
-key = "End"
-mode = "~Alt"
-mods = "Shift"
-
-[window]
-decorations = "None"
-dynamic_padding = true
-dynamic_title = true
-opacity = 1.0
-startup_mode = "Windowed"
-
-[window.padding]
-x = 20
-y = 20
+[keyboard]
+bindings = [
+  { key = "V", mods = "Control|Shift", action = "Paste" },
+  { key = "C", mods = "Control|Shift", action = "Copy" },
+  { key = "Insert", mods = "Shift", action = "PasteSelection" },
+  { key = "Key0", mods = "Control", action = "ResetFontSize" },
+  { key = "Equals", mods = "Control", action = "IncreaseFontSize" },
+  { key = "Minus", mods = "Control", action = "DecreaseFontSize" },
+  { key = "Left", mods = "Alt", chars = "\u001Bb" },
+  { key = "Right", mods = "Alt", chars = "\u001Bf" },
+  { key = "Paste", action = "Paste" },
+  { key = "Copy", action = "Copy" },
+  { key = "L", mods = "Control", action = "ClearLogNotice" },
+  { key = "L", mods = "Control", chars = "\f" },
+  { key = "PageUp", action = "ScrollPageUp", mode = "~Alt", mods = "Shift" },
+  { key = "PageDown", mode = "~Alt", mods = "Shift", action = "ScrollPageDown" },
+  { key = "Home", mode = "~Alt", mods = "Shift", action = "ScrollToTop" },
+  { key = "End", mode = "~Alt", mods = "Shift", action = "ScrollToBottom" },
+]

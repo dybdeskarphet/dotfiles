@@ -1,5 +1,0 @@
-super + m
-	dunstify --urgency=LOW -i mouse --replace=643 "fare moduna girildi." "fare modundan çıkmak için [x] tuşuna bas" && keym && dunstify -i mouse --urgency=LOW --replace=643 "fare modundan çıkıldı."
-
-super + h	
-	dunstify --urgency=LOW -i mouse --replace=643 "sağ tık!" "" && xdotool key Menu

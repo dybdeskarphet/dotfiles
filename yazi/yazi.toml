@@ -40,16 +40,19 @@ open = [
   { run = 'open "$@"', desc = "Open", orphan = true, for = "macos" },
   { run = 'start "" "%1"', orphan = true, desc = "Open", for = "windows" },
 ]
-img_open = [
-  { run = 'feh "$1"', desc = "Open image", orphan = true, for = "linux" },
+open_img = [
+  { run = 'feh --start-at "$1" .', desc = "Open image", orphan = true, for = "linux" },
   { run = 'open "$@"', desc = "Open image", orphan = true, for = "macos" },
   { run = 'start "" "%1"', orphan = true, desc = "Open image", for = "windows" },
 ]
-gimp_open = [
-  { run = 'devour gimp "$1"', desc = "Open image in GIMP", orphan = true, for = "linux" },
+open_gimp = [
+  { run = 'gimp "$1"', desc = "Open image in GIMP", orphan = true, for = "linux" },
 ]
-document_open = [
+open_document = [
   { run = 'zathura "$1"', desc = "Open document with Zathura", orphan = true, for = "linux" },
+]
+open_rnote = [
+  { run = 'rnote "$1"', desc = "Open document with Rnote", orphan = true, for = "linux" },
 ]
 reveal = [
   { run = 'xdg-open "$(dirname "$1")"', desc = "Reveal", for = "linux" },
@@ -58,8 +61,8 @@ reveal = [
   { run = '''exiftool "$1"; echo "Press enter to exit"; read _''', block = true, desc = "Show EXIF", for = "unix" },
 ]
 extract = [
-  { run = 'ya pub extract --list "$@"', desc = "Extract here", for = "unix" },
-  { run = 'ya pub extract --list %*', desc = "Extract here", for = "windows" },
+  { run = 'ouch d -y "%*"', desc = "Extract here with ouch", for = "windows" },
+  { run = 'ouch d -y "$@"', desc = "Extract here with ouch", for = "unix" },
 ]
 play = [
   { run = 'mpv --force-window "$@"', orphan = true, for = "unix" },
@@ -80,14 +83,19 @@ rules = [
     "edit",
     "reveal",
   ] },
+  # Text
+  { mime = "application/x-setupscript", use = [
+    "edit",
+    "reveal",
+  ] },
   # GIMP Image
   { mime = "image/x-xcf", use = [
-    "gimp_open",
+    "open_gimp",
     "reveal",
   ] },
   # Image
   { mime = "image/*", use = [
-    "img_open",
+    "open_img",
     "reveal",
   ] },
   # Media
@@ -97,6 +105,10 @@ rules = [
   ] },
   # Archive
   { mime = "application/{,g}zip", use = [
+    "extract",
+    "reveal",
+  ] },
+  { name = "*.zip", use = [
     "extract",
     "reveal",
   ] },
@@ -115,12 +127,17 @@ rules = [
   ] },
   # Documents
   { mime = "application/{pdf,epub+zip}", use = [
-    "document_open",
+    "open_document",
     "reveal",
   ] },
   # Empty file
   { mime = "inode/x-empty", use = [
     "edit",
+    "reveal",
+  ] },
+  # Rnote
+  { name = "*.rnote", use = [
+    "open_rnote",
     "reveal",
   ] },
   # Fallback
@@ -145,9 +162,25 @@ prepend_fetchers = [
   { id = "git", name = "*/", run = "git" },
 ]
 
+prepend_previewers = [{ mime = "application/subrip", run = "mediainfo" }]
+
 fetchers = [
   # Mimetype
   { id = "mime", name = "*", run = "mime", if = "!mime", prio = "high" },
+]
+
+spotters = [
+  { name = "*/", run = "folder" },
+  # Code
+  { mime = "text/*", run = "code" },
+  { mime = "*/{xml,javascript,wine-extension-ini}", run = "code" },
+  # Image
+  { mime = "image/{avif,hei?,jxl,svg+xml}", run = "magick" },
+  { mime = "image/*", run = "image" },
+  # Video
+  { mime = "video/*", run = "video" },
+  # Fallback
+  { name = "*", run = "file" },
 ]
 
 preloaders = [
@@ -162,13 +195,14 @@ preloaders = [
   { mime = "font/*", run = "font" },
   { mime = "application/vnd.ms-opentype", run = "font" },
 ]
+
 previewers = [
   { name = "*/", run = "folder", sync = true },
   # Code
   { mime = "text/*", run = "code" },
   { mime = "*/{xml,javascript,x-wine-extension-ini}", run = "code" },
   # JSON
-  { mime = "application/{json,x-ndjson}", run = "json" },
+  { mime = "application/{json,x-ndjson}", run = "code" },
   # Image
   { mime = "image/{avif,hei?,jxl,svg+xml}", run = "magick" },
   { mime = "image/*", run = "image" },
@@ -179,14 +213,20 @@ previewers = [
   { mime = "application/epub+zip", run = "epub-preview" },
   # Archive
   { mime = "application/{,g}zip", run = "ouch" },
+  { name = "*.zip", run = "ouch" },
+  { name = "*.gzip", run = "ouch" },
   { mime = "application/x-{tar,bzip*,7z-compressed,xz,rar,iso9660-image}", run = "ouch" },
+  # Virtual Disk / Disk Image
+  { mime = "application/{iso9660-image,qemu-disk,ms-wim,apple-diskimage}", run = "ouch" },
+  { mime = "application/virtualbox-{vhd,vhdx}", run = "ouch" },
+  { name = "*.{img,fat,ext,ext2,ext3,ext4,squashfs,ntfs,hfs,hfsx}", run = "ouch" },
   # Font
   { mime = "font/*", run = "font" },
   { mime = "application/vnd.ms-opentype", run = "font" },
   # Empty file
-  { mime = "inode/x-empty", run = "empty" },
+  { mime = "inode/{,x-}empty", run = "empty" },
   # Fallback
-  { name = "*", run = "hexyl" },
+  { name = "*", run = "file" },
 ]
 
 [input]
@@ -198,7 +238,7 @@ cd_origin = "top-center"
 cd_offset = [0, 2, 50, 3]
 
 # create
-create_title = "Create:"
+create_title = ["Create:", "Create (dir):"]
 create_origin = "top-center"
 create_offset = [0, 2, 50, 3]
 
@@ -250,7 +290,7 @@ quit_content = "The following task is still running, are you sure you want to qu
 quit_origin = "center"
 quit_offset = [0, 0, 50, 15]
 
-[select]
+[pick]
 open_title = "Open with:"
 open_origin = "hovered"
 open_offset = [0, 1, 50, 7]

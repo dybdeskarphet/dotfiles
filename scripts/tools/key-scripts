@@ -1,0 +1,116 @@
+#!/bin/bash
+
+script_name="$(basename "$0")"
+
+reload_menu() {
+  reload_selection=$(echo -e "󱂬  reload hyprland\n󰎟  reload dunst\n󰸉  reload hyprpaper\n  reload waybar" | rofi -dmenu -p "󰑓  reload")
+
+  case $reload_selection in
+  "󱂬  reload hyprland")
+    hyprctl reload
+    dunstify -a "Key Scripts" -i reload --urgency=LOW --replace=876 "hyprland yenilendi" "pencere yöneticisi yenilendi."
+    ;;
+  "  reload waybar")
+    pkill waybar >/dev/null
+    sleep 0.5
+    waybar >"$HOME"/.cache/logs/autostart/waybar.log 2>&1 &
+    dunstify -a "Key Scripts" -i reload --urgency=LOW --replace=867 "waybar yenilendi!" "sistem çubuğu yapılandırma dosyası yenilendi."
+    ;;
+  "󰎟  reload dunst")
+    pkill dunst
+    sleep 0.5
+    dunst -conf "$HOME"/.config/dunst/config.ini -verbosity debug >"$HOME"/.cache/logs/autostart/dunst.log 2>&1 &
+    sleep 1.5
+    dunstify -a "Key Scripts" -i reload --urgency=LOW --replace=877 "dunst yenilendi!" "bildirim servisi yapılandırma dosyası yenilendi."
+    ;;
+  "󰸉  reload hyprpaper")
+    hyprctl hyprpaper preload "~/img/.wallpaper1"
+    hyprctl hyprpaper preload "~/img/.wallpaper2"
+    hyprctl hyprpaper wallpaper "HDMI-A-1, ~/img/.wallpaper2"
+    hyprctl hyprpaper wallpaper "eDP-1, ~/img/.wallpaper1"
+    dunstify -a "Key Scripts" -i photo --urgency=LOW --replace=870 "duvar kağıdı yenilendi!"
+    ;;
+  esac
+}
+
+tablet_mode_menu() {
+  tablet_selection=$(echo -e "󱦹  artist mode\n󰇀  absolute mode" | rofi -dmenu -p "󰓶   graphic tablet mode")
+  case $tablet_selection in
+  "󱦹  artist mode") otd applypreset artist_mode ;;
+  "󰇀  absolute mode") otd applypreset absolute_mode ;;
+  esac
+
+}
+
+quick_settings() {
+  selection=$(echo -e "󰀻   workspaces\n󰑓   reload\n   modes\n󰓶   graphic tablet mode" | rofi -dmenu -p "  quick settings")
+  case $selection in
+  "󰀻   workspaces") workspaces ;;
+  "󰑓   reload") reload_menu ;;
+  "   modes") modes ;;
+  "󰓶   graphic tablet mode") tablet_mode_menu ;;
+  esac
+
+}
+
+do_not_disturb_toggle() {
+  dunstctl set-paused toggle
+
+  if [[ "$(dunstctl is-paused)" = "false" ]]; then
+    dunstify -a "Key Scripts" -i stock_bell --urgency=LOW --replace=341 "do not disturb mode is off!" "you can see the notifications now"
+  fi
+}
+
+print_usage() {
+  printf '\n%b\n' "  \e[1mSCRIPTS FOR SHORTCUT KEYS\e[0m"
+  printf '%b\n' "  $script_name {-q --settings}                                       open quick settings menu"
+  printf '%b\n' "  $script_name {-t --waybar-toggle}                                 toggle waybar"
+  printf '%b\n\n' "  $script_name {-d --do-not-disturb}                                 toggle dnd"
+  exit 1
+}
+
+waybar_toggle() {
+  if [ ! -f "/tmp/waybar_toggle.dat" ]; then
+    waybar_toggle=1
+    echo "${waybar_toggle}" >/tmp/waybar_toggle.dat
+  else
+    waybar_toggle=$(cat /tmp/waybar_toggle.dat)
+  fi
+
+  if [[ $waybar_toggle -eq 1 ]]; then
+    pkill -SIGUSR1 waybar
+    waybar_toggle=0
+  else
+    pkill -SIGUSR1 waybar
+    waybar_toggle=1
+  fi
+
+  echo "${waybar_toggle}" >/tmp/waybar_toggle.dat
+}
+
+power_menu() {
+  selection=$(echo -e "⏻   power off\n󰜉   restart\n⏾   sleep\n󰒲   hibernate" | rofi -dmenu -p "⏻   power menu")
+
+  case $selection in
+  "⏻   power off")
+    shutdown now
+    ;;
+  "⏾   sleep")
+    systemctl suspend
+    ;;
+  "󰒲   hibernate")
+    systemctl hibernate
+    ;;
+  "󰜉   restart")
+    reboot
+    ;;
+  esac
+}
+
+case $1 in
+--settings | -q) quick_settings ;;
+--waybar-toggle | -t) waybar_toggle ;;
+--do-not-disturb | -d) do_not_disturb_toggle ;;
+--power-menu | -p) power_menu ;;
+*) print_usage ;;
+esac

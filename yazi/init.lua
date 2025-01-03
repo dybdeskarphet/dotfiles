@@ -1,11 +1,20 @@
 -- ~/.config/yazi/init.lua
+-- relative-motions {{{
 require("relative-motions"):setup({
     show_numbers = "relative_absolute",
     show_motion = false
 })
+-- }}}
 
+-- Git Integration {{{
 require("git"):setup()
+-- }}}
 
+-- Folder-specific rules {{{
+require("folder-rules"):setup()
+-- }}}
+
+-- Symlink Status
 Status = {
     LEFT = 0,
     RIGHT = 1,
@@ -17,22 +26,24 @@ Status = {
         {"name", id = 3, order = 3000}
     },
     _right = {
-        {"permissions", id = 4, order = 1000},
-        {"percentage", id = 5, order = 2000}, {"position", id = 6, order = 3000}
+        {"perm", id = 4, order = 1000}, {"percent", id = 5, order = 2000},
+        {"position", id = 6, order = 3000}
     }
 }
 
 function Status:new(area, tab)
-    return setmetatable({_area = area, _tab = tab}, {__index = self})
+    return setmetatable({_area = area, _tab = tab, _current = tab.current},
+                        {__index = self})
 end
 
 function Status:style()
+    local m = THEME.mode
     if self._tab.mode.is_select then
-        return THEME.status.mode_select
+        return {main = m.select_main, alt = m.select_alt}
     elseif self._tab.mode.is_unset then
-        return THEME.status.mode_unset
+        return {main = m.unset_main, alt = m.unset_alt}
     else
-        return THEME.status.mode_normal
+        return {main = m.normal_main, alt = m.normal_alt}
     end
 end
 
@@ -41,64 +52,62 @@ function Status:mode()
 
     local style = self:style()
     return ui.Line {
-        ui.Span(THEME.status.separator_open):fg(style.bg),
-        ui.Span(" " .. mode .. " "):style(style),
-        ui.Span(THEME.status.separator_close):fg(style.bg):bg(THEME.status
-                                                                  .separator_style
-                                                                  .fg)
+        ui.Span(THEME.status.separator_open):fg(style.main.bg),
+        ui.Span(" " .. mode .. " "):style(style.main),
+        ui.Span(THEME.status.separator_close):fg(style.main.bg):bg(style.alt.bg)
     }
 end
 
 function Status:size()
-    local h = self._tab.current.hovered
-    if not h then return ui.Line {} end
+    local h = self._current.hovered
+    if not h then return "" end
 
     local style = self:style()
     return ui.Line {
-        ui.Span(" " .. ya.readable_size(h:size() or h.cha.length) .. " "):fg(
-            style.bg):bg(THEME.status.separator_style.bg),
-        ui.Span(THEME.status.separator_close):fg(THEME.status.separator_style.fg)
+        ui.Span(" " .. ya.readable_size(h:size() or h.cha.len) .. " "):style(
+            style.alt), ui.Span(THEME.status.separator_close):fg(style.alt.bg)
     }
 end
 
 function Status:name()
-    local h = self._tab.current.hovered
-    if not h then return ui.Line {} end
+    local h = self._current.hovered
+    if not h then return "" end
 
     local linked = ""
-    if h.link_to ~= nil then linked = " -> " .. tostring(h.link_to) end
-    return ui.Line(" " .. h.name .. linked)
+    if h.link_to ~= nil then linked = "  " .. tostring(h.link_to) end
+
+    return " " .. h.name:gsub("\r", "?", 1) .. linked
 end
 
-function Status:permissions()
-    local h = self._tab.current.hovered
-    if not h then return ui.Line {} end
+function Status:perm()
+    local h = self._current.hovered
+    if not h then return "" end
 
-    local perm = h.cha:permissions()
-    if not perm then return ui.Line {} end
+    local perm = h.cha:perm()
+    if not perm then return "" end
 
     local spans = {}
     for i = 1, #perm do
         local c = perm:sub(i, i)
-        local style = THEME.status.permissions_t
+        local style = THEME.status.perm_type
         if c == "-" or c == "?" then
-            style = THEME.status.permissions_s
+            style = THEME.status.perm_sep
         elseif c == "r" then
-            style = THEME.status.permissions_r
+            style = THEME.status.perm_read
         elseif c == "w" then
-            style = THEME.status.permissions_w
+            style = THEME.status.perm_write
         elseif c == "x" or c == "s" or c == "S" or c == "t" or c == "T" then
-            style = THEME.status.permissions_x
+            style = THEME.status.perm_exec
         end
         spans[i] = ui.Span(c):style(style)
     end
     return ui.Line(spans)
 end
 
-function Status:percentage()
+function Status:percent()
     local percent = 0
-    local cursor = self._tab.current.cursor
-    local length = #self._tab.current.files
+    local cursor = self._current.cursor
+    local length = #self._current.files
     if cursor ~= 0 and length ~= 0 then
         percent = math.floor((cursor + 1) * 100 / length)
     end
@@ -113,33 +122,36 @@ function Status:percentage()
 
     local style = self:style()
     return ui.Line {
-        ui.Span(" " .. THEME.status.separator_open):fg(THEME.status
-                                                           .separator_style.fg),
-        ui.Span(percent):fg(style.bg):bg(THEME.status.separator_style.bg)
+        ui.Span(" " .. THEME.status.separator_open):fg(style.alt.bg),
+        ui.Span(percent):style(style.alt)
     }
 end
 
 function Status:position()
-    local cursor = self._tab.current.cursor
-    local length = #self._tab.current.files
+    local cursor = self._current.cursor
+    local length = #self._current.files
 
     local style = self:style()
     return ui.Line {
-        ui.Span(THEME.status.separator_open):fg(style.bg):bg(THEME.status
-                                                                 .separator_style
-                                                                 .fg),
-        ui.Span(string.format(" %2d/%-2d ", cursor + 1, length)):style(style),
-        ui.Span(THEME.status.separator_close):fg(style.bg)
+        ui.Span(THEME.status.separator_open):fg(style.main.bg):bg(style.alt.bg),
+        ui.Span(
+            string.format(" %2d/%-2d ", math.min(cursor + 1, length), length)):style(
+            style.main), ui.Span(THEME.status.separator_close):fg(style.main.bg)
     }
 end
 
-function Status:render()
-    local left = self:children_render(self.LEFT)
-    local right = self:children_render(self.RIGHT)
+function Status:reflow() return {self} end
+
+function Status:redraw()
+    local left = self:children_redraw(self.LEFT)
+
+    local right = self:children_redraw(self.RIGHT)
+    local right_width = right:width()
+
     return {
-        ui.Paragraph(self._area, {left}),
-        ui.Paragraph(self._area, {right}):align(ui.Paragraph.RIGHT),
-        table.unpack(Progress:render(self._area, right:width()))
+        ui.Text(left):area(self._area),
+        ui.Text(right):area(self._area):align(ui.Text.RIGHT),
+        table.unpack(ya.redraw_with(Progress:new(self._area, right_width)))
     }
 end
 
@@ -171,7 +183,7 @@ function Status:children_remove(id, side)
     end
 end
 
-function Status:children_render(side)
+function Status:children_redraw(side)
     local lines = {}
     for _, c in ipairs(side == self.RIGHT and self._right or self._left) do
         lines[#lines + 1] =
@@ -179,3 +191,16 @@ function Status:children_render(side)
     end
     return ui.Line(lines)
 end
+
+-- Add file owner and group to Status bar
+Status:children_add(function()
+    local h = cx.active.current.hovered
+    if h == nil or ya.target_family() ~= "unix" then return "" end
+
+    return ui.Line {
+        ui.Span(ya.user_name(h.cha.uid) or tostring(h.cha.uid)):fg("green"),
+        ":",
+        ui.Span(ya.group_name(h.cha.gid) or tostring(h.cha.gid)):fg("green"),
+        " "
+    }
+end, 500, Status.RIGHT)

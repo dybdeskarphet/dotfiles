@@ -1,0 +1,18 @@
+* {
+    font:   "proportional_font 12";
+
+    bg0:     #0d0d0d;
+    bg1:     #7E7E7E80;
+    bg2:     #6aaf6c;
+
+    fg0:     #808080;
+    fg1:     #FFFFFF;
+    fg2:     #FFFFFF80;
+
+    background-color:   transparent;
+    text-color:         @fg0;
+
+    margin:     0;
+    padding:    0;
+    spacing:    0;
+}
