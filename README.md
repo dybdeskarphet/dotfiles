@@ -1,6 +1,6 @@
 # 🎨 Dotfiles
 
-This repository contains my personal dotfiles for configuring various programs and tools on my Arch Linux system.
+This repository contains my personal dotfiles for configuring various programs and tools on my Arch Linux system. This branch contains my `hyprland` setup, for my old `bspwm` setup, [click here](https://github.com/dybdeskarphet/dotfiles/tree/bspwm).
 
 ## Programs and Tools
 
