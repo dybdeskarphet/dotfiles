@@ -16,7 +16,7 @@ This repository contains my personal dotfiles for configuring various programs a
 
 ## Screenshots
 
-<img src="ss1.png" alt="Desktop screenshot" width="384"> <img src="ss2.png" alt="Terminal screenshot" width="384">
+<img src="screenshot1.png" width="384"> <img src="screenshot2.png" width="384">
 
 ## Installation
 
