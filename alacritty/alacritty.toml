@@ -5,7 +5,7 @@ live_config_reload = true
 decorations = "None"
 dynamic_padding = true
 dynamic_title = true
-opacity = 1.0
+opacity = 0.9
 startup_mode = "Windowed"
 resize_increments = false
 padding = { x = 20, y = 20 }
@@ -20,13 +20,13 @@ size = 10.0
 [colors]
 transparent_background_colors = false
 cursor = { cursor = "CellForeground", text = "CellBackground" }
-primary = { background = '0x0d0d0d', foreground = '0xd7d0c7' }
+primary = { background = '0x0c0f0a', foreground = '0xd7d0c7' }
 selection = { background = "CellForeground", text = "CellBackground" }
 
 [colors.bright]
 black = '0x404040'
 red = '0xd23d3d'
-green = '0x83c984'
+green = '0xb9d7a8'
 yellow = '0xf39d21'
 blue = '0x4e9fb1'
 magenta = '0xa87cb5'
@@ -36,7 +36,7 @@ white = '0xdddddd'
 [colors.normal]
 black = '0x101010'
 red = '0xe84f4f'
-green = '0x9dd49e'
+green = '0xd7e8cd'
 yellow = '0xe1aa5d'
 blue = '0x7dc1cf'
 magenta = '0xce98c0'

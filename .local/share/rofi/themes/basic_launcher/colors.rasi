@@ -6,11 +6,18 @@
  *******************************************************************************/
 
 * {
-    font:   "proportional_font Bold 13";
-    windowbg:    #0d0d0d;
+    borderfg:   #272b2580;
+    colorbg:    #bbcbb1;
+    colorborderfg:    #899881;
     entrybg:    #3D3D3D;
-    colorbg:    #9dd49e;
-    textfg:    #E6E6E6;
     fg1:    #FFFFFF;
+    fg2: #e3efdc;
     fg4:    #0d0d0d;
+    font:   "proportional_font SemiBold 13";
+    semitransparentcolorbg:    #4a5445cc;
+    semitransparentcolorborderfg:    #899881cc;
+    textfg:    #f2f5eb;
+    transparentcolorbg:    #bbcbb14d;
+    transparentcolorborderfg:    #8998814d;
+    windowbg:    #0c0f0acc;
 }

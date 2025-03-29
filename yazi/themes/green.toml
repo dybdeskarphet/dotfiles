@@ -257,6 +257,8 @@ dirs = [
   { name = 'img', text = '' },
   { name = 'mp3', text = '' },
   { name = 'vid', text = '' },
+  { name = 'pub', text = "" },
+  { name = "desk", text = "" },
 ]
 
 files = [

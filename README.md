@@ -13,10 +13,15 @@ This repository contains my personal dotfiles for configuring various programs a
 - **PDF Viewer**: [Zathura](https://pwmt.org/projects/zathura/)
 - **Shell**: [Zsh](https://www.zsh.org/)
 - **File Manager**: [Yazi](https://github.com/sxyazi/yazi)
+- **OSD:** [syshud](https://github.com/System64fumo/syshud)
 
 ## Screenshots
 
-<img src="screenshot1.png" width="384"> <img src="screenshot2.png" width="384">
+<img src="ss1.png" width="384"> <img src="ss2.png" width="384">
+
+---
+
+<img src="ss_lock.png" width="384">
 
 ## Installation
 
@@ -32,7 +37,7 @@ This repository contains my personal dotfiles for configuring various programs a
 
 ## Additional Notes
 
-- [Spicetify](https://spicetify.app/) theme is [Bloom](https://github.com/nimsandu/spicetify-bloom).
+- [Spicetify](https://spicetify.app/) theme is [Blackout](https://github.com/spicetify/spicetify-themes/tree/master/Blackout).
 - Custom scripts are located in the `scripts` directory and categorized for specific purposes such as notifications, workspace management, and tools.
 - Shaders for Hyprland are available in the `shaders` folder.
 - Fonts used:

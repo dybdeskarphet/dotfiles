@@ -35,13 +35,18 @@ edit = [
   { run = 'code %*', orphan = true, desc = "code", for = "windows" },
   { run = 'code -w %*', block = true, desc = "code (block)", for = "windows" },
 ]
+edit_vscode = [
+  { run = 'code "$@"', desc = "$EDITOR", block = true, for = "unix" },
+  { run = 'code %*', orphan = true, desc = "code", for = "windows" },
+  { run = 'code -w %*', block = true, desc = "code (block)", for = "windows" },
+]
 open = [
   { run = 'xdg-open "$1"', desc = "Open", orphan = true, for = "linux" },
   { run = 'open "$@"', desc = "Open", orphan = true, for = "macos" },
   { run = 'start "" "%1"', orphan = true, desc = "Open", for = "windows" },
 ]
 open_img = [
-  { run = 'feh --start-at "$1" .', desc = "Open image", orphan = true, for = "linux" },
+  { run = 'nsxiv-rifle "$1"', desc = "Open image", orphan = true, for = "linux" },
   { run = 'open "$@"', desc = "Open image", orphan = true, for = "macos" },
   { run = 'start "" "%1"', orphan = true, desc = "Open image", for = "windows" },
 ]
@@ -63,6 +68,10 @@ reveal = [
 extract = [
   { run = 'ouch d -y "%*"', desc = "Extract here with ouch", for = "windows" },
   { run = 'ouch d -y "$@"', desc = "Extract here with ouch", for = "unix" },
+]
+extract_rar = [
+  { run = 'unar -d "%*"', desc = "Extract here with unrar", for = "windows" },
+  { run = 'unar -d "$@"', desc = "Extract here with unrar", for = "unix" },
 ]
 play = [
   { run = 'mpv --force-window "$@"', orphan = true, for = "unix" },
@@ -88,6 +97,10 @@ rules = [
     "edit",
     "reveal",
   ] },
+  { name = "*.ipynb", use = [
+    "edit_vscode",
+    "reveal",
+  ] },
   # GIMP Image
   { mime = "image/x-xcf", use = [
     "open_gimp",
@@ -104,6 +117,10 @@ rules = [
     "reveal",
   ] },
   # Archive
+  { name = "*.rar", use = [
+    "extract_rar",
+    "reveal",
+  ] },
   { mime = "application/{,g}zip", use = [
     "extract",
     "reveal",
@@ -112,7 +129,7 @@ rules = [
     "extract",
     "reveal",
   ] },
-  { mime = "application/x-{tar,bzip*,7z-compressed,xz,rar}", use = [
+  { mime = "application/x-{tar,bzip*,7z-compressed,xz}", use = [
     "extract",
     "reveal",
   ] },
@@ -214,6 +231,7 @@ previewers = [
   # Archive
   { mime = "application/{,g}zip", run = "ouch" },
   { name = "*.zip", run = "ouch" },
+  { name = "*.rar", run = "ouch" },
   { name = "*.gzip", run = "ouch" },
   { mime = "application/x-{tar,bzip*,7z-compressed,xz,rar,iso9660-image}", run = "ouch" },
   # Virtual Disk / Disk Image

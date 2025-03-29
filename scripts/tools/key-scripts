@@ -3,7 +3,7 @@
 script_name="$(basename "$0")"
 
 reload_menu() {
-  reload_selection=$(echo -e "󱂬  reload hyprland\n󰎟  reload dunst\n󰸉  reload hyprpaper\n  reload waybar" | rofi -dmenu -p "󰑓  reload")
+  reload_selection=$(echo -e "󱂬  reload hyprland\n󰎟  reload dunst\n󰸉  reload hyprpaper\n  reload waybar" | rofi -dmenu -p "󰑓   reload")
 
   case $reload_selection in
   "󱂬  reload hyprland")
@@ -24,10 +24,7 @@ reload_menu() {
     dunstify -a "Key Scripts" -i reload --urgency=LOW --replace=877 "dunst yenilendi!" "bildirim servisi yapılandırma dosyası yenilendi."
     ;;
   "󰸉  reload hyprpaper")
-    hyprctl hyprpaper preload "~/img/.wallpaper1"
-    hyprctl hyprpaper preload "~/img/.wallpaper2"
-    hyprctl hyprpaper wallpaper "HDMI-A-1, ~/img/.wallpaper2"
-    hyprctl hyprpaper wallpaper "eDP-1, ~/img/.wallpaper1"
+    pkill hyprpaper && hyprpaper
     dunstify -a "Key Scripts" -i photo --urgency=LOW --replace=870 "duvar kağıdı yenilendi!"
     ;;
   esac
@@ -43,21 +40,23 @@ tablet_mode_menu() {
 }
 
 quick_settings() {
-  selection=$(echo -e "󰀻   workspaces\n󰑓   reload\n   modes\n󰓶   graphic tablet mode" | rofi -dmenu -p "  quick settings")
+  selection=$(echo -e "󰀻   workspaces\n󰑓   reload\n   modes\n󰓶   graphic tablet mode\n󰍃   log out" | rofi -dmenu -p "   quick settings")
   case $selection in
   "󰀻   workspaces") workspaces ;;
   "󰑓   reload") reload_menu ;;
   "   modes") modes ;;
   "󰓶   graphic tablet mode") tablet_mode_menu ;;
+  "󰍃   log out") hyprctl dispatch exit ;;
   esac
 
 }
 
 do_not_disturb_toggle() {
   dunstctl set-paused toggle
+  pkill -RTMIN+4 waybar
 
   if [[ "$(dunstctl is-paused)" = "false" ]]; then
-    dunstify -a "Key Scripts" -i stock_bell --urgency=LOW --replace=341 "do not disturb mode is off!" "you can see the notifications now"
+    dunstify -a "Key Scripts" -i stock_bell --urgency=LOW --replace=341 "do not disturb mode is off!" "you can see the notifications now."
   fi
 }
 
@@ -107,10 +106,21 @@ power_menu() {
   esac
 }
 
+toggle_caps2esc() {
+  if hyprctl getoption input:kb_options | grep "caps:swapescape"; then
+    hyprctl keyword input:kb_options "altwin:swap_lalt_lwin"
+    dunstify -a "Key Scripts" -i input-keyboard --urgency=LOW --replace=1294 "caps lock ve esc tuşları kendi yerine getirildi."
+  else
+    hyprctl keyword input:kb_options "caps:swapescape, altwin:swap_lalt_lwin"
+    dunstify -a "Key Scripts" -i input-keyboard --urgency=LOW --replace=1294 "esc, caps lock tuşu ile değiştirildi."
+  fi
+}
+
 case $1 in
 --settings | -q) quick_settings ;;
 --waybar-toggle | -t) waybar_toggle ;;
 --do-not-disturb | -d) do_not_disturb_toggle ;;
 --power-menu | -p) power_menu ;;
+--toggle-caps2esc | -c) toggle_caps2esc ;;
 *) print_usage ;;
 esac

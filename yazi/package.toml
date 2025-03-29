@@ -1,5 +1,57 @@
-[plugin]
-deps = [{ use = "dedukun/relative-motions", rev = "df97039" }, { use = "lpnh/fg", rev = "9bba743" }, { use = "yazi-rs/plugins:git", rev = "7afba3a" }, { use = "Reledia/hexyl", rev = "39d3d4e" }, { use = "AnirudhG07/rich-preview", rev = "8be4d27" }, { use = "yazi-rs/plugins:max-preview", rev = "7afba3a" }, { use = "Reledia/glow", rev = "c2ed51e" }, { use = "boydaihungst/mediainfo", rev = "ddfd5ec" }]
+[[plugin.deps]]
+use = "dedukun/relative-motions"
+rev = "8103065"
+hash = "9f13f0740fa3a0c18e47ec6fb62ddfaa"
+
+[[plugin.deps]]
+use = "lpnh/fg"
+rev = "92edf0b"
+hash = "b0edc5e9b7f44b2d3303e74f785d0bc9"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:git"
+rev = "79193b3"
+hash = "e0d2c8d7e7afe5b82270367098d1a821"
+
+[[plugin.deps]]
+use = "Reledia/hexyl"
+rev = "228a9ef"
+hash = "cdc65cfe4e60e1bf5afe5769d074fa9c"
+
+[[plugin.deps]]
+use = "AnirudhG07/rich-preview"
+rev = "2559e5f"
+hash = "c9a3d0731e7d7340e2c6d6126b1f3aa3"
+
+[[plugin.deps]]
+use = "Reledia/glow"
+rev = "c76bf4f"
+hash = "a6b78bf9af5390e3a85a6951fbb7b93"
+
+[[plugin.deps]]
+use = "boydaihungst/mediainfo"
+rev = "447fe95"
+hash = "dcaebc8bc261206f6b59e2c67464af5"
+
+[[plugin.deps]]
+use = "TD-Sky/sudo"
+rev = "af70636"
+hash = "a94dcbe9266512806c677138e8591ddb"
+
+[[plugin.deps]]
+use = "kirasok/epub-preview"
+rev = "521feb1"
+hash = "9aed469134b5c89fc4014ce278307ae3"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:chmod"
+rev = "79193b3"
+hash = "2f1053f89d1a301a648ab181d0948e38"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:toggle-pane"
+rev = "2730199"
+hash = "5c9dda1a587b8f5b6f63e3d5375bda88"
 
 [flavor]
 deps = []

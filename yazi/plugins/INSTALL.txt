@@ -1,0 +1,17 @@
+Install these plugins for yazi to work properly with my config: 
+
+chmod.yazi
+epub-preview.yazi
+epub.yazi
+fg.yazi
+folder-rules.yazi
+git.yazi
+glow.yazi
+hexyl.yazi
+mediainfo.yazi
+ouch.yazi
+relative-motions.yazi
+rich-preview.yazi
+smart-enter.yazi
+sudo.yazi
+toggle-pane.yazi

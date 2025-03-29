@@ -9,7 +9,7 @@ sync_icon() {
   if systemctl is-active --quiet backupDrive.service; then
     # uncomment this if you want to show it as a percentage
     # echo "%{F$accent}󰘿  %{F$foreground}$percentage"
-    echo "󰘿  <span foreground=\"#ffffff\">${current:=0}</span> <span foreground=\"#6fd07c\">/</span> <span foreground=\"#ffffff\">${total}</span>"
+    echo "󰘿  <span foreground=\"#f2f5eb\">${current:=0}</span> <span foreground=\"#d7e8cd\">/</span> <span foreground=\"#f2f5eb\">${total}</span>"
   elif [[ -f /tmp/not-recognized.backup ]]; then
     echo "󰅤"
   else
@@ -23,7 +23,7 @@ mic_icon() {
   mic_status=$(amixer -c $CARD_INDEX sget $CONTROL_NAME | grep -o "\[[a-z]*\]")
 
   if [[ $mic_status == *"[off]" ]]; then
-    echo "%{B#$accent}%{F#000000}  󰍭  %{B- F-}%{O-9}"
+    echo "󰍭"
   else
     echo
   fi
@@ -31,30 +31,40 @@ mic_icon() {
 
 do_not_disturb() {
   if [[ "$(dunstctl is-paused)" = "true" ]]; then
-    echo "󰂛"
+    printf "󰂛\nPress Ctrl+Alt+H"
   else
     echo ""
   fi
 }
 
 check_updates() {
-  if ! updates_arch=$(checkupdates 2>/dev/null | wc -l); then
-    updates_arch=0
-  fi
+  updates_arch=0
+  updates_aur=0
 
-  if ! updates_aur=$(paru -Qum 2>/dev/null | wc -l); then
-    # if ! updates_aur=$(paru -Qum 2> /dev/null | wc -l); then
-    # if ! updates_aur=$(cower -u 2> /dev/null | wc -l); then
-    # if ! updates_aur=$(trizen -Su --aur --quiet | wc -l); then
-    # if ! updates_aur=$(pikaur -Qua 2> /dev/null | wc -l); then
-    # if ! updates_aur=$(rua upgrade --printonly 2> /dev/null | wc -l); then
-    updates_aur=0
+  while true; do
+    if command -v checkupdates &>/dev/null; then
+      updates_arch=$(checkupdates 2>/dev/null | wc -l)
+      if [ $? -eq 0 ]; then
+        break
+      fi
+    else
+      exit 1
+    fi
+    dunstify -a "waybar" -i go-down "update error" "cannot fetch update count from checkupdates, retrying in 5s"
+    sleep 5
+  done
+
+  if command -v paru &>/dev/null; then
+    updates_aur=$(paru -Qum 2>/dev/null | wc -l || echo 0)
+    if [ $? -ne 0 ]; then
+      updates_aur=0
+    fi
   fi
 
   updates=$((updates_arch + updates_aur))
 
   if [ "$updates" -gt 0 ]; then
-    echo "󰏗 <span foreground=\"#ffffff\">$updates</span>"
+    echo "󰏗 <span foreground=\"#f2f5eb\">$updates</span>"
   else
     echo ""
   fi
@@ -69,23 +79,25 @@ copy_date() {
 }
 
 gpu_usage() {
-  echo "󰹑 <span foreground=\"#ffffff\">$(cat /sys/class/hwmon/hwmon3/device/gpu_busy_percent)%</span>"
+  echo "󰹑 <span foreground=\"#f2f5eb\">$(cat /sys/class/hwmon/hwmon3/device/gpu_busy_percent)%</span>"
 
 }
 
-nethogs_command() {
-  alacritty -e bash -c '
-  read -p "Are you sure you want to run nethogs? (y/n) " -n 1 -r
-    echo # (optional) move to a new line
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-      printf "\e[1mEnter your password to monitor the network activity:\e[0m\n" &&
+wifi_click() {
+  if ping -q -c 1 -W 1 8.8.8.8 >/dev/null 2>&1; then
+    alacritty -e bash -c '
+  read -p "are you sure you want to run nethogs? (y/n) " -n 1 -r
+    echo
+    if [[ $reply =~ ^[yy]$ ]]; then
+      printf "\e[1menter your password to monitor the network activity:\e[0m\n" &&
       sudo nethogs
     fi
   '
-}
-
-impala_command() {
-  alacritty -e bash -c 'printf "\e[1mEnter your password to monitor the network activity:\e[0m\n" && sudo impala'
+  elif rfkill | grep -w "blocked"; then
+    alacritty -e bash -c 'printf "\e[1mEnter your password to unblock network:\n" && sudo rfkill unblock all && impala'
+  else
+    alacritty -e bash -c 'impala'
+  fi
 }
 
 bt_toggle() {
@@ -96,20 +108,53 @@ bt_toggle() {
   fi
 }
 
+switch_audio_sink() {
+  if ! pactl list short sinks | grep -q "combined"; then
+    pactl load-module module-combine-sink sink_name=combined sink_properties=device.description="CombinedOutput" slaves=alsa_output.pci-0000_04_00.6.analog-stereo,alsa_output.pci-0000_04_00.1.hdmi-stereo-extra1
+  fi
+
+  # Define your sinks
+  DEFAULT_SINK="combined"
+  BLUETOOTH_SINK="bluez_output.00_A4_1C_1D_BE_79.1"
+
+  # Check if Bluetooth sink exists and is connected
+  if ! pactl list short sinks | grep -q "$BLUETOOTH_SINK"; then
+    # Set Bluetooth sink as default
+    pactl set-default-sink "$DEFAULT_SINK"
+  else
+    if [[ $(pactl info | grep "Default Sink" | awk -F: '{print $2}' | xargs) = ${BLUETOOTH_SINK} ]]; then
+      pactl set-default-sink "$DEFAULT_SINK"
+    else
+      pactl set-default-sink "$BLUETOOTH_SINK"
+    fi
+  fi
+}
+
+check_special_workspace() {
+  if hyprctl workspaces | grep "special:magic" 1>/dev/null; then
+    printf "H\nPress Super+V"
+  else
+    echo ""
+  fi
+}
+
 case $1 in
-"sync_icon") sync_icon ;;
-"mic_icon") mic_icon ;;
-"do_not_disturb") do_not_disturb ;;
-"sync_icon_click") $termwin "watch -c -n 0.5 tail -n 50 $HOME/.cache/logs/backupDrive.log" ;;
-"gpu_click") $termwin "radeontop; zsh" ;;
-"copy_date") copy_date ;;
-"nethogs_command") nethogs_command ;;
-"impala_command") alacritty -e bash -c 'printf "\e[1mEnter your password to monitor the network activity:\e[0m\n" && sudo impala' ;;
-"gpu_usage") gpu_usage ;;
-"htop_cpu") $termwin "htop -t --sort-key PERCENT_CPU" ;;
-"htop_mem") $termwin "htop -t --sort-key PERCENT_MEM" ;;
-"check_updates") check_updates ;;
-"open_update_screen") $termwin "printf '%b\n\n' '\e[1mEnter your password to update Pacman/AUR packages:\e[0m' && sudo paru -Syu; zsh" ;;
-"bt_toggle") bt_toggle ;;
+sync_icon) sync_icon ;;
+mic_icon) mic_icon ;;
+do_not_disturb) do_not_disturb ;;
+check_special_workspace) check_special_workspace ;;
+switch_audio_sink) switch_audio_sink ;;
+sync_icon_click) $termwin "watch -c -n 0.5 tail -n 50 $HOME/.cache/logs/backupDrive.log" ;;
+gpu_click) $termwin "radeontop; zsh" ;;
+copy_date) copy_date ;;
+wifi_click) wifi_click ;;
+nethogs_command) nethogs_command ;;
+impala_command) impala_command ;;
+gpu_usage) gpu_usage ;;
+htop_cpu) $termwin "htop -t --sort-key PERCENT_CPU" ;;
+htop_mem) $termwin "htop -t --sort-key PERCENT_MEM" ;;
+check_updates) check_updates ;;
+open_update_screen) $termwin "printf '%b\n\n' '\e[1mEnter your password to update Pacman/AUR packages:\e[0m' && sudo paru -Syu; zsh" ;;
+bt_toggle) bt_toggle ;;
 *) echo "Don't use this script from your terminal." ;;
 esac

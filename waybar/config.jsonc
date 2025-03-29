@@ -3,7 +3,7 @@
   // "layer": "top", // Waybar at top layer
   "position": "bottom", // Waybar position (top|bottom|left|right)
   // "width": 1280, // Waybar width
-  "height": 26,
+  "height": 24,
   "spacing": 0, // Gaps between modules (4px)
   // Choose the order of the modules
   "group/cpuntemp": {
@@ -55,11 +55,11 @@
       "weeks-pos": "right",
       "on-scroll": 1,
       "format": {
-        "months": "<span color='#ffffff'><b>{}</b></span>",
-        "days": "<span color='#ffffff'><b>{}</b></span>",
-        "weeks": "<span color='#6fd07c'><b>W{}</b></span>",
-        "weekdays": "<span color='#6fd07c'><b>{}</b></span>",
-        "today": "<span bgcolor='#6fd07c' color='#000000'><b>{}</b></span>",
+        "months": "<span color='#f2f5eb'><b>{}</b></span>",
+        "days": "<span color='#f2f5eb'><b>{}</b></span>",
+        "weeks": "<span color='#bbcbb1'><b>W{}</b></span>",
+        "weekdays": "<span color='#bbcbb1'><b>{}</b></span>",
+        "today": "<span bgcolor='#bbcbb1' color='#0c0f0a'><b>{}</b></span>",
       },
     },
     "actions": {
@@ -77,7 +77,7 @@
       "warning": 30,
       "critical": 15,
     },
-    "format": "{icon} <span foreground=\"#ffffff\">{capacity}%</span>",
+    "format": "{icon} <span foreground=\"#f2f5eb\">{capacity}%</span>",
     "format-charging": "{icon}󱐋 {capacity}%",
     "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
     "max-length": 25,
@@ -85,31 +85,34 @@
     "tooltip-format": "Time: {time} left\nCapacity: {health}%\n{power} watts",
   },
   "cpu": {
-    "interval": 3,
-    "format": " <span foreground=\"#ffffff\">{}%</span>",
+    "interval": 2,
+    "format": " <span foreground=\"#f2f5eb\">{usage}%</span>",
     "max-length": 10,
     "tooltip": true,
     "on-click": "waybar-scripts htop_cpu",
   },
   "memory": {
-    "interval": 3,
-    "format": " <span foreground=\"#ffffff\">{}%</span>",
+    "interval": 2,
+    "format": " <span foreground=\"#f2f5eb\">{}%</span>",
     "tooltip": true,
     "tooltip-format": "{used:0.1f}GiB used\n{avail:0.1f}GiB available",
     "max-length": 10,
     "on-click": "waybar-scripts htop_mem",
   },
   "temperature#cpu": {
+    // for i in /sys/class/hwmon/hwmon*/temp*_input; do                                                3:11:15
+    // echo "$(<$(dirname $i)/name): $(cat ${i%_*}_label 2>/dev/null || echo $(basename ${i%_*})) $i";
+    // done
     "hwmon-path": "/sys/class/hwmon/hwmon4/temp1_input",
     "critical-threshold": 90,
-    "interval": 10,
+    "interval": 2,
     "format-critical": " {temperatureC}°C",
-    "format": " <span foreground=\"#ffffff\">{temperatureC}°C</span>",
+    "format": " <span foreground=\"#f2f5eb\">{temperatureC}°C</span>",
     "on-click": "waybar-scripts htop_cpu",
   },
   "disk": {
     "interval": 60,
-    "format": "󰋊 <span foreground=\"#ffffff\">{percentage_used}%</span>",
+    "format": "󰋊 <span foreground=\"#f2f5eb\">{percentage_used}%</span>",
     "tooltip": true,
     "tooltip-format": "Free: {free} ({percentage_free}%)\nTotal: {total}",
     "path": "/",
@@ -145,21 +148,21 @@
   "custom/gpu_usage": {
     "exec": "waybar-scripts gpu_usage",
     "on-click": "waybar-scripts gpu_click",
-    "restart-interval": 5,
+    "restart-interval": 4,
     "tooltip": false,
   },
   "hyprland/workspaces": {
     "format": "{icon}",
+    "move-to-montior": true,
   },
   "network": {
-    "on-click": "waybar-scripts nethogs_command",
-    "on-click-right": "waybar-scripts impala_command",
+    "on-click": "waybar-scripts wifi_click",
     "interface": "wlan0",
     "interval": 2,
     "format": "{ifname}",
-    "format-wifi": "{signalStrength} 󰤨 <span foreground=\"#9dd49e\"></span> <span foreground=\"#ffffff\">{bandwidthDownBytes}</span>  <span foreground=\"#9dd49e\"></span> <span foreground=\"#ffffff\">{bandwidthUpBytes}</span>",
+    "format-wifi": "{signalStrength} 󰤨 <span foreground=\"#d7e8cd\"></span> <span foreground=\"#f2f5eb\">{bandwidthDownBytes}</span>  <span foreground=\"#d7e8cd\"></span> <span foreground=\"#f2f5eb\">{bandwidthUpBytes}</span>",
     "format-ethernet": "󰈁 {ipaddr}/{cidr}",
-    "format-disconnected": "", //An empty format will hide the module.
+    "format-disconnected": "󰤭 Disconnected", //An empty format will hide the module.
     "tooltip-format": "{ifname} via {gwaddr} 󰊗",
     "tooltip-format-wifi": "SSID: {essid}\nIP: {ipaddr}",
     "tooltip-format-ethernet": "{ifname} ",
@@ -168,12 +171,14 @@
   },
   "bluetooth": {
     // "controller": "controller1", // specify the alias of the controller if there are more than 1 on the system
-    "format": "󰂯 <span foreground=\"#ffffff\">{status}</span>",
-    "format-disabled": "", // an empty format will hide the module
+    "format": "󰂯 <span foreground=\"#f2f5eb\">{status}</span>",
+    "format-on": "󰂯 No connection",
+    "format-disabled": "󰂯 Disabled",
+    "format-off": "󰂯 Disabled",
     "on-click": "blueman-manager",
     "on-click-right": "waybar-scripts bt_toggle",
     "max-length": 15,
-    "format-connected": "{device_battery_percentage} 󰂱 <span foreground=\"#ffffff\">{device_alias}</span>",
+    "format-connected": "{device_battery_percentage} 󰂱 <span foreground=\"#f2f5eb\">{device_alias}</span>",
     "tooltip-format": "{controller_alias}\t{controller_address}",
     "tooltip-format-connected": "{controller_alias}:  {controller_address}\n{device_enumerate}",
     "tooltip-format-enumerate-connected": "{device_alias}:  {device_address}",

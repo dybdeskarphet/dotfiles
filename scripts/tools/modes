@@ -1,15 +1,20 @@
 #!/bin/bash
 
-selection=$(echo -e "󰎁  movie mode\n  normal mode\n󰋰  grayscale mode\n󰴅  blue light filter mode\n󰉦  vibrant mode" | rofi -dmenu -p "   modes")
+selection=$(echo -e "󱐋  zen mode\n󰎁  movie mode\n  normal mode\n󰋰  grayscale mode\n󰴅  blue light filter mode\n󰉦  vibrant mode" | rofi -dmenu -p "    modes")
+
+zen_mode() {
+  hyprctl keyword decoration:rounding 0
+  hyprctl keyword general:border_size 0
+  hyprctl keyword general:gaps_in 0
+  hyprctl keyword general:gaps_out 0
+}
 
 movie_mode() {
-  # Hide borders, padding, and gaps (handled via Hyprland config reload)
   hyprctl keyword decoration:rounding 0
   hyprctl keyword general:border_size 0
   hyprctl keyword general:gaps_in 0
   hyprctl keyword general:gaps_out 0
 
-  # Set a black wallpaper
   hyprctl hyprpaper preload "$HOME/img/wal/solid-black.png"
   hyprctl hyprpaper wallpaper "eDP-1,$HOME/img/wal/solid-black.png"
   hyprctl hyprpaper wallpaper "HDMI-A-1,$HOME/img/wal/solid-black.png"
@@ -29,10 +34,9 @@ movie_mode() {
 }
 
 normal_mode() {
-  # Reload Hyprland config to reset to defaults
   hyprctl reload
-  hyprctl hyprpaper wallpaper "HDMI-A-1, ~/img/.wallpaper2"
-  hyprctl hyprpaper wallpaper "eDP-1, ~/img/.wallpaper1"
+  hyprctl hyprpaper wallpaper "HDMI-A-1, ~/img/.wallpaper_big.png"
+  hyprctl hyprpaper wallpaper "eDP-1, ~/img/.wallpaper_small.png"
 
   if [ ! -f "/tmp/waybar_toggle.dat" ]; then
     waybar_toggle=1
@@ -65,19 +69,22 @@ vibrant_mode() {
 }
 
 case $selection in
+"󱐋  zen mode")
+  zen_mode && dunstify -a "modes" -r 2903 -i crosshairs "zen" "start focusing on your task!"
+  ;;
 "󰎁  movie mode")
-  movie_mode && dunstify -r 2903 -i colormanagement "movie" "enjoy your movie! 🍿"
+  movie_mode && dunstify -a "modes" -r 2903 -i filmgrain "movie" "enjoy your movie! 🍿"
   ;;
 "  normal mode")
-  normal_mode && dunstify -r 2903 -i colormanagement "default" "back to default."
+  normal_mode && dunstify -a "modes" -r 2903 -i reply "default" "back to default."
   ;;
 "󰋰  grayscale mode")
-  grayscale_mode && dunstify -r 2903 -i colormanagement "grayscale" "b&w forever."
+  grayscale_mode && dunstify -a "modes" -r 2903 -i edit-select-invert "grayscale" "b&w forever."
   ;;
 "󰴅  blue light filter mode")
-  bluelight_filter && dunstify -r 2903 -i colormanagement "blue light filter" "protect your eyes."
+  bluelight_filter && dunstify -a "modes" -r 2903 -i redeyes "blue light filter" "protect your eyes."
   ;;
 "󰉦  vibrant mode")
-  vibrant_mode && dunstify -r 2903 -i colormanagement "vibrant" "colorful colors."
+  vibrant_mode && dunstify -a "modes" -r 2903 -i color-fill "vibrant" "colorful colors."
   ;;
 esac

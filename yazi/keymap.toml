@@ -32,8 +32,8 @@ keymap = [
   { on = [
     "g",
     "g",
-  ], run = "arrow -99999999", desc = "Move cursor to the top" },
-  { on = "G", run = "arrow 99999999", desc = "Move cursor to the bottom" },
+  ], run = "arrow top", desc = "Move cursor to the top" },
+  { on = "G", run = "arrow bot", desc = "Move cursor to the bottom" },
 
   # Navigation
   { on = "h", run = "leave", desc = "Go back to the parent directory" },
@@ -65,10 +65,10 @@ keymap = [
   { on = "<S-Enter>", run = "open --interactive", desc = "Open selected files interactively" },
   { on = "y", run = [
     '''
-	shell 'for path in "$@"; do echo "file://$path"; done | wl-copy -t text/uri-list'
+	shell -- for path in "$@"; do echo "file://$path"; done | wl-copy -t text/uri-list
 ''',
     "yank",
-  ], desc = "Yank selected files (copy)" },
+  ], desc = "Yank selected files and copy the file URI to clipboard" },
   { on = "x", run = "yank --cut", desc = "Yank selected files (cut)" },
   { on = "p", run = "paste", desc = "Paste yanked files" },
   { on = "P", run = "paste --force", desc = "Paste yanked files (overwrite if the destination exists)" },
@@ -79,7 +79,7 @@ keymap = [
   { on = [
     "d",
     "d",
-  ], run = '''shell --confirm 'gtrash put "$@"'''', desc = "Trash selected files" },
+  ], run = '''shell --confirm -- gtrash put "$@"''', desc = "Trash selected files" },
   { on = [
     "d",
     "x",
@@ -139,28 +139,28 @@ keymap = [
     "o",
     "m",
   ], run = [
-    "sort modified --reverse=no",
+    "sort mtime --reverse=no",
     "linemode mtime",
   ], desc = "Sort by modified time" },
   { on = [
     "o",
     "M",
   ], run = [
-    "sort modified --reverse",
+    "sort mtime --reverse",
     "linemode mtime",
   ], desc = "Sort by modified time (reverse)" },
   { on = [
     "o",
     "c",
   ], run = [
-    "sort created --reverse=no",
+    "sort btime --reverse=no",
     "linemode ctime",
   ], desc = "Sort by created time" },
   { on = [
     "o",
     "C",
   ], run = [
-    "sort created --reverse",
+    "sort btime --reverse",
     "linemode ctime",
   ], desc = "Sort by created time (reverse)" },
   { on = [
@@ -249,64 +249,111 @@ keymap = [
   # Help
   { on = "~", run = "help", desc = "Open help" },
   { on = "<F1>", run = "help", desc = "Open help" },
+
+  # Uso Sudo
+  { on = [
+    "R",
+    "p",
+    "p",
+  ], run = "plugin sudo -- paste", desc = "sudo paste" },
+  { on = [
+    "R",
+    "P",
+  ], run = "plugin sudo -- paste -f", desc = "sudo paste" },
+  { on = [
+    "R",
+    "r",
+  ], run = "plugin sudo -- rename", desc = "sudo rename" },
+  { on = [
+    "R",
+    "p",
+    "l",
+  ], run = "plugin sudo -- link", desc = "sudo link" },
+  { on = [
+    "R",
+    "p",
+    "L",
+  ], run = "plugin sudo -- link -r", desc = "sudo link relative path" },
+  { on = [
+    "R",
+    "a",
+  ], run = "plugin sudo -- create", desc = "sudo create" },
+  { on = [
+    "R",
+    "d",
+  ], run = "plugin sudo -- remove", desc = "sudo trash" },
+  { on = [
+    "R",
+    "D",
+  ], run = "plugin sudo -- remove -P", desc = "sudo delete" },
 ]
 
 prepend_keymap = [
   # Relative motions plugin
-  { on = "1", run = "plugin relative-motions --args=1", desc = "Move in relative steps" },
-  { on = "2", run = "plugin relative-motions --args=2", desc = "Move in relative steps" },
-  { on = "3", run = "plugin relative-motions --args=3", desc = "Move in relative steps" },
-  { on = "4", run = "plugin relative-motions --args=4", desc = "Move in relative steps" },
-  { on = "5", run = "plugin relative-motions --args=5", desc = "Move in relative steps" },
-  { on = "6", run = "plugin relative-motions --args=6", desc = "Move in relative steps" },
-  { on = "7", run = "plugin relative-motions --args=7", desc = "Move in relative steps" },
-  { on = "8", run = "plugin relative-motions --args=8", desc = "Move in relative steps" },
-  { on = "9", run = "plugin relative-motions --args=9", desc = "Move in relative steps" },
+  { on = "1", run = "plugin relative-motions -- 1", desc = "Move in relative steps" },
+  { on = "2", run = "plugin relative-motions -- 2", desc = "Move in relative steps" },
+  { on = "3", run = "plugin relative-motions -- 3", desc = "Move in relative steps" },
+  { on = "4", run = "plugin relative-motions -- 4", desc = "Move in relative steps" },
+  { on = "5", run = "plugin relative-motions -- 5", desc = "Move in relative steps" },
+  { on = "6", run = "plugin relative-motions -- 6", desc = "Move in relative steps" },
+  { on = "7", run = "plugin relative-motions -- 7", desc = "Move in relative steps" },
+  { on = "8", run = "plugin relative-motions -- 8", desc = "Move in relative steps" },
+  { on = "9", run = "plugin relative-motions -- 9", desc = "Move in relative steps" },
 
-  { on = "T", run = "plugin max-preview", desc = "Maximize or restore preview" },
+  { on = "T", run = "plugin toggle-pane max-preview", desc = "Maximize or restore preview pane" },
 
   # Fuzzy finder and ripgrep
   { on = [
     "f",
-    "g",
+    "G",
   ], run = "plugin fg", desc = "find file by content (fuzzy match)" },
   { on = [
     "f",
-    "G",
-  ], run = "plugin fg --args='rg'", desc = "find file by content (ripgrep match)" },
+    "g",
+  ], run = "plugin fg -- rg", desc = "find file by content (ripgrep match)" },
 
   { on = [
     "f",
     "f",
-  ], run = "plugin fg --args='fzf'", desc = "find file by filename" },
-  { on = "<C-f>", run = "plugin fg --args='fzf'", desc = "find file by filename" },
+  ], run = "plugin fg -- fzf", desc = "find file by filename" },
+  { on = "<C-f>", run = "plugin fg  -- fzf", desc = "find file by filename" },
 
   # dragon-drop 
-  { on = "<C-n>", run = '''shell --confirm 'dragon-drop -x -a -T "$@"'''', desc = "Open with dragon (drag-and-drop)" },
+  { on = "<C-n>", run = '''
+  shell --confirm -- dragon-drop -x -a -T "$@"
+  ''', desc = "Open with dragon (drag-and-drop)" },
   { on = [
     "c",
     "n",
-  ], run = '''shell --confirm 'dragon-drop -x -a -T "$@"'''', desc = "Open with dragon (drag-and-drop)" },
+  ], run = '''
+  shell --confirm -- dragon-drop -x -a -T "$@"
+  ''', desc = "Open with dragon (drag-and-drop)" },
   { on = [
     "c",
-    "m",
-  ], run = '''shell --orphan --confirm 'cp -r "$(dragon-drop -x -T -t -p)" .'''', desc = "Open with dragon as target( drag-and-drop)" },
+    "N",
+  ], run = '''
+  shell --orpan --confirm -- cp -r "$(dragon-drop -t -p -x)" .
+  ''', desc = "Open current directory with dragon as target (drag-and-drop)" },
   # send with qrcp
   { on = [
     "c",
     "p",
-  ], run = '''shell --confirm --block 'qrcp "$@" '''', desc = "Send with qrcp" },
+  ], run = '''
+  shell --confirm --block -- qrcp --interface wlan0 "$@"
+  ''', desc = "Send with qrcp" },
   # compress with ouch
   { on = [
     "C",
     "z",
-  ], run = "plugin ouch --args=zip", desc = "Compress to .zip with Ouch" },
+  ], run = "plugin ouch -- zip", desc = "Compress to .zip with Ouch" },
   { on = [
     "C",
     "t",
-  ], run = "plugin ouch --args=tar.gz", desc = "Compress to .tar with Ouch" },
-  # set as wallpaper
-  { on = "W", run = '''shell --orphan --confirm 'cp -r $1 ~/img/.wallpaper; ~/.config/feh/.fehbg' ''', desc = "Set as wallpaper" },
+  ], run = "plugin ouch -- tar.gz", desc = "Compress to .tar with Ouch" },
+  { on = [
+    "c",
+    "m",
+  ], run = "plugin chmod", desc = "Chmod on selected files" },
 ]
 
 

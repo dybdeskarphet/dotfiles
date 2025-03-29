@@ -17,7 +17,9 @@
 window {
     border-radius:  12px;
     border:         0px;
-    location:       center;
+    location:       north;
+    anchor:         north;
+    y-offset:       300px;
     width:          800;
 }
 
@@ -26,27 +28,31 @@ mainbox {
 }
 
 inputbar {
-    background-color:   @windowbg;
-    border-radius:  12px;
     children:   [ prompt, entry ];
-    margin: 0 0 12px 0;
-    padding: 15px;
-    spacing:    2px;
+    margin: 0px 0px 8px 0px;
+    border: 2.5px;
 }
 
 prompt {
-    background-color: @colorbg;
     border-radius: 8px;
-    font:   "proportional_font 13";
+    font:   "proportional_font Bold 13";
+    vertical-align: 0.5;
+    text-color: @fg2;
+    background-color:   @semitransparentcolorbg;
+    border: 1.0px;
+    border-color: @transparentcolorborderfg;
+    border-radius:  12px;
+    margin: 0px 8px 0px 0px;
     padding: 10px;
-    text-color: @fg4;
 }
 
 entry {
-  background-color:   @windowbg;
-  border-radius: 8px;
-  margin: 0 0 0 8px;
-  padding: 10px;
+    background-color:   @windowbg;
+    border: 0px;
+    border: 2.5px;
+    border-color: @semitransparentcolorbg;
+    border-radius:  12px;
+    padding: 13px;
 }
 
 message {
@@ -59,12 +65,19 @@ message {
 
 textbox {
     padding:    8px 24px;
-    background-color:   @windowbg;
+    text-color: @fg2;
+    background-color:   @semitransparentcolorbg;
+    border: 2.0px;
+    border-color: @transparentcolorborderfg;
+    border-radius:  12px;
 }
 
 listview {
+    require-input: true;
     background-color: @windowbg;
     border-radius:  12px;
+    border: 2.5px;
+    border-color: @transparentcolorborderfg;
     columns:    2;
     fixed-height: false;
     lines:      5;
@@ -73,7 +86,7 @@ listview {
 
 element {
     border-radius: 8px;
-    padding:        8px 16px;
+    padding:        11px 16px;
     spacing:        8px;
 }
 
@@ -82,8 +95,10 @@ element normal active {
 }
 
 element selected normal, element selected active {
-    background-color: @colorbg;
-    text-color: @fg4;
+    background-color: @transparentcolorbg;
+    text-color: @fg2;
+    border: 2px;
+    border-color: @transparentcolorborderfg;
 }
 
 element-icon {
