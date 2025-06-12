@@ -23,7 +23,7 @@ title = { fg = "blue" }
 # : Manager {{{
 
 [mgr]
-cwd = { fg = "green", bold = true }
+cwd = { fg = "yellow", bold = true }
 
 # Hovered
 hovered = { bold = true, reversed = true }
@@ -84,8 +84,8 @@ permissions_s = { fg = "darkgray" }
 
 [mode]
 
-normal_main = { fg = "black", bg = "lightgreen", bold = true }
-normal_alt = { fg = "black", bg = "green" }
+normal_main = { fg = "black", bg = "lightyellow", bold = true }
+normal_alt = { fg = "black", bg = "yellow" }
 
 # Select mode
 select_main = { fg = "black", bg = "lightred", bold = true }
@@ -200,7 +200,7 @@ icon_error = ""
 
 rules = [
   # Images
-  { mime = "image/*", fg = "yellow" },
+  { mime = "image/*", fg = "blue" },
 
   # Media
   { mime = "{audio,video}/*", fg = "magenta" },
@@ -227,7 +227,7 @@ rules = [
 
   # Fallback
   # { name = "*", fg = "white" },
-  { name = "*/", fg = "green" },
+  { name = "*/", fg = "yellow" },
 ]
 
 [icon]

@@ -1,0 +1,108 @@
+#!/usr/bin/env python3
+
+import subprocess
+import sys
+from datetime import datetime
+from pathlib import Path
+
+SS_DIR = Path.home() / "img/ss/null"
+SS_DIR.mkdir(parents=True, exist_ok=True)
+DEST = str(SS_DIR / (datetime.now().strftime("%Y-%m-%d_%H.%M.%S") + ".png"))
+APP_NAME="Screenshot"
+
+def notify(kind: str, image_path: str = ""):
+    title, message = {
+        "cheese": ("screenshot", "selection captured successfully."),
+        "qr": ("qr code detected", "copied to clipboard."),
+        "error": ("screenshot failed", "something went wrong while taking the screenshot."),
+    }.get(kind, ("Info", kind))
+
+    base_cmd = [
+        "dunstify", "-a", APP_NAME,
+        "--urgency=LOW", 
+    ]
+
+    if image_path:
+        base_cmd.extend(["-I", str(image_path)])
+    else:
+        base_cmd.extend(["-i", "view-preview"])
+
+    base_cmd.extend([title, message])
+
+    _ = subprocess.run(base_cmd)
+
+def copy(image_path: str):
+    with open(image_path, "rb") as img_file:
+        _ = subprocess.run(["wl-copy"], stdin=img_file)
+
+def process_screenshot(image_path: str):
+    result = subprocess.run(["zbarimg", "-q", "--raw", str(image_path)],
+                            stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
+                            text=True)
+
+    if result.stdout.strip():
+        _ = subprocess.run(["wl-copy"], input=result.stdout.strip(), text=True)
+        notify("qr", image_path)
+    else:
+        copy(image_path)
+        notify("cheese", image_path)
+
+def selection_screenshot():
+    try:
+        region = subprocess.check_output(["slurp"], text=True).strip()
+        _ = subprocess.run(["grim", "-g", region, DEST], check=True)
+        process_screenshot(DEST)
+    except subprocess.CalledProcessError:
+        pass
+    except Exception as e:
+        notify("error")
+        raise e
+
+def full_screenshot():
+    try:
+        monitor = subprocess.check_output(
+            ["hyprctl", "monitors", "-j"], text=True
+        )
+
+        import json
+        monitor_name = next(m["name"] for m in json.loads(monitor) if m["focused"])
+        _ = subprocess.run(["grim", "-o", monitor_name, DEST], check=True)
+
+        copy(DEST)
+        notify("cheese", DEST)
+    except Exception as e:
+        notify("error")
+        raise e
+
+def window_screenshot():
+    try:
+        addr = subprocess.check_output(
+            ["hyprctl", "activewindow", "-j"], text=True
+        )
+
+        import json
+        window_addr = json.loads(addr)["address"]
+        _ = subprocess.run(["grim", "-w", window_addr, DEST], check=True)
+
+        copy(DEST)
+        notify("cheese", DEST)
+    except Exception as e:
+        notify("error")
+        raise e
+
+def main():
+    if len(sys.argv) < 2:
+        print("Usage: script.py [select|full|window]")
+        return
+    mode = sys.argv[1]
+    if mode == "select":
+        selection_screenshot()
+    elif mode == "full":
+        full_screenshot()
+    elif mode == "window":
+        window_screenshot()
+    else:
+        print("Unknown mode:", mode)
+
+if __name__ == "__main__":
+    main()

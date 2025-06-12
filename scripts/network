@@ -1,0 +1,55 @@
+#!/bin/sh
+
+bundle_name="$(basename "$0")"
+
+list_passwords() {
+  RED='\033[0;31m'
+  GREEN='\033[0;32m'
+  CYAN='\033[0;36m'
+  YELLOW='\033[1;33m'
+  RESET='\033[0m'
+
+  if [ "$EUID" -ne 0 ]; then
+    echo -e "${YELLOW}This script needs sudo access to read /var/lib/iwd${RESET}"
+    exec sudo "$0" --list-passwords
+  fi
+
+  CONFIG_DIR="/var/lib/iwd"
+
+  echo -e "${CYAN}Remembered Wi-Fi Networks:${RESET}"
+  echo -e "${CYAN}---------------------------${RESET}"
+
+  if ! compgen -G "$CONFIG_DIR"/*.psk >/dev/null; then
+    echo -e "${RED}No saved networks found in $CONFIG_DIR${RESET}"
+    exit 1
+  fi
+
+  for file in "$CONFIG_DIR"/*.psk; do
+    ssid=$(basename "$file" .psk)
+    pass=$(grep -Po '(?<=^Passphrase=).*' "$file")
+
+    echo -e "${GREEN}SSID: ${RESET}$ssid"
+    if [ -n "$pass" ]; then
+      echo -e "${GREEN}Password: ${RESET}$pass"
+    else
+      echo -e "${GREEN}Password: [None or 802.1X]${RESET}"
+    fi
+    echo -e "${CYAN}---------------------------${RESET}"
+  done
+}
+
+list_connected_devices() {
+  BROADCAST_IP="$(ifconfig | grep -oP "(?<=broadcast )(\d{1,3}\.){3}\d{1,3}")"
+  sudo nmap -sP "$BROADCAST_IP/24"
+}
+
+print_usage() {
+  printf '\n%b\n' "  \e[1mNETWORK TOOLS\e[0m"
+  printf '%b\n' "  $bundle_name {-L --list-connected}    list connected devices on the current network"
+  printf '%b\n\n' "  $bundle_name {-l --list-passwords}    list ssids and passwords from iwd"
+}
+case $1 in
+--list-connected | -L) list_connected_devices ;;
+--list-passwords | -l) list_passwords ;;
+*) print_usage ;;
+esac

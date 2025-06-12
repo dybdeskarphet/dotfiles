@@ -1,37 +1,27 @@
 [[plugin.deps]]
 use = "dedukun/relative-motions"
-rev = "8103065"
-hash = "9f13f0740fa3a0c18e47ec6fb62ddfaa"
-
-[[plugin.deps]]
-use = "lpnh/fg"
-rev = "92edf0b"
-hash = "b0edc5e9b7f44b2d3303e74f785d0bc9"
-
-[[plugin.deps]]
-use = "yazi-rs/plugins:git"
-rev = "79193b3"
-hash = "e0d2c8d7e7afe5b82270367098d1a821"
+rev = "ce2e890"
+hash = "23915860e59348bf4166778bb0e606f7"
 
 [[plugin.deps]]
 use = "Reledia/hexyl"
-rev = "228a9ef"
-hash = "cdc65cfe4e60e1bf5afe5769d074fa9c"
+rev = "016a09b"
+hash = "50da29476e744dba37d77fb209328fd1"
 
 [[plugin.deps]]
 use = "AnirudhG07/rich-preview"
-rev = "2559e5f"
-hash = "c9a3d0731e7d7340e2c6d6126b1f3aa3"
+rev = "843c3fa"
+hash = "b4040931f0d2f9670ddb4923e55cd881"
 
 [[plugin.deps]]
 use = "Reledia/glow"
-rev = "c76bf4f"
-hash = "a6b78bf9af5390e3a85a6951fbb7b93"
+rev = "2da96e3"
+hash = "f9ee1436e3b853508d87f7d49dce56e6"
 
 [[plugin.deps]]
 use = "boydaihungst/mediainfo"
-rev = "447fe95"
-hash = "dcaebc8bc261206f6b59e2c67464af5"
+rev = "c6d0de7"
+hash = "7b024fc14b462235068400207cbe7bf0"
 
 [[plugin.deps]]
 use = "TD-Sky/sudo"
@@ -45,13 +35,33 @@ hash = "9aed469134b5c89fc4014ce278307ae3"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:chmod"
-rev = "79193b3"
-hash = "2f1053f89d1a301a648ab181d0948e38"
+rev = "63f9650"
+hash = "d0ad0c1946b46a30c8489735fe8de41c"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:toggle-pane"
-rev = "2730199"
-hash = "5c9dda1a587b8f5b6f63e3d5375bda88"
+rev = "63f9650"
+hash = "d5d4f3527592da5fbe77fd6f51815f80"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:vcs-files"
+rev = "63f9650"
+hash = "70898957e9e4c1ca291ff26e8fdc434"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:git"
+rev = "63f9650"
+hash = "bf6f074cd41ee33c3360341d168f9733"
+
+[[plugin.deps]]
+use = "ndtoan96/ouch"
+rev = "10b4627"
+hash = "3ec6a973d506665f1570a9fe08343fd8"
+
+[[plugin.deps]]
+use = "DreamMaoMao/fg"
+rev = "46a5c16"
+hash = "46dc32503296c68aa54e5ca30f022a6"
 
 [flavor]
 deps = []

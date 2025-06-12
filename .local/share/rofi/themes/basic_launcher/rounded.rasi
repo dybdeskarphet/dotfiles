@@ -38,9 +38,9 @@ prompt {
     font:   "proportional_font Bold 13";
     vertical-align: 0.5;
     text-color: @fg2;
-    background-color:   @semitransparentcolorbg;
+    background-color:   @colorbg;
     border: 1.0px;
-    border-color: @transparentcolorborderfg;
+    border-color: @borderfg;
     border-radius:  12px;
     margin: 0px 8px 0px 0px;
     padding: 10px;
@@ -50,7 +50,7 @@ entry {
     background-color:   @windowbg;
     border: 0px;
     border: 2.5px;
-    border-color: @semitransparentcolorbg;
+    border-color: @borderfg;
     border-radius:  12px;
     padding: 13px;
 }
@@ -66,22 +66,10 @@ message {
 textbox {
     padding:    8px 24px;
     text-color: @fg2;
-    background-color:   @semitransparentcolorbg;
+    background-color:   @colorbg;
     border: 2.0px;
-    border-color: @transparentcolorborderfg;
+    border-color: @borderfg;
     border-radius:  12px;
-}
-
-listview {
-    require-input: true;
-    background-color: @windowbg;
-    border-radius:  12px;
-    border: 2.5px;
-    border-color: @transparentcolorborderfg;
-    columns:    2;
-    fixed-height: false;
-    lines:      5;
-    padding: 15px;
 }
 
 element {
@@ -91,14 +79,14 @@ element {
 }
 
 element normal active {
-    text-color: @fg1;
+    text-color: @textfg;
 }
 
 element selected normal, element selected active {
     background-color: @transparentcolorbg;
     text-color: @fg2;
     border: 2px;
-    border-color: @transparentcolorborderfg;
+    border-color: @borderfg;
 }
 
 element-icon {

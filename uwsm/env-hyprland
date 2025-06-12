@@ -1,0 +1,15 @@
+export CLUTTER_BACKEND="wayland"
+export ELECTRON_OZONE_PLATFORM_HINT="auto"
+export ELM_DISPLAY="wl"
+export GDK_BACKEND="wayland"
+export NO_AT_BRIDGE="1"
+export OZONE_PLATFORM="wayland"
+export QT_QPA_PLATFORM="wayland-egl"
+export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
+export SDL_VIDEODRIVER="wayland"
+export XDG_CURRENT_DESKTOP="Hyprland"
+export XDG_SESSION_DESKTOP="Hyprland"
+export XDG_SESSION_TYPE="wayland"
+export XCURSOR_SIZE=24
+export HYPRCURSOR_THEME="Default"
+export HYPRCURSOR_SIZE=24

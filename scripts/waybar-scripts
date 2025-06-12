@@ -1,15 +1,15 @@
 #!/bin/bash
-termwin="alacritty -e zsh -c"
+termwin="footclient zsh -c"
 
 sync_icon() {
   total="$(cat /tmp/total_backup.dat 2>/dev/null)"
   current="$(cat /tmp/current_backup.dat 2>/dev/null)"
   # uncomment this if you want to show it as a percentage
   # percentage="$(echo "$current/$total*100" | bc -l | cut -d '.' -f 1)%"
-  if systemctl is-active --quiet backupDrive.service; then
+  if systemctl --user is-active --quiet backupDrive.service; then
     # uncomment this if you want to show it as a percentage
     # echo "%{F$accent}󰘿  %{F$foreground}$percentage"
-    echo "󰘿  <span foreground=\"#f2f5eb\">${current:=0}</span> <span foreground=\"#d7e8cd\">/</span> <span foreground=\"#f2f5eb\">${total}</span>"
+    echo "󰘿  <span foreground=\"#f9f3e5\">${current:=0}</span> <span foreground=\"#ede3bc\">/</span> <span foreground=\"#f9f3e5\">${total}</span>"
   elif [[ -f /tmp/not-recognized.backup ]]; then
     echo "󰅤"
   else
@@ -64,7 +64,7 @@ check_updates() {
   updates=$((updates_arch + updates_aur))
 
   if [ "$updates" -gt 0 ]; then
-    echo "󰏗 <span foreground=\"#f2f5eb\">$updates</span>"
+    echo "󰏗 <span foreground=\"#f9f3e5\">$updates</span>"
   else
     echo ""
   fi
@@ -79,13 +79,13 @@ copy_date() {
 }
 
 gpu_usage() {
-  echo "󰹑 <span foreground=\"#f2f5eb\">$(cat /sys/class/hwmon/hwmon3/device/gpu_busy_percent)%</span>"
+  echo "󰹑 <span foreground=\"#f9f3e5\">$(cat /sys/class/hwmon/hwmon3/device/gpu_busy_percent)%</span>"
 
 }
 
 wifi_click() {
   if ping -q -c 1 -W 1 8.8.8.8 >/dev/null 2>&1; then
-    alacritty -e bash -c '
+    footclient zsh -c '
   read -p "are you sure you want to run nethogs? (y/n) " -n 1 -r
     echo
     if [[ $reply =~ ^[yy]$ ]]; then
@@ -94,9 +94,9 @@ wifi_click() {
     fi
   '
   elif rfkill | grep -w "blocked"; then
-    alacritty -e bash -c 'printf "\e[1mEnter your password to unblock network:\n" && sudo rfkill unblock all && impala'
+    footclient zsh -c 'printf "\e[1mEnter your password to unblock network:\n" && sudo rfkill unblock all && impala'
   else
-    alacritty -e bash -c 'impala'
+    footclient zsh -c 'impala'
   fi
 }
 
@@ -148,8 +148,6 @@ sync_icon_click) $termwin "watch -c -n 0.5 tail -n 50 $HOME/.cache/logs/backupDr
 gpu_click) $termwin "radeontop; zsh" ;;
 copy_date) copy_date ;;
 wifi_click) wifi_click ;;
-nethogs_command) nethogs_command ;;
-impala_command) impala_command ;;
 gpu_usage) gpu_usage ;;
 htop_cpu) $termwin "htop -t --sort-key PERCENT_CPU" ;;
 htop_mem) $termwin "htop -t --sort-key PERCENT_MEM" ;;

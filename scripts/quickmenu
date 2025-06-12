@@ -1,0 +1,53 @@
+#!/bin/sh
+
+quick_settings() {
+  selection=$(echo -e "󰀻   workspaces\n󰑓   reload\n   modes\n󰓶   graphic tablet mode\n󰍃   log out" | rofi -dmenu -theme ~/.local/share/rofi/themes/basic_launcher/rounded_with_listview.rasi -p "   quick settings")
+  case $selection in
+  "󰀻   workspaces") workspaces ;;
+  "󰑓   reload") reload_menu ;;
+  "   modes") modes ;;
+  "󰓶   graphic tablet mode") tablet_mode_menu ;;
+  "󰍃   log out") uwsm stop ;;
+  esac
+
+}
+
+reload_menu() {
+  reload_selection=$(echo -e "󱂬  reload hyprland\n󰎟  reload dunst\n󰸉  reload swww\n  reload waybar" | rofi -dmenu -theme ~/.local/share/rofi/themes/basic_launcher/rounded_with_listview.rasi -p "󰑓   reload")
+
+  case $reload_selection in
+  "󱂬  reload hyprland")
+    hyprctl reload
+    dunstify -a "Key Scripts" -i reload --urgency=LOW --replace=876 "hyprland is reloaded"
+    ;;
+  "  reload waybar")
+    pkill waybar >/dev/null
+    sleep 0.5
+    app2unit -- waybar &
+    dunstify -a "Key Scripts" -i reload --urgency=LOW --replace=867 "waybar is reloaded!"
+    ;;
+  "󰎟  reload dunst")
+    pkill dunst
+    sleep 0.5
+    app2unit -- dunst -conf "$HOME"/.config/dunst/config.ini -verbosity debug &
+    sleep 1.5
+    dunstify -a "Key Scripts" -i reload --urgency=LOW --replace=877 "dunst is reloaded!"
+    ;;
+  "󰸉  reload swww")
+    pkill swww-daemon
+    app2unit -- swww-daemon &
+    dunstify -a "Key Scripts" -i photo --urgency=LOW --replace=870 "swww is reloaded!"
+    ;;
+  esac
+}
+
+tablet_mode_menu() {
+  tablet_selection=$(echo -e "󱦹  artist mode\n󰇀  absolute mode" | rofi -dmenu -theme ~/.local/share/rofi/themes/basic_launcher/rounded_with_listview.rasi -p "󰓶   graphic tablet mode")
+  case $tablet_selection in
+  "󱦹  artist mode") otd applypreset artist_mode && dunstify -a "Key Scripts" -i tablet --urgency=LOW --replace=341 "drawing tablet" "mode is changed to 'artist mode'." ;;
+  "󰇀  absolute mode") otd applypreset absolute_mode && dunstify -a "Key Scripts" -i tablet --urgency=LOW --replace=341 "drawing tablet" "mode is changed to 'absolute mode'." ;;
+  # TODO: Add toggle using the below function
+  esac
+}
+
+quick_settings

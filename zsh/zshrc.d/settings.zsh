@@ -27,14 +27,14 @@ _absolute_files () {
   _files "$@";
 }
 
-export PS1="%F{green}%f%K{green}%F{#151515}%B%1~%b  %#%f%k%F{green}%f "
+export PS1="%B%c %F{yellow}%# %b%f "
 export PS2="%F{012}~%f "
 export RPROMPT='${vcs_info_msg_0_} %(?,%F{green}%f,%F{yellow}%?%f %F{red}%f) %D{%K:%M:%S}'
 
 ## Key Bindings
-bindkey '\e\e[C' forward-word
-bindkey '\e\e[D' backward-word
 bindkey -e
+bindkey '\e[1;3C' forward-word     # Alt + →
+bindkey '\e[1;3D' backward-word    # Alt + ←
 
 ## External Script Sources
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-selection=$(echo -e "󱐋  zen mode\n󰎁  movie mode\n  normal mode\n󰋰  grayscale mode\n󰴅  blue light filter mode\n󰉦  vibrant mode" | rofi -dmenu -p "    modes")
+selection=$(echo -e "󱐋  zen mode\n󰎁  movie mode\n  normal mode\n󰋰  grayscale mode\n󰴅  blue light filter mode\n󰉦  vibrant mode" | rofi -dmenu -theme ~/.local/share/rofi/themes/basic_launcher/rounded_with_listview.rasi -p "    modes")
 
 zen_mode() {
   hyprctl keyword decoration:rounding 0
@@ -15,9 +15,8 @@ movie_mode() {
   hyprctl keyword general:gaps_in 0
   hyprctl keyword general:gaps_out 0
 
-  hyprctl hyprpaper preload "$HOME/img/wal/solid-black.png"
-  hyprctl hyprpaper wallpaper "eDP-1,$HOME/img/wal/solid-black.png"
-  hyprctl hyprpaper wallpaper "HDMI-A-1,$HOME/img/wal/solid-black.png"
+  swww img --transition-fps 100 --outputs "HDMI-A-1" --transition-type center "$HOME"/img/wal/solid-black.png
+  swww img --transition-fps 60 --outputs "eDP-1" --transition-type center "$HOME"/img/wal/solid-black.png
 
   if [ ! -f "/tmp/waybar_toggle.dat" ]; then
     waybar_toggle=1
@@ -34,9 +33,9 @@ movie_mode() {
 }
 
 normal_mode() {
+  swww img --transition-fps 100 --outputs "HDMI-A-1" --transition-type center "$HOME"/img/.wallpaper_big.png
+  swww img --transition-fps 60 --outputs "eDP-1" --transition-type center "$HOME"/img/.wallpaper_small.png
   hyprctl reload
-  hyprctl hyprpaper wallpaper "HDMI-A-1, ~/img/.wallpaper_big.png"
-  hyprctl hyprpaper wallpaper "eDP-1, ~/img/.wallpaper_small.png"
 
   if [ ! -f "/tmp/waybar_toggle.dat" ]; then
     waybar_toggle=1

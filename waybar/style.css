@@ -1,14 +1,13 @@
-@define-color accent #d7e8cd;
-@define-color accent_hover #bbcbb1;
-@define-color background rgba(12, 15, 10, 0.7);
-@define-color background_light rgba(39, 43, 37, 0.7);
-@define-color background_lighter rgba(54, 58, 52, 0.7);
+@define-color accent #ede3bc;
+@define-color accent_hover #FBF1CA;
+@define-color black rgba(0, 0, 0, 0.7);
+@define-color background rgba(0, 0, 0, 0.0);
 @define-color critical #ffdad6;
 @define-color critical_text #93000a;
-@define-color text_color #f2f5eb;
-@define-color text_color_hover #646b61;
-@define-color tertiary_hover #a0cfd1;
-@define-color tertiary #bcebee;
+@define-color text_color #f9f3e5;
+@define-color text_color_hover #eee8da;
+@define-color tertiary_hover #8DB49A;
+@define-color tertiary #D2FBDE;
 
 * {
   border: none;
@@ -21,21 +20,22 @@
 
 window#waybar {
   background: @background;
-  border-top: 1.5px solid @background_light;
 }
 
 tooltip {
-  background: @background;
+  background: @black;
   font-family: proportional_font;
   border-radius: 10px;
 }
 
 tooltip label {
+  background: @black;
   color: @text_color;
   font-family: proportional_font;
 }
 
 #custom-updates,
+#custom-keyboard_lighting,
 #network,
 #bluetooth,
 #custom-gpu_usage,
@@ -49,13 +49,14 @@ tooltip label {
 
 #bluetooth:hover,
 #custom-gpu_usage:hover,
+#custom-keyboard_lighting:hover,
 #memory:hover,
 #network:hover {
-  background: @background_light;
+  background: @background;
   color: @accent;
   padding-left: 5px;
   padding-right: 5px;
-  box-shadow: inset 0 0 0 1.5px @background_lighter;
+  box-shadow: inset 0 0 0px 1px @accent_hover;
 }
 
 #bluetooth.disabled,
@@ -63,7 +64,7 @@ tooltip label {
 #network.disabled,
 #network.disconnected,
 #bluetooth.on {
-  color: @text_color_hover;
+  color: gray;
   margin-right: 9px;
   transition: 0.3s;
   padding-top: 2px;
@@ -77,7 +78,7 @@ tooltip label {
   color: @accent_hover;
   padding-left: 5px;
   padding-right: 5px;
-  box-shadow: inset 0 0 0 1.5px @background_lighter;
+  box-shadow: inset 0 0 0px 1px @accent_hover;
 }
 
 #pulseaudionslider {
@@ -106,7 +107,7 @@ tooltip label {
   min-height: 10px;
   min-width: 50px;
   border-radius: 2px;
-  background: @background_lighter;
+  background: @background;
 }
 
 #pulseaudio-slider highlight {
@@ -139,7 +140,7 @@ tooltip label {
   min-height: 10px;
   min-width: 50px;
   border-radius: 2px;
-  background: @background_lighter;
+  background: @background;
 }
 
 #backlight-slider highlight {
@@ -149,11 +150,10 @@ tooltip label {
 }
 
 #custom-updates:hover {
-  background: @background_lighter;
   color: @accent;
   padding-left: 5px;
   padding-right: 5px;
-  box-shadow: inset 0 0 0 1.5px @background_lighter;
+  box-shadow: inset 0 0 0px 1px @accent_hover;
 }
 
 #workspaces {
@@ -186,7 +186,7 @@ tooltip label {
 
 #workspaces button:hover {
   box-shadow: inset 0 0 0px 1px @accent_hover;
-  background: @background_light;
+  background: @background;
   color: @accent;
   margin-bottom: 0px;
 }
@@ -202,16 +202,17 @@ tooltip label {
 }
 
 #clock {
-  background: @accent;
-  color: @background;
+  color: @accent;
   transition: 0.2s;
-  padding-left: 5px;
-  padding-right: 5px;
-  padding-top: 2px;
+  padding-left: 8px;
+  padding-right: 7px;
+  padding-top: 3px;
+  font-weight: 800;
+  font-size: 1.05em;
 }
 
 #clock:hover {
-  background: @accent_hover;
+  box-shadow: inset 0 0 0px 1px @accent_hover;
 }
 
 #battery {
@@ -243,11 +244,11 @@ tooltip label {
 }
 
 #cpuntemp:hover {
-  background: @background_light;
+  background: @background;
   color: @accent;
   padding-left: 5px;
   padding-right: 5px;
-  box-shadow: inset 0 0 0 1.5px @background_lighter;
+  box-shadow: inset 0 0 0px 1px @accent_hover;
 }
 
 #cpu {
@@ -290,13 +291,13 @@ tooltip label {
 
 #custom-sync:hover,
 #tray:hover {
-  background: @background_lighter;
-  box-shadow: inset 0 0 0 1.5px @background_lighter;
+  background: @background;
+  box-shadow: inset 0 0 0 1px @accent;
 }
 
 #tray menu {
   color: @accent;
-  background: @background;
+  background: @black;
   transition: 0.2s;
   border-radius: 10px;
 }

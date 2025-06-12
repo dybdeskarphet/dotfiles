@@ -1,5 +1,3 @@
-# no beep
-setterm --blength=0
-
-# start hyprland
-[[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && Hyprland --config $HOME/.config/hypr/hyprland/init.conf >$HOME/.cache/logs/hyprland.log 2>&1
+if uwsm check may-start; then
+  exec uwsm start -- hyprland --config ~/.config/hypr/hyprland/init.conf
+fi

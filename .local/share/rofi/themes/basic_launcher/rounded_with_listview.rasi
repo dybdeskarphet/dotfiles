@@ -1,16 +1,18 @@
 /*******************************************************************************
-@import "colors.rasi"
  * ROUNDED THEME FOR ROFI 
  * User                 : LR-Tech               
  * Theme Repo           : https://github.com/lr-tech/rofi-themes-collection
  *******************************************************************************/
 
-* {
-    fg2: #ede3bc;
-    font:   "proportional_font SemiBold 13";
-    colorbg:    #585441cc;
-    textfg:    #f9f3e5;
-    transparentcolorbg:    #B4AB884d;
-    borderfg:    #d0c7a24d;
-    windowbg:    #100e07cc;
+@import "rounded.rasi"
+
+listview {
+    background-color: @windowbg;
+    border-radius:  12px;
+    border: 2.5px;
+    border-color: @borderfg;
+    columns:    2;
+    fixed-height: false;
+    lines:      5;
+    padding: 15px;
 }

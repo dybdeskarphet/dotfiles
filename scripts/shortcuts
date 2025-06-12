@@ -1,0 +1,68 @@
+#!/bin/bash
+
+script_name="$(basename "$0")"
+
+tablet_mode_toggle() {
+  if $(otd getallsettings | grep "Absolute" >/dev/null); then
+    otd applypreset artist_mode
+    dunstify -a "Key Scripts" -i tablet --urgency=LOW --replace=341 "drawing tablet" "mode is changed to 'artist mode'."
+  else
+    otd applypreset absolute_mode
+    dunstify -a "Key Scripts" -i tablet --urgency=LOW --replace=341 "drawing tablet" "mode is changed to 'absolute mode'."
+  fi
+}
+
+do_not_disturb_toggle() {
+  dunstctl set-paused toggle
+  pkill -RTMIN+4 waybar
+
+  if [[ "$(dunstctl is-paused)" = "false" ]]; then
+    dunstify -a "Key Scripts" -i stock_bell --urgency=LOW --replace=341 "do not disturb mode is off!" "you can see the notifications now."
+  fi
+}
+
+waybar_toggle() {
+  if [ ! -f "/tmp/waybar_toggle.dat" ]; then
+    waybar_toggle=1
+    echo "${waybar_toggle}" >/tmp/waybar_toggle.dat
+  else
+    waybar_toggle=$(cat /tmp/waybar_toggle.dat)
+  fi
+
+  if [[ $waybar_toggle -eq 1 ]]; then
+    pkill -SIGUSR1 waybar
+    waybar_toggle=0
+  else
+    pkill -SIGUSR1 waybar
+    waybar_toggle=1
+  fi
+
+  echo "${waybar_toggle}" >/tmp/waybar_toggle.dat
+}
+
+toggle_caps2esc() {
+  if hyprctl getoption input:kb_options | grep "caps:swapescape"; then
+    hyprctl keyword input:kb_options "altwin:swap_lalt_lwin"
+    dunstify -a "Key Scripts" -i input-keyboard --urgency=LOW --replace=1294 "caps lock ve esc tuşları kendi yerine getirildi."
+  else
+    hyprctl keyword input:kb_options "caps:swapescape, altwin:swap_lalt_lwin"
+    dunstify -a "Key Scripts" -i input-keyboard --urgency=LOW --replace=1294 "esc, caps lock tuşu ile değiştirildi."
+  fi
+}
+
+print_usage() {
+  printf '\n%b\n' "  \e[1mSCRIPTS FOR SHORTCUT KEYS\e[0m"
+  printf '%b\n' "  $script_name {-t --waybar-toggle}                                  toggle waybar"
+  printf '%b\n' "  $script_name {-T --tablet-toggle}                                  changes the mode of graphics tablet"
+  printf '%b\n' "  $script_name {-c --toggle-caps2esc}                                toggles caps lock and escape keys"
+  printf '%b\n\n' "  $script_name {-d --do-not-disturb}                                 toggle dnd"
+  exit 1
+}
+
+case $1 in
+--tablet-toggle | -T) tablet_mode_toggle ;;
+--waybar-toggle | -t) waybar_toggle ;;
+--do-not-disturb | -d) do_not_disturb_toggle ;;
+--toggle-caps2esc | -c) toggle_caps2esc ;;
+*) print_usage ;;
+esac

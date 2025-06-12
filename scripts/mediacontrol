@@ -34,10 +34,10 @@ volume)
   ;;
 backlight)
   case $2 in
-  down) xbacklight -dec 10 && dunstify_bl ;;
-  up) xbacklight -inc 10 && dunstify_bl ;;
-  full) xbacklight -set 100 -steps 10 && dunstify_bl ;;
-  off) xbacklight -set 1 -steps 10 && dunstify_bl ;;
+  down) brightnessctl set 10%- ;;
+  up) brightnessctl set +10% ;;
+  full) xbacklight -set 100% -steps 10 ;;
+  off) xbacklight -set 1% -steps 10 ;;
   esac
   ;;
 

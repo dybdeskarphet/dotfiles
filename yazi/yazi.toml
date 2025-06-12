@@ -2,7 +2,7 @@
 # If you encounter any issues, please make an issue at https://github.com/yazi-rs/schemas.
 "$schema" = "https://yazi-rs.github.io/schemas/yazi.json"
 
-[manager]
+[mgr]
 ratio = [1, 3, 4]
 sort_by = "alphabetical"
 sort_sensitive = false
@@ -81,6 +81,11 @@ play = [
 
 [open]
 rules = [
+  # Empty File
+  { mime = "inode/x-empty", use = [
+    "edit",
+    "reveal",
+  ] },
   # Folder
   { name = "*/", use = [
     "edit",
@@ -174,12 +179,11 @@ suppress_preload = false
 
 [plugin]
 
+prepend_previewers = [{ mime = "application/subrip", run = "mediainfo" }]
 prepend_fetchers = [
   { id = "git", name = "*", run = "git" },
   { id = "git", name = "*/", run = "git" },
 ]
-
-prepend_previewers = [{ mime = "application/subrip", run = "mediainfo" }]
 
 fetchers = [
   # Mimetype

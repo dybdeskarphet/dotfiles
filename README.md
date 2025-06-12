@@ -4,10 +4,10 @@ This repository contains my personal dotfiles for configuring various programs a
 
 ## Programs and Tools
 
-- **Wayland Compositor**: [Hyprland](https://hyprland.org/)
-- **Terminal**: [Alacritty](https://github.com/alacritty/alacritty)
+- **Wayland Compositor**: [Hyprland](https://hyprland.org/) with [uwsm](https://github.com/Vladimir-csp/uwsm)/[app2unit](https://github.com/Vladimir-csp/app2unit)
+- **Terminal**: [foot](https://codeberg.org/dnkl/foot)
 - **Notification Daemon**: [Dunst](https://dunst-project.org/)
-- **Wallpaper Setter**: [Hyprpaper](https://github.com/hyprwm/hyprpaper)
+- **Wallpaper Setter**: [swww](https://github.com/LGFae/swww)
 - **Session Lock:** [Hyprlock](https://github.com/hyprwm/hyprlock)
 - **Application Launcher**: [Rofi (lbonn's Wayland fork)](https://github.com/lbonn/rofi)
 - **PDF Viewer**: [Zathura](https://pwmt.org/projects/zathura/)
@@ -37,8 +37,7 @@ This repository contains my personal dotfiles for configuring various programs a
 
 ## Additional Notes
 
-- [Spicetify](https://spicetify.app/) theme is [Blackout](https://github.com/spicetify/spicetify-themes/tree/master/Blackout).
-- Custom scripts are located in the `scripts` directory and categorized for specific purposes such as notifications, workspace management, and tools.
+- Custom scripts are located in the `scripts` directory.
 - Shaders for Hyprland are available in the `shaders` folder.
 - Fonts used:
   - [JetBrains Mono Nerd Font](https://www.nerdfonts.com/font-downloads)

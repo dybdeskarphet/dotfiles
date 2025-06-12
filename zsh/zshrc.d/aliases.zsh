@@ -2,6 +2,7 @@
 ### Package Management
 alias clpac='sudo pacman -Qtdq | sudo pacman -Rns -'
 alias findpac='sudo pacman -Qs'
+alias pac='paru'
 alias inspac='paru -S'
 alias lspac='pacman -Qqe'
 alias rmpac='sudo pacman -Rs'
@@ -11,7 +12,7 @@ function uppac() {
   printf '%b\n' "\e[32m:: \e[0mImportant updates:"
   checkupdates | grep -Ff ~/.config/paru/important_packages.txt
   echo
-  paru -Syu
+  paru
 }
 alias mkps='makepkg --printsrcinfo > .SRCINFO'
 alias mkpc='makepkg -g >> PKGBUILD'
@@ -32,6 +33,17 @@ alias toclipboard='wl-copy'
 alias uefi='systemctl reboot --firmware-setup'
 alias lsserv='systemctl list-unit-files --state=enabled'
 alias sudo='sudo -v; sudo '
+alias ytgetplaylist="yt-dlp --flat-playlist --print title"
+alias df="duf"
+alias grep="rg"
+alias man="batman"
+
+function ffsend() {
+  url=$(/usr/bin/ffsend upload -q "$@")
+  qrencode -t UTF8 --foreground=000000 --background=ffffff -l M -s 20 ${url}
+  echo "Copied to clipboard: ${url}"
+  wl-copy "${url}"
+}
 
 ### Navigation and File Management
 function r() {
@@ -42,27 +54,31 @@ function r() {
   fi
   rm -f -- "$tmp"
 }
-
 alias y='r'
 alias ....='cd ../../..'
 alias ...='cd ../..'
 alias ..='cd ..'
-alias ls="lsd --color=auto"
+alias ls="lsd --color=auto --hyperlink=auto -Fl"
 alias lsdu='du -mh --max-depth 1 | sort -rh | sed "s/\.\///g"'
 alias rm="rm -i"
 alias trash-empty="gtrash prune --day 0"
 alias trash-restore="gtrash restore"
 alias trash="gtrash"
+alias find="fd"
+alias dir="ls"
 
 ### Applications with workarounds and shortcuts
 alias scr="scrcpy --keyboard=uhid --no-audio & disown && exit"
-alias tty-clock="termdown.py -f larry3d -z -Z "%H:%M""
+alias tty-clock="termdown -f larry3d -z -Z "%H:%M""
 alias watchsync="sudo watch -d grep -e Dirty: -e Writeback: /proc/meminfo"
 alias watchprog="sudo watch -n 0.1 progress"
 alias termux="adb forward tcp:8022 tcp:8022 && adb forward tcp:8080 tcp:8080 && ssh localhost -p 8022"
 alias godsays='curl "https://godsays.xyz/"'
 alias cr='cargo run'
 alias acvpip="source .venv/bin/activate"
+alias hyprpicker="hyprpicker -a"
+alias todo="nvim ~/doc/notes/todo.md"
+alias npm="echo 'Run bun'"
 
 ### Editor and Git Aliases
 alias gita='git add .'

@@ -2,7 +2,7 @@
 # If you encounter any issues, please make an issue at https://github.com/yazi-rs/schemas.
 "$schema" = "https://yazi-rs.github.io/schemas/keymap.json"
 
-[manager]
+[mgr]
 
 keymap = [
   { on = "<Esc>", run = "escape", desc = "Exit visual mode, clear selected, or cancel search" },
@@ -93,7 +93,6 @@ keymap = [
   { on = "S", run = "search rg", desc = "Search files by content using ripgrep" },
   { on = "<C-s>", run = "escape --search", desc = "Cancel the ongoing search" },
   { on = "z", run = "plugin zoxide", desc = "Jump to a directory using zoxide" },
-  { on = "Z", run = "plugin fzf", desc = "Jump to a directory or reveal a file using fzf" },
   ## Rename Operations
   { on = [
     "r",
@@ -221,21 +220,18 @@ keymap = [
   ], run = "cd ~/dl", desc = "Downloads" },
   { on = [
     "g",
+    "m",
+  ], run = "cd /run/media/skarphet/", desc = "Go to connected mediums" },
+  { on = [
+    "g",
     "<Space>",
   ], run = "cd --interactive", desc = "Go to a directory interactively" },
 
-  # Tabs
-  { on = "t", run = "tab_create --current", desc = "Create a new tab with CWD" },
+  # Touch command
+  { on = "t", run = "shell --interactive 'touch '", desc = "Create an empty file" },
 
-  { on = "1", run = "tab_switch 0", desc = "Switch to the first tab" },
-  { on = "2", run = "tab_switch 1", desc = "Switch to the second tab" },
-  { on = "3", run = "tab_switch 2", desc = "Switch to the third tab" },
-  { on = "4", run = "tab_switch 3", desc = "Switch to the fourth tab" },
-  { on = "5", run = "tab_switch 4", desc = "Switch to the fifth tab" },
-  { on = "6", run = "tab_switch 5", desc = "Switch to the sixth tab" },
-  { on = "7", run = "tab_switch 6", desc = "Switch to the seventh tab" },
-  { on = "8", run = "tab_switch 7", desc = "Switch to the eighth tab" },
-  { on = "9", run = "tab_switch 8", desc = "Switch to the ninth tab" },
+  # Tabs
+  # { on = "t", run = "tab_create --current", desc = "Create a new tab with CWD" },
 
   { on = "[", run = "tab_switch -1 --relative", desc = "Switch to the previous tab" },
   { on = "]", run = "tab_switch 1 --relative", desc = "Switch to the next tab" },
@@ -244,7 +240,7 @@ keymap = [
   { on = "}", run = "tab_swap 1", desc = "Swap current tab with next tab" },
 
   # Tasks
-  { on = "w", run = "tasks_show", desc = "Show task manager" },
+  { on = "w", run = "tasks:show", desc = "Show task manager" },
 
   # Help
   { on = "~", run = "help", desc = "Open help" },
@@ -354,6 +350,13 @@ prepend_keymap = [
     "c",
     "m",
   ], run = "plugin chmod", desc = "Chmod on selected files" },
+  { on = [
+    "g",
+    "R",
+  ], run = "plugin vcs-files", desc = "Show Git file changes" },
+  { on = [
+    "W",
+  ], run = "shell -- swww img --outputs $(hyprctl monitors -j | jq -r '.[] | select(.focused) | .name') --transition-fps 100 --transition-type center $1", desc = "Set wallpaper" },
 ]
 
 
@@ -431,7 +434,7 @@ keymap = [
   { on = "<Tab>", run = "close --submit", desc = "Submit the completion" },
   { on = "<Enter>", run = [
     "close --submit",
-    "close_input --submit",
+    "input:close --submit",
   ], desc = "Submit the completion and input" },
 
   { on = "<A-k>", run = "arrow -1", desc = "Move cursor up" },

@@ -1,0 +1,2 @@
+export QT_STYLE_OVERRIDE=kvantum
+export SLURP_ARGS="-c '#33333380' -b '00000080'"
