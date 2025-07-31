@@ -15,8 +15,8 @@ movie_mode() {
   hyprctl keyword general:gaps_in 0
   hyprctl keyword general:gaps_out 0
 
-  swww img --transition-fps 100 --outputs "HDMI-A-1" --transition-type center "$HOME"/img/wal/solid-black.png
-  swww img --transition-fps 60 --outputs "eDP-1" --transition-type center "$HOME"/img/wal/solid-black.png
+  swww img --transition-fps 100 --outputs "HDMI-A-1" --transition-type center "$HOME"/img/wal/stars.jpg
+  swww img --transition-fps 60 --outputs "eDP-1" --transition-type center "$HOME"/img/wal/stars.jpg
 
   if [ ! -f "/tmp/waybar_toggle.dat" ]; then
     waybar_toggle=1
@@ -33,8 +33,8 @@ movie_mode() {
 }
 
 normal_mode() {
-  swww img --transition-fps 100 --outputs "HDMI-A-1" --transition-type center "$HOME"/img/.wallpaper_big.png
-  swww img --transition-fps 60 --outputs "eDP-1" --transition-type center "$HOME"/img/.wallpaper_small.png
+  swww img --transition-fps 100 --outputs "HDMI-A-1" --transition-type center "$HOME"/img/.wallpaper.png
+  swww img --transition-fps 60 --outputs "eDP-1" --transition-type center "$HOME"/img/.wallpaper.png
   hyprctl reload
 
   if [ ! -f "/tmp/waybar_toggle.dat" ]; then

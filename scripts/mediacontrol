@@ -1,5 +1,13 @@
 #!/bin/bash
 
+script_name="$(basename "$0")"
+
+print_usage() {
+  printf '\n%b\n' "  \e[1mMEDIA CONTROL\e[0m"
+  printf '%b\n' "  $script_name volume <up|down|full|off|toggle>    control the volume"
+  printf '%b\n\n' "  $script_name backlight <down|up|full|off>        control the backlight"
+}
+
 mic_toggle() {
   CARD_INDEX=1
   CONTROL_NAME='Capture'
@@ -36,12 +44,13 @@ backlight)
   case $2 in
   down) brightnessctl set 10%- ;;
   up) brightnessctl set +10% ;;
-  full) xbacklight -set 100% -steps 10 ;;
-  off) xbacklight -set 1% -steps 10 ;;
+  full) brightnessctl set 100% ;;
+  off) brightnessctl set 1% 10 ;;
   esac
   ;;
 
 togglemic)
   mic_toggle
   ;;
+*) print_usage ;;
 esac

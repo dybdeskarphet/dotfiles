@@ -20,7 +20,6 @@ alias mkpc='makepkg -g >> PKGBUILD'
 ### System and Utility Commands
 alias cal="LANG=tr_TR.UTF-8 cal"
 alias esupport='ESUPPORT=$(sudo dmidecode -t system | grep Serial | sed "s/.*:\ //g"); echo "$ESUPPORT" | wl-copy; echo "Copied to clipboard: $ESUPPORT"'
-alias grep='grep --color=auto'
 alias help="man zsh"
 alias hibernate='systemctl hibernate'
 alias ixio="curl -F 'f:1=<-' ix.io"
@@ -50,10 +49,11 @@ function r() {
   local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
   yazi "$@" --cwd-file="$tmp"
   if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-    builtin cd -- "$cwd"
+    cd -- "$cwd"
   fi
   rm -f -- "$tmp"
 }
+
 alias y='r'
 alias ....='cd ../../..'
 alias ...='cd ../..'
@@ -69,7 +69,7 @@ alias dir="ls"
 
 ### Applications with workarounds and shortcuts
 alias scr="scrcpy --keyboard=uhid --no-audio & disown && exit"
-alias tty-clock="termdown -f larry3d -z -Z "%H:%M""
+alias tty-clock="termdown -f cosmic -z -Z "%H:%M""
 alias watchsync="sudo watch -d grep -e Dirty: -e Writeback: /proc/meminfo"
 alias watchprog="sudo watch -n 0.1 progress"
 alias termux="adb forward tcp:8022 tcp:8022 && adb forward tcp:8080 tcp:8080 && ssh localhost -p 8022"

@@ -17,7 +17,7 @@ This repository contains my personal dotfiles for configuring various programs a
 
 ## Screenshots
 
-<img src="screenshot1.png" width="384"> <img src="screenshot2.png" width="384">
+<img src="ss1.png" width="384"> <img src="ss2.png" width="384">
 
 ## Installation
 
@@ -38,6 +38,7 @@ This repository contains my personal dotfiles for configuring various programs a
 - Fonts used:
   - [JetBrains Mono Nerd Font](https://www.nerdfonts.com/font-downloads)
   - [Mulish](https://fonts.google.com/specimen/Mulish)
+  - [Kiwi soda](https://www.dafont.com/kiwisoda.font)
 
 ## License
 

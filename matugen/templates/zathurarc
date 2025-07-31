@@ -1,0 +1,56 @@
+" -----------------------------------------------------------------------------
+" Zathura settings
+" -----------------------------------------------------------------------------
+
+" Colors
+set default-bg              "{{colors.surface_container_low.default.rgba | set_alpha: 1.0}}"
+set default-fg              "{{colors.on_background.default.hex}}"
+
+set statusbar-bg            "{{colors.surface_container_low.default.hex}}"
+set statusbar-fg            "{{colors.primary.default.hex}}"
+
+set inputbar-bg             "{{colors.surface_container_low.default.hex}}"
+set inputbar-fg             "{{colors.primary.default.hex}}"
+
+set notification-error-bg   "{{colors.on_error.default.hex}}"
+set notification-error-fg   "{{colors.error.default.hex}}"
+
+set notification-warning-bg "{{colors.primary_fixed.default.hex}}"
+set notification-warning-fg "{{colors.error_container.default.hex}}"
+
+set highlight-color         "{{colors.primary_fixed.default.hex}}"
+set highlight-active-color  "{{colors.primary_fixed_dim.default.hex}}"
+
+set completion-highlight-fg "{{colors.surface_container_low.default.hex}}"
+set completion-highlight-bg "{{colors.primary.default.hex}}"
+
+set completion-bg           "{{colors.surface_container_low.default.hex}}"
+set completion-fg           "{{colors.primary.default.hex}}"
+
+set notification-bg         "{{colors.surface_container_low.default.hex}}"
+set notification-fg         "{{colors.primary.default.hex}}"
+
+set recolor                 "true"
+set recolor-lightcolor      "{{colors.surface_container_low.default.rgba | set_alpha: 1.0}}"
+set recolor-darkcolor       "{{colors.primary_fixed.default.hex}}"
+set recolor-reverse-video   "true"
+set recolor-keephue         "true"
+
+" Clipboard
+set selection-clipboard clipboard
+
+" Search
+set incremental-search true
+set search-hadjust true
+
+" Autoadjust
+set adjust-open width
+
+" Typography
+set font "FiraCode Nerd Font 12"
+
+" Mappings
+
+unmap f
+map f toggle_fullscreen
+map [fullscreen] f toggle_fullscreen

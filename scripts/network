@@ -1,6 +1,6 @@
 #!/bin/sh
 
-bundle_name="$(basename "$0")"
+script_name="$(basename "$0")"
 
 list_passwords() {
   RED='\033[0;31m'
@@ -45,9 +45,10 @@ list_connected_devices() {
 
 print_usage() {
   printf '\n%b\n' "  \e[1mNETWORK TOOLS\e[0m"
-  printf '%b\n' "  $bundle_name {-L --list-connected}    list connected devices on the current network"
-  printf '%b\n\n' "  $bundle_name {-l --list-passwords}    list ssids and passwords from iwd"
+  printf '%b\n' "  $script_name {-L --list-connected}    list connected devices on the current network"
+  printf '%b\n\n' "  $script_name {-l --list-passwords}    list ssids and passwords from iwd"
 }
+
 case $1 in
 --list-connected | -L) list_connected_devices ;;
 --list-passwords | -l) list_passwords ;;

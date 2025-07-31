@@ -27,7 +27,7 @@ _absolute_files () {
   _files "$@";
 }
 
-export PS1="%B%c %F{yellow}%# %b%f "
+export PS1="%B%c %F{cyan}%# %b%f "
 export PS2="%F{012}~%f "
 export RPROMPT='${vcs_info_msg_0_} %(?,%F{green}%f,%F{yellow}%?%f %F{red}%f) %D{%K:%M:%S}'
 
@@ -41,6 +41,10 @@ ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
 source /usr/share/zsh/plugins/zsh-fzf-plugin/fzf.plugin.zsh
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
+zbell_duration=10
+zbell_ignore=($EDITOR $PAGER r y todo nvim vim vi)
+source $ZDOTDIR/plugins/zbell.plugin.zsh
+source $ZDOTDIR/plugins/zoxide.plugin.zsh
 
 ## Additional Configurations
 setopt correct

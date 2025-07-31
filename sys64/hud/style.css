@@ -1,11 +1,13 @@
+@import url("./colors.css");
+
 #syshud {
   background: transparent;
 }
 
 #syshud .box_layout {
-  background: rgba(12, 15, 10, 0.7);
+  background: alpha(@surface_container, 0.7);
   border-radius: 25px;
-  border: 1.5px solid rgba(39, 43, 37, 0.7);
+  border: 1px solid @borders;
   margin: 10px;
 }
 
@@ -14,7 +16,7 @@
   padding: 0px;
 }
 #syshud label {
-  color: #f2f5eb;
+  color: alpha(@on_background, 0.9);
 }
 
 /* Horizontal layout */
@@ -24,14 +26,14 @@
 }
 #syshud scale.horizontal trough {
   border-radius: 3px;
-  background: rgba(12, 15, 10, 0.7);
+  background: alpha(@primary, 0.8);
   min-height: 5px;
   padding: 0px;
 }
 #syshud scale.horizontal highlight {
   border-radius: 3px;
   min-height: 5px;
-  background: rgba(242, 245, 235, 0.9);
+  background: alpha(@on_background, 0.9);
   margin: 0px;
 }
 #syshud scale.horizontal slider {
@@ -49,17 +51,16 @@
 }
 #syshud scale.vertical trough {
   border-radius: 3px;
-  background: alpha(currentColor, 0.1);
+  background: alpha(@primary, 0.8)
   min-width: 5px;
   padding: 0px;
 }
 #syshud scale.vertical highlight {
   border-radius: 3px;
   min-width: 5px;
-  background: alpha(@theme_fg_color, 0.75);
+  background: alpha(@on_background, 0.9);
   margin: 0px;
 }
-
 #syshud scale.vertical slider {
   margin: 0px;
   background: transparent;

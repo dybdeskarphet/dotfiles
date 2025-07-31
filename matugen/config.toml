@@ -1,0 +1,47 @@
+[config.wallpaper]
+command = "swww"
+arguments = ["img", "--transition-type", "center"]
+set = true
+
+[templates.hyprland]
+input_path = './templates/hyprland.conf'
+output_path = '~/.config/hypr/hyprland/colors.conf'
+post_hook = 'hyprctl reload'
+
+[templates.waybar-style]
+input_path = './templates/colors.css'
+output_path = '~/.config/waybar/colors.css'
+
+[templates.waybar-config]
+input_path = './templates/waybar.jsonc'
+output_path = '~/.config/waybar/config.jsonc'
+post_hook = 'pkill -SIGUSR2 waybar'
+
+[templates.dunst]
+input_path = './templates/dunstrc.ini'
+output_path = '~/.config/dunst/config.ini'
+post_hook = 'dunstctl reload'
+
+[templates.rofi]
+input_path = './templates/rofi.rasi'
+output_path = '~/.local/share/rofi/themes/basic_launcher/colors.rasi'
+
+[templates.rofi-launchpad]
+input_path = './templates/rofi.rasi'
+output_path = '~/.local/share/rofi/themes/launchpad/colors.rasi'
+
+[templates.plaintext]
+input_path = './templates/current_colors.txt'
+output_path = '~/.config/matugen/colors.txt'
+
+[templates.nwgdock]
+input_path = './templates/colors.css'
+output_path = '~/.config/nwg-dock-hyprland/colors.css'
+
+[templates.zathura]
+input_path = './templates/zathurarc'
+output_path = '~/.config/zathura/zathurarc'
+
+[templates.syshud]
+input_path = './templates/colors.css'
+output_path = '~/.config/sys64/hud/colors.css'

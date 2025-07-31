@@ -50,11 +50,16 @@ toggle_caps2esc() {
   fi
 }
 
+show_history() {
+  app2unit -- footclient -T ntfyhistory -a ntfyhistory zsh -c "dunstctl history | jq '.data[0] | map({app: .appname.data, summary: .summary.data, body: .body.data})' | tw --format json"
+}
+
 print_usage() {
   printf '\n%b\n' "  \e[1mSCRIPTS FOR SHORTCUT KEYS\e[0m"
   printf '%b\n' "  $script_name {-t --waybar-toggle}                                  toggle waybar"
   printf '%b\n' "  $script_name {-T --tablet-toggle}                                  changes the mode of graphics tablet"
   printf '%b\n' "  $script_name {-c --toggle-caps2esc}                                toggles caps lock and escape keys"
+  printf '%b\n' "  $script_name {-n --show-ntfy-history}                              show notification history"
   printf '%b\n\n' "  $script_name {-d --do-not-disturb}                                 toggle dnd"
   exit 1
 }
@@ -64,5 +69,6 @@ case $1 in
 --waybar-toggle | -t) waybar_toggle ;;
 --do-not-disturb | -d) do_not_disturb_toggle ;;
 --toggle-caps2esc | -c) toggle_caps2esc ;;
+--show-ntfy-history | -n) show_history ;;
 *) print_usage ;;
 esac

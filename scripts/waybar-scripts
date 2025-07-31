@@ -2,16 +2,14 @@
 termwin="footclient zsh -c"
 
 sync_icon() {
-  total="$(cat /tmp/total_backup.dat 2>/dev/null)"
-  current="$(cat /tmp/current_backup.dat 2>/dev/null)"
+  total="$(easyclone get-status --show-total 2>/dev/null)"
+  current="$(easyclone get-status --all 2>/dev/null | jq '.finished_path_count' 2>/dev/null)"
   # uncomment this if you want to show it as a percentage
   # percentage="$(echo "$current/$total*100" | bc -l | cut -d '.' -f 1)%"
   if systemctl --user is-active --quiet backupDrive.service; then
     # uncomment this if you want to show it as a percentage
     # echo "%{F$accent}󰘿  %{F$foreground}$percentage"
-    echo "󰘿  <span foreground=\"#f9f3e5\">${current:=0}</span> <span foreground=\"#ede3bc\">/</span> <span foreground=\"#f9f3e5\">${total}</span>"
-  elif [[ -f /tmp/not-recognized.backup ]]; then
-    echo "󰅤"
+    echo "󰘿  <span foreground=\"#e5e1e9\">${current:=0}</span> <span foreground=\"#c8bfff\">/</span> <span foreground=\"#e5e1e9\">${total}</span>"
   else
     echo
   fi
@@ -64,7 +62,7 @@ check_updates() {
   updates=$((updates_arch + updates_aur))
 
   if [ "$updates" -gt 0 ]; then
-    echo "󰏗 <span foreground=\"#f9f3e5\">$updates</span>"
+    echo "󰏗 <span foreground=\"#e5e1e9\">$updates</span>"
   else
     echo ""
   fi
@@ -79,7 +77,7 @@ copy_date() {
 }
 
 gpu_usage() {
-  echo "󰹑 <span foreground=\"#f9f3e5\">$(cat /sys/class/hwmon/hwmon3/device/gpu_busy_percent)%</span>"
+  echo "󰹑 <span foreground=\"#e5e1e9\">$(cat /sys/class/hwmon/hwmon3/device/gpu_busy_percent)%</span>"
 
 }
 
@@ -148,6 +146,8 @@ sync_icon_click) $termwin "watch -c -n 0.5 tail -n 50 $HOME/.cache/logs/backupDr
 gpu_click) $termwin "radeontop; zsh" ;;
 copy_date) copy_date ;;
 wifi_click) wifi_click ;;
+nethogs_command) nethogs_command ;;
+impala_command) impala_command ;;
 gpu_usage) gpu_usage ;;
 htop_cpu) $termwin "htop -t --sort-key PERCENT_CPU" ;;
 htop_mem) $termwin "htop -t --sort-key PERCENT_MEM" ;;

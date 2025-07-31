@@ -1,0 +1,61 @@
+#!/bin/sh
+
+script_name="$(basename $0)"
+
+run() {
+  # Check for --refresh flag
+  REFRESH=false
+  if [ "$1" = "--refresh" ]; then
+    REFRESH=true
+  else
+    echo "'$script_name --refresh' to refresh the cached IP address."
+  fi
+
+  # Refresh the IP if needed
+  if [ "$REFRESH" = true ] || [ ! -f "$IP_FILE" ]; then
+    echo "[*] Scanning network to find device IP..."
+    BROADCAST_IP="$(ifconfig | grep -oP "(?<=broadcast )(\d{1,3}\.){3}\d{1,3}" | head -n1)"
+    echo "Broadcast IP: $BROADCAST_IP"
+    NMAP_OUTPUT="$(sudo nmap -sP "$BROADCAST_IP/24")"
+
+    IP=$(
+      echo "$NMAP_OUTPUT" | grep -B 2 "$TARGET_MAC" | grep -oP '\b(?:\d{1,3}\.){3}\d{1,3}\b' | head -n1
+    )
+
+    if [ -z "$IP" ]; then
+      echo ":( Could not find IP for MAC $TARGET_MAC"
+      exit 1
+    fi
+
+    echo "[+] Found device at IP: $IP"
+    echo "$IP" >"$IP_FILE"
+  else
+    IP=$(cat "$IP_FILE")
+    echo "[*] Using cached IP from $IP_FILE: $IP"
+  fi
+
+  echo "[*] Connecting to $USERNAME@$IP via SSH..."
+  sshpass -p "$PASSWORD" ssh -t -p $PORT -o StrictHostKeyChecking=no "$USERNAME@$IP" "export TERM=xterm-256color; exec $SSH_SHELL -i"
+}
+
+print_usage() {
+  printf '\n%b\n' "  \e[1mAUTOSSH\e[0m"
+  printf '%b\n' "  $script_name something"
+  printf '%b\n' "  $script_name something"
+  printf '%b\n\n' "  $script_name something"
+}
+
+case $1 in
+"something")
+  TARGET_MAC=""
+  USERNAME=""
+  PASSWORD=""
+  IP_FILE="$HOME/.cache/autossh_ip_$USERNAME.txt"
+  PORT="22"
+  SSH_SHELL="zsh"
+  run $2
+  ;;
+*)
+  print_usage
+  ;;
+esac

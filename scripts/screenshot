@@ -10,11 +10,12 @@ SS_DIR.mkdir(parents=True, exist_ok=True)
 DEST = str(SS_DIR / (datetime.now().strftime("%Y-%m-%d_%H.%M.%S") + ".png"))
 APP_NAME="Screenshot"
 
-def notify(kind: str, image_path: str = ""):
+def notify(kind: str, image_path: str = "", custom_text: str = ""):
     title, message = {
         "cheese": ("screenshot", "selection captured successfully."),
         "qr": ("qr code detected", "copied to clipboard."),
-        "error": ("screenshot failed", "something went wrong while taking the screenshot."),
+        "ocr": ("text detected and copied to clipboard", custom_text),
+        "error": ("screenshot failed", "something went wrong while taking the screenshot: error"),
     }.get(kind, ("Info", kind))
 
     base_cmd = [
@@ -46,6 +47,21 @@ def process_screenshot(image_path: str):
     else:
         copy(image_path)
         notify("cheese", image_path)
+
+def process_ocr(image_path: str):
+    result = subprocess.run(["tesseract", str(image_path), "stdout"],
+                            stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
+                            text=True)
+
+    processed_stdout = result.stdout.strip()
+
+    if processed_stdout:
+        _ = subprocess.run(["wl-copy"], input=result.stdout.strip(), text=True)
+        notify("ocr", image_path, processed_stdout)
+    else:
+        copy(image_path)
+        notify("cheese", image_path)
+
 
 def selection_screenshot():
     try:
@@ -90,17 +106,31 @@ def window_screenshot():
         notify("error")
         raise e
 
+def ocr_screenshot():
+    try:
+        region = subprocess.check_output(["slurp"], text=True).strip()
+        _ = subprocess.run(["grim", "-g", region, DEST], check=True)
+        process_ocr(DEST)
+    except subprocess.CalledProcessError:
+        pass
+    except Exception as e:
+        notify("error")
+        raise e
+
 def main():
     if len(sys.argv) < 2:
-        print("Usage: script.py [select|full|window]")
+        print("Usage: screenshot [select|full|window|ocr]")
         return
     mode = sys.argv[1]
+
     if mode == "select":
         selection_screenshot()
     elif mode == "full":
         full_screenshot()
     elif mode == "window":
         window_screenshot()
+    elif mode == "ocr":
+        ocr_screenshot()
     else:
         print("Unknown mode:", mode)
 
