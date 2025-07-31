@@ -1,0 +1,5 @@
+#!/bin/sh
+ROFI="rofi -show run -show-icons -theme ~/.local/share/rofi/themes/launchpad/launchpad.rasi"
+pkill nwg-dock-hyprla &
+app2unit -- nwg-dock-hyprland -d -m -o "HDMI-A-1" -hl "top" -i 32 -w 5 -mb 10 -ml 10 -mr 10 -s 'style.css' -c "$ROFI" &
+app2unit -- nwg-dock-hyprland -d -m -o "eDP-1" -hl "top" -i 32 -w 5 -mb 10 -ml 10 -mr 10 -s 'style.css' -c "$ROFI" &
