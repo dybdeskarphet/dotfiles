@@ -1,0 +1,17 @@
+/*******************************************************************************
+@import "colors.rasi"
+ * ROUNDED THEME FOR ROFI 
+ * User                 : LR-Tech               
+ * Theme Repo           : https://github.com/lr-tech/rofi-themes-collection
+ *******************************************************************************/
+
+* {
+    fg2: #e5dff9;
+    font: "proportional_font SemiBold 13";
+    colorbg: #48454fcc;
+    textfg: #e5e1e9;
+    transparentcolorbg: #c9c3dc4d;
+    borderfg:    #c9c3dc4d;
+    windowbg:    #1c1b20cc;
+}
+
