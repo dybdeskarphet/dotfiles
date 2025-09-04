@@ -4,7 +4,7 @@ This repository contains my personal dotfiles for configuring various programs a
 
 ## Programs and Tools
 
-- **Wayland Compositor**: [Hyprland](https://yalter.github.io/niri/)
+- **Wayland Compositor**: [niri](https://yalter.github.io/niri/)
 - **Terminal**: [foot](https://codeberg.org/dnkl/foot)
 - **Notification Daemon**: [Dunst](https://dunst-project.org/)
 - **Wallpaper Setter**: [swww](https://github.com/LGFae/swww)
