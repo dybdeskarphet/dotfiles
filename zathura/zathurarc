@@ -3,36 +3,36 @@
 " -----------------------------------------------------------------------------
 
 " Colors
-set default-bg              "rgba(28, 27, 32, 1.0)"
-set default-fg              "#e5e1e9"
+set default-bg              "#000000"
+set default-fg              "#f1dfda"
 
-set statusbar-bg            "#1c1b20"
-set statusbar-fg            "#c8bfff"
+set statusbar-bg            "#231917"
+set statusbar-fg            "#ffb59e"
 
-set inputbar-bg             "#1c1b20"
-set inputbar-fg             "#c8bfff"
+set inputbar-bg             "#231917"
+set inputbar-fg             "#ffb59e"
 
 set notification-error-bg   "#690005"
 set notification-error-fg   "#ffb4ab"
 
-set notification-warning-bg "#e5deff"
+set notification-warning-bg "#ffdbd0"
 set notification-warning-fg "#93000a"
 
-set highlight-color         "#e5deff"
-set highlight-active-color  "#c8bfff"
+set highlight-color         "#ffdbd0"
+set highlight-active-color  "#ffb59e"
 
-set completion-highlight-fg "#1c1b20"
-set completion-highlight-bg "#c8bfff"
+set completion-highlight-fg "#231917"
+set completion-highlight-bg "#ffb59e"
 
-set completion-bg           "#1c1b20"
-set completion-fg           "#c8bfff"
+set completion-bg           "#231917"
+set completion-fg           "#ffb59e"
 
-set notification-bg         "#1c1b20"
-set notification-fg         "#c8bfff"
+set notification-bg         "#231917"
+set notification-fg         "#ffb59e"
 
 set recolor                 "true"
-set recolor-lightcolor      "rgba(28, 27, 32, 1.0)"
-set recolor-darkcolor       "#e5deff"
+set recolor-lightcolor      "rgba(35, 25, 23, 1.0)"
+set recolor-darkcolor       "#ffdbd0"
 set recolor-reverse-video   "true"
 set recolor-keephue         "true"
 
@@ -47,7 +47,7 @@ set search-hadjust true
 set adjust-open width
 
 " Typography
-set font "FiraCode Nerd Font 12"
+set font "JetBrainsMono Nerd Font Mono 10"
 
 " Mappings
 

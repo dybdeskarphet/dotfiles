@@ -31,28 +31,25 @@ inputbar {
     children:   [ prompt, entry ];
     margin: 0px 0px 8px 0px;
     border: 2.5px;
-}
-
-prompt {
-    border-radius: 8px;
-    font:   "proportional_font Bold 13";
-    vertical-align: 0.5;
-    text-color: @fg2;
-    background-color:   @colorbg;
-    border: 1.0px;
-    border-color: @borderfg;
-    border-radius:  12px;
-    margin: 0px 8px 0px 0px;
-    padding: 10px;
-}
-
-entry {
     background-color:   @windowbg;
     border: 0px;
     border: 2.5px;
     border-color: @borderfg;
     border-radius:  12px;
+    vertical-align: 0.5;
+}
+
+prompt {
+    font:   "proportional_font Bold 13";
+    text-color: @fg2;
+    padding: 13px 4px 13px 16px;
+    vertical-align: 0.5;
+}
+
+entry {
+    border: 0px;
     padding: 13px;
+    vertical-align: 0.5;
 }
 
 message {

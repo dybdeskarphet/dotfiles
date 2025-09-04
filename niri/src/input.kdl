@@ -1,0 +1,25 @@
+input {
+    keyboard {
+        xkb {
+            layout "tr,es"
+            options "caps:swapescape,altwin:swap_lalt_lwin,grp:ctrls_toggle"
+        }
+        numlock
+    }
+    touchpad {
+        tap
+        accel-profile "adaptive"
+        scroll-method "two-finger"
+    }
+    mouse {
+        accel-profile "adaptive"
+    }
+
+    tablet {
+        map-to-output "HDMI-A-1"
+        // calibration-matrix 1.0 0.0 0.0 0.0 1.0 0.0
+    }
+
+    focus-follows-mouse
+    warp-mouse-to-focus
+}

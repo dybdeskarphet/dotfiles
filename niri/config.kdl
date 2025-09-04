@@ -1,0 +1,320 @@
+prefer-no-csd
+
+environment {
+  CLUTTER_BACKEND "wayland"
+  ELECTRON_OZONE_PLATFORM_HINT "auto"
+  ELM_DISPLAY "wl"
+  GDK_BACKEND "wayland"
+  NO_AT_BRIDGE "1"
+  OZONE_PLATFORM "wayland"
+  QT_QPA_PLATFORM "wayland"
+  QT_STYLE_OVERRIDE "qt6ct-style"
+  QT_WAYLAND_DISABLE_WINDOWDECORATION "1"
+  SDL_VIDEODRIVER "wayland"
+  XDG_CURRENT_DESKTOP "niri"
+  XDG_SESSION_DESKTOP "niri"
+  XDG_SESSION_TYPE "wayland"
+  QT_STYLE_OVERRIDE "kvantum"
+}
+
+screenshot-path "~/img/ss/null/%Y-%m-%d_%H.%M.%S.png"
+spawn-sh-at-startup "~/.config/niri/src/autostart.sh"
+
+output "eDP-1" {
+    mode "1920x1080@60.001"
+    scale 1
+    transform "normal"
+    position x=1920 y=0
+}
+
+output "HDMI-A-1" {
+    focus-at-startup
+    mode "1920x1080@99.999"
+    scale 1
+    transform "normal"
+    position x=0 y=0
+}
+
+input {
+    keyboard {
+        xkb {
+            layout "tr,es"
+            options "caps:swapescape,altwin:swap_lalt_lwin,grp:ctrls_toggle"
+        }
+        numlock
+    }
+    touchpad {
+        tap
+        accel-profile "adaptive"
+        scroll-method "two-finger"
+    }
+    mouse {
+        accel-profile "adaptive"
+    }
+
+    tablet {
+        map-to-output "HDMI-A-1"
+        // calibration-matrix 1.0 0.0 0.0 0.0 1.0 0.0
+    }
+
+    focus-follows-mouse
+    warp-mouse-to-focus
+}
+
+binds {
+    Mod+Return hotkey-overlay-title="Open the terminal" { spawn "footclient"; }
+    Mod+P hotkey-overlay-title="Open application launcher" { spawn "rofi" "-show" "run" "-show-icons" "-display-run" "   run"; }
+    Mod+W hotkey-overlay-title="Open browser" { spawn "brave"; }
+    Mod+Escape hotkey-overlay-title="Open quick menu" { spawn "quickmenu"; }
+    Mod+Shift+V hotkey-overlay-title="Open clipboard manager" { spawn "footclient" "-a" "clipse" "-T" "clipse" "clipse"; }
+
+    Mod+O repeat=false { toggle-overview; }
+    Mod+Shift+Escape repeat=false { show-hotkey-overlay; }
+    Mod+Q { close-window; }
+
+    Mod+H     { focus-column-left; }
+    Mod+U     { focus-window-down; }
+    Mod+I     { focus-window-up; }
+    Mod+L     { focus-column-right; }
+
+    MouseForward     { focus-column-right; }
+    MouseBack    { focus-column-left; }
+
+    Mod+Shift+H     { move-column-left-or-to-monitor-left; }
+    Mod+Shift+L     { move-column-right-or-to-monitor-right; }
+
+    Mod+Alt+H { set-column-width "-10%"; }
+    Mod+Alt+L { set-column-width "+10%"; }
+
+    Mod+J              { focus-workspace-down; }
+    Mod+K              { focus-workspace-up; }
+    Mod+Shift+J         { move-column-to-workspace-down; }
+    Mod+Shift+K         { move-column-to-workspace-up; }
+    Mod+Shift+U         { move-workspace-down; }
+    Mod+Shift+I         { move-workspace-up; }
+
+    Mod+N  { focus-monitor-left; }
+    Mod+M { focus-monitor-right; }
+    Mod+Shift+N     { move-column-to-monitor-left; }
+    Mod+Shift+M     { move-column-to-monitor-right; }
+
+    Mod+S       { toggle-window-floating; }
+
+    Mod+WheelScrollDown      cooldown-ms=150 { focus-workspace-down; }
+    Mod+WheelScrollUp        cooldown-ms=150 { focus-workspace-up; }
+    Mod+Shift+WheelScrollDown      { focus-column-right; }
+    Mod+Shift+WheelScrollUp        { focus-column-left; }
+
+    Mod+TouchpadScrollDown { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.02-"; }
+    Mod+TouchpadScrollUp   { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.02+"; }
+
+    Mod+1 { focus-workspace 1; }
+    Mod+2 { focus-workspace 2; }
+    Mod+3 { focus-workspace 3; }
+    Mod+4 { focus-workspace 4; }
+    Mod+5 { focus-workspace 5; }
+    Mod+6 { focus-workspace 6; }
+    Mod+7 { focus-workspace 7; }
+    Mod+8 { focus-workspace 8; }
+    Mod+9 { focus-workspace 9; }
+
+    Mod+Shift+1 { move-column-to-workspace 1; }
+    Mod+Shift+2 { move-column-to-workspace 2; }
+    Mod+Shift+3 { move-column-to-workspace 3; }
+    Mod+Shift+4 { move-column-to-workspace 4; }
+    Mod+Shift+5 { move-column-to-workspace 5; }
+    Mod+Shift+6 { move-column-to-workspace 6; }
+    Mod+Shift+7 { move-column-to-workspace 7; }
+    Mod+Shift+8 { move-column-to-workspace 8; }
+    Mod+Shift+9 { move-column-to-workspace 9; }
+
+    // WARN: This works but somehow config validator gives an error
+    // Alt+Tab { focus-column-previous; }
+    // Alt+Tab { focus-workspace-previous; }
+
+    Mod+Comma  { consume-window-into-column; }
+    Mod+Period { expel-window-from-column; }
+
+    Mod+R { switch-preset-column-width; }
+    Mod+Shift+R { switch-preset-window-height; }
+    Mod+Ctrl+R { reset-window-height; }
+    Mod+F { maximize-column; }
+    Mod+Shift+F { fullscreen-window; }
+    Mod+Ctrl+F { expand-column-to-available-width; }
+    Mod+Shift+C { center-column; }
+    Mod+Ctrl+Shift+C { center-visible-columns; }
+
+    Alt+Shift+S { spawn "screenshot" "select"; }
+    Mod+Shift+S { spawn "screenshot" "full"; }
+    Mod+Alt+Shift+S { spawn "screenshot" "window"; }
+    Mod+Shift+O { spawn "screenshot" "ocr"; }
+
+    // FN Keys
+    XF86AudioLowerVolume { spawn "mediacontrol" "volume" "down"; }
+    XF86AudioRaiseVolume { spawn "mediacontrol" "volume" "up"; }
+    XF86AudioMute { spawn "mediacontrol" "volume" "toggle"; }
+    XF86AudioPlay { spawn "playerctl" "play-pause"; }
+    XF86AudioStop { spawn "playerctl" "stop"; }
+    XF86AudioNext { spawn "playerctl" "next"; }
+    XF86AudioPrev { spawn "playerctl" "previous"; }
+    XF86MonBrightnessUp { spawn "mediacontrol" "backlight" "up"; }
+    XF86MonBrightnessDown { spawn "mediacontrol" "backlight" "down"; }
+    Mod+XF86MonBrightnessUp { spawn "mediacontrol" "backlight" "full"; }
+    Mod+XF86MonBrightnessDown { spawn "mediacontrol" "backlight" "off"; }
+    XF86AudioMicMute { spawn "mediacontrol" "togglemic"; }
+    XF86HomePage { spawn "mediacontrol" "togglemic"; }
+    XF86Calculator { spawn "footclient" "-T" "qalc" "-a" "qalc" "qalc"; }
+    XF86Launch4 { spawn "shortcuts" "-t"; }
+    XF86Macro27 { spawn "dunstify" "-r" "134897" "-a" "Razer" "-i" "keyboard" "brightness increased"; }
+    XF86Macro28 { spawn "dunstify" "-r" "134897" "-a" "Razer" "-i" "keyboard" "brightness decreased"; }
+
+    // TKL Extras
+    Mod+C { spawn "footclient" "-T" "qalc" "-a" "qalc" "qalc"; }
+    ISO_Level3_Shift+K { spawn "mediacontrol" "togglemic"; }
+
+    Mod+Space { spawn "dunstctl" "close"; }
+    Mod+b { spawn "shortcuts" "-n"; }
+    Mod+shift+b { spawn "shortcuts" "-d"; }
+    Mod+Ctrl+Shift+Alt+T { spawn "shortcuts" "-T"; }
+} 
+
+overview {
+  backdrop-color "transparent"
+}
+
+cursor {
+    xcursor-theme "Adwaita"
+    xcursor-size 24
+}
+
+hotkey-overlay {
+  skip-at-startup
+}
+
+layout {
+    gaps 3
+    background-color "transparent"
+    center-focused-column "on-overflow"
+    preset-column-widths {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+    }
+
+    default-column-width { proportion 0.5; }
+
+    border {
+        width 2
+        active-color "#ffb59e"
+        inactive-color "#5d4037"
+        urgent-color "#93000a"
+    }
+
+    focus-ring {
+      off
+    }
+
+    struts {
+        left 0
+        right 0
+        top 0
+        bottom 0
+    }
+    insert-hint {
+        color "#ffb59eaa"
+    }
+}
+
+animations {
+    // Uncomment to turn off all animations.
+    // You can also put "off" into each individual animation to disable it.
+    // off
+
+    // Slow down all animations by this factor. Values below 1 speed them up instead.
+    // slowdown 3.0
+
+    // Individual animations.
+
+    workspace-switch {
+        spring damping-ratio=1.0 stiffness=1000 epsilon=0.0001
+    }
+  
+    window-open {
+        duration-ms 150
+        curve "ease-out-expo"
+    }
+
+    window-close {
+        duration-ms 150
+        curve "ease-out-quad"
+    }
+
+    horizontal-view-movement {
+        spring damping-ratio=1.0 stiffness=800 epsilon=0.0001
+    }
+
+    window-movement {
+        spring damping-ratio=1.0 stiffness=800 epsilon=0.0001
+    }
+
+    window-resize {
+        spring damping-ratio=1.0 stiffness=800 epsilon=0.0001
+    }
+
+    config-notification-open-close {
+        spring damping-ratio=0.6 stiffness=1000 epsilon=0.001
+    }
+
+    screenshot-ui-open {
+        duration-ms 200
+        curve "ease-out-quad"
+    }
+
+    overview-open-close {
+        spring damping-ratio=1.0 stiffness=800 epsilon=0.0001
+    }
+}
+
+window-rule {
+    match app-id=r#"^$"#
+    match title=r#"^$"#
+    open-floating true
+    open-focused false
+}
+
+window-rule {
+    match app-id=r#"clipse$"#
+    open-floating true
+}
+
+window-rule {
+  geometry-corner-radius 5
+  clip-to-geometry true
+}
+
+window-rule {
+    match app-id=r#"qalc$"#
+    open-floating true
+}
+
+window-rule {
+    match app-id=r#"ntfyhistory$"#
+    open-floating true
+}
+
+
+layer-rule {
+    match namespace="^wallpaper$"
+    place-within-backdrop true
+}
+
+window-rule {
+    match app-id=r#"^org\.keepassxc\.KeePassXC$"#
+    match app-id=r#"^org\.gnome\.World\.Secrets$"#
+
+    block-out-from "screen-capture"
+
+    // Use this instead if you want them visible on third-party screenshot tools.
+    // block-out-from "screencast"
+}
+

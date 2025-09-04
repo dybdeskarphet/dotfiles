@@ -1,22 +1,10 @@
 #!/bin/bash
 
-selection=$(echo -e "󱐋  zen mode\n󰎁  movie mode\n  normal mode\n󰋰  grayscale mode\n󰴅  blue light filter mode\n󰉦  vibrant mode" | rofi -dmenu -theme ~/.local/share/rofi/themes/basic_launcher/rounded_with_listview.rasi -p "    modes")
-
-zen_mode() {
-  hyprctl keyword decoration:rounding 0
-  hyprctl keyword general:border_size 0
-  hyprctl keyword general:gaps_in 0
-  hyprctl keyword general:gaps_out 0
-}
+selection=$(echo -e "󰎁  movie mode\n  normal mode" | rofi -dmenu -theme ~/.local/share/rofi/themes/basic_launcher/rounded_with_listview.rasi -p "    modes")
 
 movie_mode() {
-  hyprctl keyword decoration:rounding 0
-  hyprctl keyword general:border_size 0
-  hyprctl keyword general:gaps_in 0
-  hyprctl keyword general:gaps_out 0
-
-  swww img --transition-fps 100 --outputs "HDMI-A-1" --transition-type center "$HOME"/img/wal/stars.jpg
-  swww img --transition-fps 60 --outputs "eDP-1" --transition-type center "$HOME"/img/wal/stars.jpg
+  ~/.config/niri/companion/ipcext.py replace "width 2" "width 0"
+  ~/.config/niri/companion/ipcext.py replace "gaps 3" "gaps 0"
 
   if [ ! -f "/tmp/waybar_toggle.dat" ]; then
     waybar_toggle=1
@@ -33,9 +21,7 @@ movie_mode() {
 }
 
 normal_mode() {
-  swww img --transition-fps 100 --outputs "HDMI-A-1" --transition-type center "$HOME"/img/.wallpaper.png
-  swww img --transition-fps 60 --outputs "eDP-1" --transition-type center "$HOME"/img/.wallpaper.png
-  hyprctl reload
+  ~/.config/niri/companion/genconfig.py generate
 
   if [ ! -f "/tmp/waybar_toggle.dat" ]; then
     waybar_toggle=1
@@ -51,39 +37,11 @@ normal_mode() {
   fi
 }
 
-grayscale_mode() {
-  # Apply grayscale shader
-  hyprctl keyword decoration:blur false
-  hyprctl keyword decoration:screen_shader "$HOME/.config/hypr/shaders/grayscale.frag"
-}
-
-bluelight_filter() {
-  hyprctl keyword decoration:blur false
-  hyprctl keyword decoration:screen_shader "$HOME/.config/hypr/shaders/blfilter.frag"
-}
-
-vibrant_mode() {
-  hyprctl keyword decoration:blur false
-  hyprctl keyword decoration:screen_shader "$HOME/.config/hypr/shaders/vibrance.frag"
-}
-
 case $selection in
-"󱐋  zen mode")
-  zen_mode && dunstify -a "modes" -r 2903 -i crosshairs "zen" "start focusing on your task!"
-  ;;
 "󰎁  movie mode")
   movie_mode && dunstify -a "modes" -r 2903 -i filmgrain "movie" "enjoy your movie! 🍿"
   ;;
 "  normal mode")
   normal_mode && dunstify -a "modes" -r 2903 -i reply "default" "back to default."
-  ;;
-"󰋰  grayscale mode")
-  grayscale_mode && dunstify -a "modes" -r 2903 -i edit-select-invert "grayscale" "b&w forever."
-  ;;
-"󰴅  blue light filter mode")
-  bluelight_filter && dunstify -a "modes" -r 2903 -i redeyes "blue light filter" "protect your eyes."
-  ;;
-"󰉦  vibrant mode")
-  vibrant_mode && dunstify -a "modes" -r 2903 -i color-fill "vibrant" "colorful colors."
   ;;
 esac

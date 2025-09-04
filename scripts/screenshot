@@ -1,121 +1,121 @@
 #!/usr/bin/env python3
 
+import mimetypes
 import subprocess
 import sys
-from datetime import datetime
 from pathlib import Path
+import os
+import time
 
-SS_DIR = Path.home() / "img/ss/null"
-SS_DIR.mkdir(parents=True, exist_ok=True)
-DEST = str(SS_DIR / (datetime.now().strftime("%Y-%m-%d_%H.%M.%S") + ".png"))
-APP_NAME="Screenshot"
-
-def notify(kind: str, image_path: str = "", custom_text: str = ""):
-    title, message = {
-        "cheese": ("screenshot", "selection captured successfully."),
-        "qr": ("qr code detected", "copied to clipboard."),
-        "ocr": ("text detected and copied to clipboard", custom_text),
-        "error": ("screenshot failed", "something went wrong while taking the screenshot: error"),
-    }.get(kind, ("Info", kind))
-
-    base_cmd = [
-        "dunstify", "-a", APP_NAME,
-        "--urgency=LOW", 
-    ]
-
-    if image_path:
-        base_cmd.extend(["-I", str(image_path)])
-    else:
-        base_cmd.extend(["-i", "view-preview"])
-
-    base_cmd.extend([title, message])
-
-    _ = subprocess.run(base_cmd)
-
-def copy(image_path: str):
-    with open(image_path, "rb") as img_file:
-        _ = subprocess.run(["wl-copy"], stdin=img_file)
-
-def process_screenshot(image_path: str):
-    result = subprocess.run(["zbarimg", "-q", "--raw", str(image_path)],
-                            stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
-                            text=True)
-
-    if result.stdout.strip():
-        _ = subprocess.run(["wl-copy"], input=result.stdout.strip(), text=True)
-        notify("qr", image_path)
-    else:
-        copy(image_path)
-        notify("cheese", image_path)
-
-def process_ocr(image_path: str):
-    result = subprocess.run(["tesseract", str(image_path), "stdout"],
-                            stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
-                            text=True)
-
-    processed_stdout = result.stdout.strip()
-
-    if processed_stdout:
-        _ = subprocess.run(["wl-copy"], input=result.stdout.strip(), text=True)
-        notify("ocr", image_path, processed_stdout)
-    else:
-        copy(image_path)
-        notify("cheese", image_path)
+APP_NAME = "Screenshot"
 
 
-def selection_screenshot():
-    try:
-        region = subprocess.check_output(["slurp"], text=True).strip()
-        _ = subprocess.run(["grim", "-g", region, DEST], check=True)
-        process_screenshot(DEST)
-    except subprocess.CalledProcessError:
-        pass
-    except Exception as e:
-        notify("error")
-        raise e
+class Screenshot:
+    def __init__(
+        self, ntfy_title: str, ntfy_message: str = "screenshot captured. (default)"
+    ) -> None:
+        home = os.environ.get("HOME")
+        if home:
+            self.path: Path = Path(home) / "img" / "ss" / "null"
+            self.path.mkdir(parents=True, exist_ok=True)
+            self.dir_last_state: dict[str, float] = self._snapshot_dir()
+        self.ntfy_title: str = ntfy_title
+        self.ntfy_message: str = ntfy_message
+        self.ocr_text: str = ""
 
-def full_screenshot():
-    try:
-        monitor = subprocess.check_output(
-            ["hyprctl", "monitors", "-j"], text=True
+    def _snapshot_dir(self):
+        return {
+            f: os.path.getmtime(os.path.join(self.path, f))
+            for f in os.listdir(self.path)
+        }
+
+    def _wait_for_file(self):
+        for i in range(60):
+            time.sleep(0.5)
+            current_state = self._snapshot_dir()
+
+            if current_state != self.dir_last_state:
+                latest_file = max(current_state, key=lambda f: current_state[f])
+                print("Latest added file:", latest_file)
+                self.path = self.path / latest_file
+                break
+
+    def _process_ocr(self):
+        result = subprocess.run(
+            ["tesseract", str(self.path), "stdout"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+            text=True,
         )
 
-        import json
-        monitor_name = next(m["name"] for m in json.loads(monitor) if m["focused"])
-        _ = subprocess.run(["grim", "-o", monitor_name, DEST], check=True)
+        self.ocr_text = result.stdout.strip()
 
-        copy(DEST)
-        notify("cheese", DEST)
-    except Exception as e:
-        notify("error")
-        raise e
+        if self.ocr_text != "":
+            _ = subprocess.run(["wl-copy"], input=self.ocr_text, text=True)
+            self.ntfy_message = self.ocr_text
+            return True
+        else:
+            self.ntfy_message = "Couldn't find any text."
+            return False
 
-def window_screenshot():
-    try:
-        addr = subprocess.check_output(
-            ["hyprctl", "activewindow", "-j"], text=True
+    def _notify(self):
+        base_cmd = [
+            "dunstify",
+            "-a",
+            APP_NAME,
+            "--urgency=LOW",
+            self.ntfy_title,
+            self.ntfy_message,
+        ]
+
+        mime, _ = mimetypes.guess_type(self.path)
+        if mime is not None and mime.startswith("image/"):
+            base_cmd.extend(["-I", str(self.path)])
+        else:
+            base_cmd.extend(["-i", "view-preview"])
+
+        _ = subprocess.run(base_cmd)
+
+    def _copy(self):
+        if self.ocr_text != "":
+            _ = subprocess.run(["wl-copy"], input=self.ocr_text, text=True)
+        else:
+            with self.path.open("rb") as img_file:
+                _ = subprocess.run(["wl-copy"], stdin=img_file)
+
+    def selection(self):
+        _ = subprocess.run(
+            ["niri", "msg", "action", "screenshot", "-p", "false"], check=True
         )
+        self._wait_for_file()
+        self._copy()
+        self._notify()
 
-        import json
-        window_addr = json.loads(addr)["address"]
-        _ = subprocess.run(["grim", "-w", window_addr, DEST], check=True)
+    def full(self):
+        _ = subprocess.run(
+            ["niri", "msg", "action", "screenshot-screen", "-p", "false"], check=True
+        )
+        self._wait_for_file()
+        self._copy()
+        self._notify()
 
-        copy(DEST)
-        notify("cheese", DEST)
-    except Exception as e:
-        notify("error")
-        raise e
+    def window(self):
+        _ = subprocess.run(
+            ["niri", "msg", "action", "screenshot-window", "-p", "false"], check=True
+        )
+        self._wait_for_file()
+        self._copy()
+        self._notify()
 
-def ocr_screenshot():
-    try:
-        region = subprocess.check_output(["slurp"], text=True).strip()
-        _ = subprocess.run(["grim", "-g", region, DEST], check=True)
-        process_ocr(DEST)
-    except subprocess.CalledProcessError:
-        pass
-    except Exception as e:
-        notify("error")
-        raise e
+    def ocr(self):
+        _ = subprocess.run(
+            ["niri", "msg", "action", "screenshot", "-p", "false"], check=True
+        )
+        self._wait_for_file()
+        if not self._process_ocr():
+            self._copy()
+        self._notify()
+
 
 def main():
     if len(sys.argv) < 2:
@@ -124,15 +124,20 @@ def main():
     mode = sys.argv[1]
 
     if mode == "select":
-        selection_screenshot()
+        screenshot = Screenshot("screenshot", "selection captured successfully.")
+        screenshot.selection()
     elif mode == "full":
-        full_screenshot()
+        screenshot = Screenshot("screenshot", "screen captured successfully.")
+        screenshot.full()
     elif mode == "window":
-        window_screenshot()
+        screenshot = Screenshot("screenshot", "window captured successfully.")
+        screenshot.window()
     elif mode == "ocr":
-        ocr_screenshot()
+        screenshot = Screenshot("ocr")
+        result = screenshot.ocr()
     else:
         print("Unknown mode:", mode)
+
 
 if __name__ == "__main__":
     main()

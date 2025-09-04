@@ -3,7 +3,7 @@
 " -----------------------------------------------------------------------------
 
 " Colors
-set default-bg              "{{colors.surface_container_low.default.rgba | set_alpha: 1.0}}"
+set default-bg              "#000000"
 set default-fg              "{{colors.on_background.default.hex}}"
 
 set statusbar-bg            "{{colors.surface_container_low.default.hex}}"
@@ -47,7 +47,7 @@ set search-hadjust true
 set adjust-open width
 
 " Typography
-set font "FiraCode Nerd Font 12"
+set font "JetBrainsMono Nerd Font Mono 10"
 
 " Mappings
 

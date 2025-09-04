@@ -8,10 +8,10 @@ static const int WIN_HEIGHT = 600;
  * See nsxiv(1), X(7) section Resources and xrdb(1) for more information.
  *                                      X resource            value (NULL == default) */
 static const char *WIN_BG[]   = { "Nsxiv.window.background",   "#000000" };
-static const char *WIN_FG[]   = { "Nsxiv.window.foreground",   "#c8bfff" };
+static const char *WIN_FG[]   = { "Nsxiv.window.foreground",   "#ffb59e" };
 static const char *MARK_FG[]  = { "Nsxiv.mark.foreground",      NULL };
 #if HAVE_LIBFONTS
-static const char *BAR_BG[]   = { "Nsxiv.bar.background",       "#c8bfff" };
+static const char *BAR_BG[]   = { "Nsxiv.bar.background",       "#ffb59e" };
 static const char *BAR_FG[]   = { "Nsxiv.bar.foreground",       "#000000" };
 static const char *BAR_FONT[] = { "Nsxiv.bar.font",            "monospace_font-9" };
 

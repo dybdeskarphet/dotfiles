@@ -6,12 +6,12 @@
  *******************************************************************************/
 
 * {
-    fg2: {{colors.on_secondary_container.dark.hex}};
+    fg2: {{colors.primary.dark.hex}};
     font: "proportional_font SemiBold 13";
-    colorbg: {{colors.outline_variant.dark.hex}}cc;
+    colorbg: {{colors.secondary_container.dark.hex}}cc;
     textfg: {{colors.on_background.dark.hex}};
-    transparentcolorbg: {{colors.secondary.dark.hex}}4d;
-    borderfg:    {{colors.secondary.dark.hex}}4d;
-    windowbg:    {{colors.surface_container_low.dark.hex}}cc;
+    transparentcolorbg: {{colors.primary.dark.hex}}4d;
+    borderfg:    {{colors.primary.dark.hex}}4d;
+    windowbg:    {{colors.surface_container.dark.hex}}cc;
 }
 

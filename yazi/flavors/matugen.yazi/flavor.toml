@@ -1,0 +1,48 @@
+[mgr]
+cwd = { fg = "#ffb59e", bold = true }
+border_symbol=" "
+hovered = { bold = true, reversed = true }
+preview_hovered = { bold = true, reversed = true }
+
+[mode]
+normal_main = { bg = "reset", fg = "#ffb59e", bold = true }
+normal_alt = { bg = "reset", fg = "#ffb59e" }
+
+[tabs]
+sep_inner = { open = "", close = "" }
+sep_outer = { open = "", close = "" }
+
+[status]
+overall   = {}
+sep_left  = { open = "", close = "" }
+sep_right = { open = "", close = "" }
+
+[filetype]
+rules = [
+	# Images
+	{ mime = "image/*", fg = "yellow" },
+
+	# Media
+	{ mime = "{audio,video}/*", fg = "magenta" },
+
+	# Archives
+	{ mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", fg = "red" },
+
+	# Documents
+	{ mime = "application/{pdf,doc,rtf}", fg = "cyan" },
+
+	# Empty files
+	{ mime = "inode/empty", fg = "red" },
+
+	# Special files
+	{ name = "*", is = "orphan", bg = "red" },
+	{ name = "*", is = "exec"  , fg = "green" },
+
+	# Dummy files
+	{ name = "*", is = "dummy", bg = "red" },
+	{ name = "*/", is = "dummy", bg = "red" },
+
+	# Fallback
+	# { url = "*", fg = "white" },
+  { name = "*/", fg = "#ffb59e" }
+]

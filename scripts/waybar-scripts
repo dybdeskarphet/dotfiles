@@ -2,14 +2,10 @@
 termwin="footclient zsh -c"
 
 sync_icon() {
-  total="$(easyclone get-status --show-total 2>/dev/null)"
-  current="$(easyclone get-status --all 2>/dev/null | jq '.finished_path_count' 2>/dev/null)"
-  # uncomment this if you want to show it as a percentage
-  # percentage="$(echo "$current/$total*100" | bc -l | cut -d '.' -f 1)%"
   if systemctl --user is-active --quiet backupDrive.service; then
-    # uncomment this if you want to show it as a percentage
-    # echo "%{F$accent}󰘿  %{F$foreground}$percentage"
-    echo "󰘿  <span foreground=\"#e5e1e9\">${current:=0}</span> <span foreground=\"#c8bfff\">/</span> <span foreground=\"#e5e1e9\">${total}</span>"
+    total="$(easyclone get-status --show-total 2>/dev/null)"
+    current="$(easyclone get-status --all 2>/dev/null | jq '.finished_path_count' 2>/dev/null)"
+    echo "󰘿  <span foreground=\"#f1dfda\">${current:=0}</span> <span foreground=\"#ffb59e\">/</span> <span foreground=\"#f1dfda\">${total}</span>"
   else
     echo
   fi
@@ -62,7 +58,7 @@ check_updates() {
   updates=$((updates_arch + updates_aur))
 
   if [ "$updates" -gt 0 ]; then
-    echo "󰏗 <span foreground=\"#e5e1e9\">$updates</span>"
+    echo "󰏗 <span foreground=\"#f1dfda\">$updates</span>"
   else
     echo ""
   fi
@@ -70,14 +66,14 @@ check_updates() {
 
 copy_date() {
   if wl-copy $(date "+%F"); then
-    dunstify -a "Waybar" -r 9326 -i clipit-trayicon -t 5000 "tarih panoya kopyalandı!" "koplyanan tarih: '$(date +"%F")'"
+    dunstify -a "Waybar" -r 9326 -i clipit-trayicon -t 5000 "date copied to clipboard!" "'$(date +"%F")'"
   else
-    dunstify -a "Waybar" -r 9326 -i clipit-trayicon -t 5000 "tarih kopyalanırken hata ile karşılaşıldı!" "scripti kontorl edin."
+    dunstify -a "Waybar" -r 9326 -i clipit-trayicon -t 5000 "something happend while copying date to clipboard." "check the script file $0."
   fi
 }
 
 gpu_usage() {
-  echo "󰹑 <span foreground=\"#e5e1e9\">$(cat /sys/class/hwmon/hwmon3/device/gpu_busy_percent)%</span>"
+  echo "󰹑 <span foreground=\"#f1dfda\">$(cat /sys/class/hwmon/hwmon3/device/gpu_busy_percent)%</span>"
 
 }
 
@@ -152,7 +148,7 @@ gpu_usage) gpu_usage ;;
 htop_cpu) $termwin "htop -t --sort-key PERCENT_CPU" ;;
 htop_mem) $termwin "htop -t --sort-key PERCENT_MEM" ;;
 check_updates) check_updates ;;
-open_update_screen) $termwin "printf '%b\n\n' '\e[1mEnter your password to update Pacman/AUR packages:\e[0m' && sudo paru -Syu; zsh" ;;
+open_update_screen) $termwin "printf '%b\n\n' '\e[1mEnter your password to update Pacman/AUR packages:\e[0m'; printf '%b\n' "\e[32m:: \e[0mImportant updates:"; checkupdates | grep -Ff ~/.config/paru/important_packages.txt; sudo paru; zsh" ;;
 bt_toggle) bt_toggle ;;
 *) echo "Don't use this script from your terminal." ;;
 esac

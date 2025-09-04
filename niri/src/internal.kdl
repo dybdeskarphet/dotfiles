@@ -1,0 +1,21 @@
+prefer-no-csd
+
+environment {
+  CLUTTER_BACKEND "wayland"
+  ELECTRON_OZONE_PLATFORM_HINT "auto"
+  ELM_DISPLAY "wl"
+  GDK_BACKEND "wayland"
+  NO_AT_BRIDGE "1"
+  OZONE_PLATFORM "wayland"
+  QT_QPA_PLATFORM "wayland"
+  QT_STYLE_OVERRIDE "qt6ct-style"
+  QT_WAYLAND_DISABLE_WINDOWDECORATION "1"
+  SDL_VIDEODRIVER "wayland"
+  XDG_CURRENT_DESKTOP "niri"
+  XDG_SESSION_DESKTOP "niri"
+  XDG_SESSION_TYPE "wayland"
+  QT_STYLE_OVERRIDE "kvantum"
+}
+
+screenshot-path "~/img/ss/null/%Y-%m-%d_%H.%M.%S.png"
+spawn-sh-at-startup "~/.config/niri/src/autostart.sh"

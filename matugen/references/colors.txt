@@ -1,0 +1,101 @@
+
+background: #1a110f
+
+error: #ffb4ab
+
+error_container: #93000a
+
+inverse_on_surface: #392e2b
+
+inverse_primary: #8f4c36
+
+inverse_surface: #f1dfda
+
+on_background: #f1dfda
+
+on_error: #690005
+
+on_error_container: #ffdad6
+
+on_primary: #561f0d
+
+on_primary_container: #ffdbd0
+
+on_primary_fixed: #3a0b00
+
+on_primary_fixed_variant: #723521
+
+on_secondary: #442a22
+
+on_secondary_container: #ffdbd0
+
+on_secondary_fixed: #2c160e
+
+on_secondary_fixed_variant: #5d4037
+
+on_surface: #f1dfda
+
+on_surface_variant: #d8c2bc
+
+on_tertiary: #3a3005
+
+on_tertiary_container: #f4e2a7
+
+on_tertiary_fixed: #221b00
+
+on_tertiary_fixed_variant: #52461a
+
+outline: #a08c87
+
+outline_variant: #53433f
+
+primary: #ffb59e
+
+primary_container: #723521
+
+primary_fixed: #ffdbd0
+
+primary_fixed_dim: #ffb59e
+
+scrim: #000000
+
+secondary: #e7bdb1
+
+secondary_container: #5d4037
+
+secondary_fixed: #ffdbd0
+
+secondary_fixed_dim: #e7bdb1
+
+shadow: #000000
+
+source_color: #8a4c38
+
+surface: #1a110f
+
+surface_bright: #423734
+
+surface_container: #271d1b
+
+surface_container_high: #322825
+
+surface_container_highest: #3d322f
+
+surface_container_low: #231917
+
+surface_container_lowest: #140c0a
+
+surface_dim: #1a110f
+
+surface_tint: #ffb59e
+
+surface_variant: #53433f
+
+tertiary: #d7c68d
+
+tertiary_container: #52461a
+
+tertiary_fixed: #f4e2a7
+
+tertiary_fixed_dim: #d7c68d
+

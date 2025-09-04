@@ -1,0 +1,80 @@
+[global]
+    monitor = 0
+    follow = mouse
+
+    background = "#19191999"
+    foreground = "#f1dfda"
+    frame_color = "#442a22b3"
+    frame_width = 2
+    gap_size = 8
+    highlight = "#ffdbd0"
+
+    width = (100, 300)
+    height = (0,160)
+    origin = top-right
+    offset = (7, 7)
+    scale = 0 			# auto detect
+    notification_limit = 20
+    padding = 11
+    horizontal_padding = 11
+
+    progress_bar = true
+    progress_bar_height = 13
+    progress_bar_min_width = 150
+    progress_bar_max_width = 300
+    progress_bar_frame_width = 2
+    progress_bar_corner_radius = 2
+
+    sort = yes
+    indicate_hidden = no
+    stack_duplicates = true
+    hide_duplicate_count = false
+    idle_threshold = 120
+;   never show the age
+    show_age_threshold = -1 	
+    sticky_history = yes
+    history_length = 20
+
+    separator_height = 0
+    separator_color = "#ffdbd0"
+
+    font = proportional_font 11
+    corner_radius = 7
+    line_height = 0
+
+    markup = full
+    format = "<b>%s</b> <span rise="2pt" size="small" fgalpha="60%" text_transform='uppercase'>| %a</span>\n%b"
+    ellipsize = middle
+    alignment = left
+    vertical_alignment = center
+    ignore_newline = no
+    show_indicators = no
+
+    icon_corner_radius = 7
+    icon_path = /usr/share/icons/Papirus-Dark/22x22/actions/:/usr/share/icons/Papirus-Dark/22x22/animations/:/usr/share/icons/Papirus-Dark/22x22/apps/:/usr/share/icons/Papirus-Dark/22x22/devices/:/usr/share/icons/Papirus-Dark/22x22/emblems/:/usr/share/icons/Papirus-Dark/22x22/emotes/:/usr/share/icons/Papirus-Dark/22x22/mimetypes/:/usr/share/icons/Papirus-Dark/22x22/panel/:/usr/share/icons/Papirus-Dark/22x22/places/:/usr/share/icons/Papirus-Dark/22x22/status/:/usr/share/icons/Papirus-Dark/symbolic/actions/:/usr/share/icons/Papirus-Dark/symbolic/devices/:/usr/share/icons/Papirus-Dark/symbolic/status/
+    icon_position = left
+    max_icon_size = 64
+    min_icon_size = 0
+    text_icon_padding = 0
+
+    title = Dunst
+    class = Dunst
+    dmenu = /usr/bin/rofi -dmenu -p dunst:
+    browser = /usr/bin/chromium
+    always_run_script = true
+    ignore_dbusclose = false
+    force_xinerama = false
+
+    mouse_left_click = do_action, close_current
+    mouse_middle_click = context, close_current
+    mouse_right_click = close_all
+
+[skip-rule] 
+appname=niri
+skip_display=true
+
+[urgency_critical]
+    foreground = "#ffdad6"
+    background = "#690005b3"
+    frame_color = "#93000ab3"
+    timeout = 0

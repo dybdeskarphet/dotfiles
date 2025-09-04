@@ -22,11 +22,9 @@
     "bluetooth",
     "network#wireless",
     "network#ethernet",
-    "hyprland/workspaces",
-    "niri/workspaces",
-    "custom/hiddenwindow",
+    "niri/workspaces"
   ],
-  "modules-center": ["hyprland/window", "niri/window"],
+  "modules-center": ["niri/window"],
   "modules-left": [
     "clock",
     "battery",
@@ -47,7 +45,7 @@
   },
   "clock": {
     "locale": "tr_TR.UTF-8",
-    "format": "<span font_desc='KiwiSoda 15' weight='900'>{:%H:%M}</span>",
+    "format": "<span font_desc='Deutsch Gothic 12' weight='900'>{:%H:%M}</span>",
     "interval": 1,
     "format-alt": "{:L%H:%M:%S  │   %F, %B, %A}",
     "tooltip-format": "<tt><small>{calendar}</small></tt>",
@@ -58,11 +56,11 @@
       "weeks-pos": "right",
       "on-scroll": 1,
       "format": {
-        "months": "<span color='#e5e1e9'><b>{}</b></span>",
-        "days": "<span color='#e5e1e9'><b>{}</b></span>",
-        "weeks": "<span color='#e5dff9'><b>W{}</b></span>",
-        "weekdays": "<span color='#e5dff9'><b>{}</b></span>",
-        "today": "<span bgcolor='#e5dff9' color='#000000'><b>{}</b></span>",
+        "months": "<span color='#f1dfda'><b>{}</b></span>",
+        "days": "<span color='#f1dfda'><b>{}</b></span>",
+        "weeks": "<span color='#ffdbd0'><b>W{}</b></span>",
+        "weekdays": "<span color='#ffdbd0'><b>{}</b></span>",
+        "today": "<span bgcolor='#ffdbd0' color='#000000'><b>{}</b></span>",
       },
     },
     "actions": {
@@ -80,7 +78,7 @@
       "warning": 30,
       "critical": 15,
     },
-    "format": "{icon} <span foreground=\"#e5e1e9\">{capacity}%</span>",
+    "format": "{icon} <span foreground=\"#f1dfda\">{capacity}%</span>",
     "format-charging": "{icon}󱐋 {capacity}%",
     "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
     "max-length": 25,
@@ -89,14 +87,14 @@
   },
   "cpu": {
     "interval": 2,
-    "format": " <span foreground=\"#e5e1e9\">{usage}%</span>",
+    "format": " <span foreground=\"#f1dfda\">{usage}%</span>",
     "max-length": 10,
     "tooltip": true,
     "on-click": "waybar-scripts htop_cpu",
   },
   "memory": {
     "interval": 2,
-    "format": " <span foreground=\"#e5e1e9\">{}%</span>",
+    "format": " <span foreground=\"#f1dfda\">{}%</span>",
     "tooltip": true,
     "tooltip-format": "{used:0.1f}GiB used\n{avail:0.1f}GiB available",
     "max-length": 10,
@@ -110,12 +108,12 @@
     "critical-threshold": 90,
     "interval": 2,
     "format-critical": " {temperatureC}°C",
-    "format": " <span foreground=\"#e5e1e9\">{temperatureC}°C</span>",
+    "format": " <span foreground=\"#f1dfda\">{temperatureC}°C</span>",
     "on-click": "waybar-scripts htop_cpu",
   },
   "disk": {
     "interval": 60,
-    "format": "󰋊 <span foreground=\"#e5e1e9\">{percentage_used}%</span>",
+    "format": "󰋊 <span foreground=\"#f1dfda\">{percentage_used}%</span>",
     "tooltip": true,
     "tooltip-format": "Free: {free} ({percentage_free}%)\nTotal: {total}",
     "path": "/",
@@ -144,7 +142,7 @@
   },
   "custom/mic": {
     "exec": "waybar-scripts mic_icon",
-    "on-click": "notify-media togglemic",
+    "on-click": "mediacontrol togglemic",
     "tooltip": false,
     "signal": 5,
   },
@@ -153,10 +151,6 @@
     "on-click": "waybar-scripts gpu_click",
     "restart-interval": 4,
     "tooltip": false,
-  },
-  "hyprland/workspaces": {
-    "format": "{icon}",
-    "move-to-montior": true,
   },
   "niri/workspaces": {
     "format": "{icon}",
@@ -167,7 +161,7 @@
     "interface": "wlan0",
     "interval": 2,
     "format": "{ifname}",
-    "format-wifi": "{signalStrength} 󰤨 <span foreground=\"#e5dff9\"></span> <span foreground=\"#e5e1e9\">{bandwidthDownBytes}</span>  <span foreground=\"#e5dff9\"></span> <span foreground=\"#e5e1e9\">{bandwidthUpBytes}</span>",
+    "format-wifi": "{signalStrength} 󰤨 <span foreground=\"#ffdbd0\"></span> <span foreground=\"#f1dfda\">{bandwidthDownBytes}</span>  <span foreground=\"#ffdbd0\"></span> <span foreground=\"#f1dfda\">{bandwidthUpBytes}</span>",
     "format-disconnected": "󰤭 Disconnected", //An empty format will hide the module.
     "tooltip-format": "{ifname} via {gwaddr} 󰊗",
     "tooltip-format-wifi": "SSID: {essid}\nIP: {ipaddr}",
@@ -179,7 +173,7 @@
     "interface": "enp1s0",
     "interval": 2,
     "format": "{ifname}",
-    "format-ethernet": "󰈁 <span foreground=\"#e5dff9\"></span> <span foreground=\"#e5e1e9\">{bandwidthDownBytes}</span>  <span foreground=\"#e5dff9\"></span> <span foreground=\"#e5e1e9\">{bandwidthUpBytes}</span>",
+    "format-ethernet": "󰈁 <span foreground=\"#ffdbd0\"></span> <span foreground=\"#f1dfda\">{bandwidthDownBytes}</span>  <span foreground=\"#ffdbd0\"></span> <span foreground=\"#f1dfda\">{bandwidthUpBytes}</span>",
     "format-disconnected": "", //An empty format will hide the module.
     "tooltip-format": "{ifname} via {gwaddr} 󰊗",
     "tooltip-format-wifi": "SSID: {essid}\nIP: {ipaddr}",
@@ -189,14 +183,14 @@
   },
   "bluetooth": {
     // "controller": "controller1", // specify the alias of the controller if there are more than 1 on the system
-    "format": "󰂯 <span foreground=\"#e5e1e9\">{status}</span>",
+    "format": "󰂯 <span foreground=\"#f1dfda\">{status}</span>",
     "format-on": "󰂯 No connection",
     "format-disabled": "󰂯 Disabled",
     "format-off": "󰂯 Disabled",
     "on-click": "blueman-manager",
     "on-click-right": "waybar-scripts bt_toggle",
     "max-length": 15,
-    "format-connected": "{device_battery_percentage} 󰂱 <span foreground=\"#e5e1e9\">{device_alias}</span>",
+    "format-connected": "{device_battery_percentage} 󰂱 <span foreground=\"#f1dfda\">{device_alias}</span>",
     "tooltip-format": "{controller_alias}\t{controller_address}",
     "tooltip-format-connected": "{controller_alias}:  {controller_address}\n{device_enumerate}",
     "tooltip-format-enumerate-connected": "{device_alias}:  {device_address}",
@@ -262,11 +256,6 @@
   "tray": {
     "icon-size": 15,
     "spacing": 10,
-  },
-  "hyprland/window": {
-    "format": "{}",
-    "separate-outputs": true,
-    "max-length": 20,
   },
   "niri/window": {
     "format": "{}",

@@ -1,0 +1,42 @@
+window-rule {
+    match app-id=r#"^$"#
+    match title=r#"^$"#
+    open-floating true
+    open-focused false
+}
+
+window-rule {
+    match app-id=r#"clipse$"#
+    open-floating true
+}
+
+window-rule {
+  geometry-corner-radius 5
+  clip-to-geometry true
+}
+
+window-rule {
+    match app-id=r#"qalc$"#
+    open-floating true
+}
+
+window-rule {
+    match app-id=r#"ntfyhistory$"#
+    open-floating true
+}
+
+
+layer-rule {
+    match namespace="^wallpaper$"
+    place-within-backdrop true
+}
+
+window-rule {
+    match app-id=r#"^org\.keepassxc\.KeePassXC$"#
+    match app-id=r#"^org\.gnome\.World\.Secrets$"#
+
+    block-out-from "screen-capture"
+
+    // Use this instead if you want them visible on third-party screenshot tools.
+    // block-out-from "screencast"
+}

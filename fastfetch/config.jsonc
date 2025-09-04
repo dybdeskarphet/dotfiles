@@ -3,12 +3,12 @@
   "logo": {
     "type": "small",
     "color": {
-      "1": "cyan",
-      "2": "light_cyan",
+      "1": "#8a4c38",
+      "2": "#ffb59e",
     },
   },
   "display": {
-    "color": "cyan",
+    "color": "#ffb59e",
     "brightColor": true,
   },
   "modules": ["title", "os", "kernel", "uptime", "packages", "shell", "wm"],

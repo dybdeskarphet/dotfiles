@@ -41,17 +41,17 @@ waybar_toggle() {
 }
 
 toggle_caps2esc() {
-  if hyprctl getoption input:kb_options | grep "caps:swapescape"; then
-    hyprctl keyword input:kb_options "altwin:swap_lalt_lwin"
-    dunstify -a "Key Scripts" -i input-keyboard --urgency=LOW --replace=1294 "caps lock ve esc tuşları kendi yerine getirildi."
+  if grep "caps:swapescape" ~/.config/niri/config.kdl; then
+    ~/.config/niri/companion/ipcext.py replace "options" 'options "altwin:swap_lalt_lwin,grp:ctrls_toggle"'
+    dunstify -a "Key Scripts" -i input-keyboard --urgency=LOW --replace=1294 "esc and caps lock keys are at their default positions."
   else
-    hyprctl keyword input:kb_options "caps:swapescape, altwin:swap_lalt_lwin"
-    dunstify -a "Key Scripts" -i input-keyboard --urgency=LOW --replace=1294 "esc, caps lock tuşu ile değiştirildi."
+    ~/.config/niri/companion/ipcext.py replace "options" 'options "caps:swapescape,altwin:swap_lalt_lwin,grp:ctrls_toggle"'
+    dunstify -a "Key Scripts" -i input-keyboard --urgency=LOW --replace=1294 "esc key is swapped with caps lock key."
   fi
 }
 
 show_history() {
-  app2unit -- footclient -T ntfyhistory -a ntfyhistory zsh -c "dunstctl history | jq '.data[0] | map({app: .appname.data, summary: .summary.data, body: .body.data})' | tw --format json"
+  footclient -T ntfyhistory -a ntfyhistory zsh -c "dunstctl history | jq '.data[0] | map({app: .appname.data, summary: .summary.data, body: .body.data})' | tw --format json"
 }
 
 print_usage() {

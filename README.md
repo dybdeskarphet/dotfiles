@@ -1,23 +1,23 @@
 # 🎨 Dotfiles
 
-This repository contains my personal dotfiles for configuring various programs and tools on my Arch Linux system. This branch contains my `hyprland` setup, for my old `bspwm` setup, [click here](https://github.com/dybdeskarphet/dotfiles/tree/bspwm).
+This repository contains my personal dotfiles for configuring various programs and tools on my Arch Linux system. This branch contains my `niri` setup, for my old `bspwm` or `hyprland` setup, check out the other branches
 
 ## Programs and Tools
 
-- **Wayland Compositor**: [Hyprland](https://hyprland.org/) with [uwsm](https://github.com/Vladimir-csp/uwsm)/[app2unit](https://github.com/Vladimir-csp/app2unit)
+- **Wayland Compositor**: [Hyprland](https://yalter.github.io/niri/)
 - **Terminal**: [foot](https://codeberg.org/dnkl/foot)
 - **Notification Daemon**: [Dunst](https://dunst-project.org/)
 - **Wallpaper Setter**: [swww](https://github.com/LGFae/swww)
 - **Session Lock:** [Hyprlock](https://github.com/hyprwm/hyprlock)
 - **Application Launcher**: [Rofi (lbonn's Wayland fork)](https://github.com/lbonn/rofi)
 - **PDF Viewer**: [Zathura](https://pwmt.org/projects/zathura/)
-- **Shell**: [Zsh](https://www.zsh.org/)
+- **Shell**: [Fish](https://fishshell.com/)
 - **File Manager**: [Yazi](https://github.com/sxyazi/yazi)
 - **OSD:** [syshud](https://github.com/System64fumo/syshud)
 
 ## Screenshots
 
-<img src="ss1.png" width="384"> <img src="ss2.png" width="384">
+<img src="screenshot1.png" width="384"> <img src="screenshot2.png" width="384">
 
 ## Installation
 
@@ -34,11 +34,10 @@ This repository contains my personal dotfiles for configuring various programs a
 ## Additional Notes
 
 - Custom scripts are located in the `scripts` directory.
-- Shaders for Hyprland are available in the `shaders` folder.
 - Fonts used:
   - [JetBrains Mono Nerd Font](https://www.nerdfonts.com/font-downloads)
   - [Mulish](https://fonts.google.com/specimen/Mulish)
-  - [Kiwi soda](https://www.dafont.com/kiwisoda.font)
+  - [Deutsch Gothic](https://www.dafont.com/deutsch-gothic.font)
 
 ## License
 

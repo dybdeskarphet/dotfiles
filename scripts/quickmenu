@@ -1,42 +1,45 @@
-#!/bin/sh
+#!/bin/bash
 
 quick_settings() {
-  selection=$(echo -e "󰀻   workspaces\n󰑓   reload\n   modes\n󰓶   graphic tablet mode\n󰍃   log out" | rofi -dmenu -theme ~/.local/share/rofi/themes/basic_launcher/rounded_with_listview.rasi -p "   quick settings")
+  selection=$(echo -e "   modes\n󰑓   reload\n󰓶   graphic tablet mode\n󰍃   log out" | rofi -dmenu -theme ~/.local/share/rofi/themes/basic_launcher/rounded_with_listview.rasi -p "   quick settings")
   case $selection in
   "󰀻   workspaces") workspaces ;;
   "󰑓   reload") reload_menu ;;
   "   modes") modes ;;
   "󰓶   graphic tablet mode") tablet_mode_menu ;;
-  "󰍃   log out") uwsm stop ;;
+  "󰍃   log out") loginctl terminate-user skarphet ;;
   esac
-
 }
 
 reload_menu() {
-  reload_selection=$(echo -e "󱂬  reload hyprland\n󰎟  reload dunst\n󰸉  reload swww\n  reload waybar" | rofi -dmenu -theme ~/.local/share/rofi/themes/basic_launcher/rounded_with_listview.rasi -p "󰑓   reload")
+  reload_selection=$(echo -e "󱂬  reload niri\n󰎟  reload dunst\n󰸉  reload swww\n  reload waybar\n  reload foot server" | rofi -dmenu -theme ~/.local/share/rofi/themes/basic_launcher/rounded_with_listview.rasi -p "󰑓   reload")
 
   case $reload_selection in
-  "󱂬  reload hyprland")
-    hyprctl reload
-    dunstify -a "Key Scripts" -i reload --urgency=LOW --replace=876 "hyprland is reloaded!"
+  "󱂬  reload niri")
+    ~/.config/niri/companion/genconfig.py generate
+    dunstify -a "Key Scripts" -i reload --urgency=LOW --replace=876 "niri is reloaded!"
     ;;
   "  reload waybar")
-    pkill -f startwaybar >/dev/null
     pkill -f waybar >/dev/null
-    ~/.config/waybar/startwaybar &
+    waybar &
     dunstify -a "Key Scripts" -i reload --urgency=LOW --replace=867 "waybar is reloaded!"
     ;;
   "󰎟  reload dunst")
     pkill dunst
     sleep 0.5
-    app2unit -- dunst -conf "$HOME"/.config/dunst/config.ini -verbosity debug &
+    dunst -conf "$HOME"/.config/dunst/config.ini -verbosity debug &
     sleep 1.5
     dunstify -a "Key Scripts" -i reload --urgency=LOW --replace=877 "dunst is reloaded!"
     ;;
   "󰸉  reload swww")
     pkill swww-daemon
-    app2unit -- swww-daemon &
+    swww-daemon &
     dunstify -a "Key Scripts" -i photo --urgency=LOW --replace=870 "swww is reloaded!"
+    ;;
+  "  reload foot server")
+    pkill foot
+    foot --server &
+    dunstify -a "Key Scripts" -i terminal --urgency=LOW --replace=870 "foot is reloaded!"
     ;;
   esac
 }

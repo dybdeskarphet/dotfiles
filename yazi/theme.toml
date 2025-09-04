@@ -1,1 +1,33 @@
-themes/purple.toml
+[flavor]
+dark  = "matugen"
+light = "matugen"
+
+[icon]
+dirs = [
+  { name = ".config", text = "" },
+  { name = ".git", text = "" },
+  { name = "Desktop", text = "" },
+  { name = "Development", text = "" },
+  { name = "Documents", text = "" },
+  { name = "Downloads", text = "" },
+  { name = "Library", text = "" },
+  { name = "Movies", text = "" },
+  { name = "Music", text = "" },
+  { name = "Pictures", text = "" },
+  { name = "Public", text = "" },
+  { name = "Videos", text = "" },
+  { name = '.minecraft', text = '󰍳' },
+  { name = '.npm', text = '' },
+  { name = '.ssh', text = '󰣀' },
+  { name = 'bak', text = '󰒋' },
+  { name = 'code', text = '' },
+  { name = 'dl', text = '' },
+  { name = 'doc', text = '' },
+  { name = 'dotfiles', text = '' },
+  { name = 'img', text = '' },
+  { name = 'mp3', text = '' },
+  { name = 'vid', text = '' },
+  { name = 'pub', text = "" },
+  { name = "desk", text = "" },
+]
+
