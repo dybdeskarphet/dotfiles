@@ -1,0 +1,20 @@
+div > .vimiumHintMarker {
+/* linkhint boxes */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#efe0cf),
+  color-stop(100%,#d8c3ab));
+border: 1px solid #d8c3ab;
+}
+
+div > .vimiumHintMarker span {
+/* linkhint text */
+color: black;
+font-weight: bold;
+font-size: 12px;
+}
+
+#vimium-hint-marker-container div span.matchingCharacter {
+    color: #82715b;
+}
+
+div > .vimiumHintMarker > .matchingCharacter {
+}

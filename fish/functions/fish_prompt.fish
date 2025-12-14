@@ -7,7 +7,7 @@ function fish_prompt
   else
     echo -n " \$"
   end
-  set_color -o "#ffb59e"
+  set_color -o "#d8c3ab"
   echo -n "  "
   set_color normal
 end

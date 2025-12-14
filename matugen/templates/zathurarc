@@ -30,12 +30,6 @@ set completion-fg           "{{colors.primary.default.hex}}"
 set notification-bg         "{{colors.surface_container_low.default.hex}}"
 set notification-fg         "{{colors.primary.default.hex}}"
 
-set recolor                 "true"
-set recolor-lightcolor      "{{colors.surface_container_low.default.rgba | set_alpha: 1.0}}"
-set recolor-darkcolor       "{{colors.primary_fixed.default.hex}}"
-set recolor-reverse-video   "true"
-set recolor-keephue         "true"
-
 " Clipboard
 set selection-clipboard clipboard
 

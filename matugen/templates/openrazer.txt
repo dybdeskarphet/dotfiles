@@ -1,0 +1,1 @@
+{{ colors.primary.dark.rgb | auto_lightness: 40.0 }}

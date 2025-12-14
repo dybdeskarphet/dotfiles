@@ -11,40 +11,6 @@ hotkey-overlay {
   skip-at-startup
 }
 
-layout {
-    gaps 3
-    background-color "transparent"
-    center-focused-column "on-overflow"
-    preset-column-widths {
-        proportion 0.33333
-        proportion 0.5
-        proportion 0.66667
-    }
-
-    default-column-width { proportion 0.5; }
-
-    border {
-        width 2
-        active-color "#ffb59e"
-        inactive-color "#5d4037"
-        urgent-color "#93000a"
-    }
-
-    focus-ring {
-      off
-    }
-
-    struts {
-        left 0
-        right 0
-        top 0
-        bottom 0
-    }
-    insert-hint {
-        color "#ffb59eaa"
-    }
-}
-
 animations {
     // Uncomment to turn off all animations.
     // You can also put "off" into each individual animation to disable it.

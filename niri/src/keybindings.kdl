@@ -1,5 +1,6 @@
 binds {
-    Mod+Return hotkey-overlay-title="Open the terminal" { spawn "footclient"; }
+    Mod+Return hotkey-overlay-title="Open the terminal" { spawn-sh "footclient"; }
+    Mod+Shift+Return hotkey-overlay-title="Open the terminal" { spawn-sh "foot"; }
     Mod+P hotkey-overlay-title="Open application launcher" { spawn "rofi" "-show" "run" "-show-icons" "-display-run" "   run"; }
     Mod+W hotkey-overlay-title="Open browser" { spawn "brave"; }
     Mod+Escape hotkey-overlay-title="Open quick menu" { spawn "quickmenu"; }
@@ -29,6 +30,8 @@ binds {
     Mod+Shift+K         { move-column-to-workspace-up; }
     Mod+Shift+U         { move-workspace-down; }
     Mod+Shift+I         { move-workspace-up; }
+
+    Mod+X { spawn-sh "nirius toggle-follow-mode";}
 
     Mod+N  { focus-monitor-left; }
     Mod+M { focus-monitor-right; }
@@ -77,40 +80,43 @@ binds {
     Mod+Ctrl+R { reset-window-height; }
     Mod+F { maximize-column; }
     Mod+Shift+F { fullscreen-window; }
+    Mod+Alt+F { toggle-windowed-fullscreen; }
     Mod+Ctrl+F { expand-column-to-available-width; }
     Mod+Shift+C { center-column; }
     Mod+Ctrl+Shift+C { center-visible-columns; }
 
-    Alt+Shift+S { spawn "screenshot" "select"; }
-    Mod+Shift+S { spawn "screenshot" "full"; }
-    Mod+Alt+Shift+S { spawn "screenshot" "window"; }
-    Mod+Shift+O { spawn "screenshot" "ocr"; }
+    Alt+Shift+S hotkey-overlay-title="Take a screenshot by selection" { spawn "screenshot" "select"; }
+    Mod+Shift+S hotkey-overlay-title="Take a full screenshot" { spawn "screenshot" "full"; }
+    Mod+Alt+Shift+S hotkey-overlay-title="Take a screenshot of the window" { spawn "screenshot" "window"; }
+    Mod+Shift+O hotkey-overlay-title="Use OCR by selection" { spawn "screenshot" "ocr"; }
 
     // FN Keys
-    XF86AudioLowerVolume { spawn "mediacontrol" "volume" "down"; }
-    XF86AudioRaiseVolume { spawn "mediacontrol" "volume" "up"; }
+    XF86AudioLowerVolume hotkey-overlay-title="Volume down" { spawn "mediacontrol" "volume" "down"; }
+    XF86AudioRaiseVolume hotkey-overlay-title="Volume up" { spawn "mediacontrol" "volume" "up"; }
     XF86AudioMute { spawn "mediacontrol" "volume" "toggle"; }
     XF86AudioPlay { spawn "playerctl" "play-pause"; }
+    Ctrl+XF86AudioPlay { spawn "playerctl" "previous"; }
+    Alt+XF86AudioPlay { spawn "playerctl" "next"; }
     XF86AudioStop { spawn "playerctl" "stop"; }
     XF86AudioNext { spawn "playerctl" "next"; }
     XF86AudioPrev { spawn "playerctl" "previous"; }
-    XF86MonBrightnessUp { spawn "mediacontrol" "backlight" "up"; }
-    XF86MonBrightnessDown { spawn "mediacontrol" "backlight" "down"; }
-    Mod+XF86MonBrightnessUp { spawn "mediacontrol" "backlight" "full"; }
-    Mod+XF86MonBrightnessDown { spawn "mediacontrol" "backlight" "off"; }
+    XF86MonBrightnessUp hotkey-overlay-title="Brightness up" { spawn "mediacontrol" "backlight" "up"; }
+    XF86MonBrightnessDown hotkey-overlay-title="Brightness down" { spawn "mediacontrol" "backlight" "down"; }
+    Mod+XF86MonBrightnessUp hotkey-overlay-title=null  { spawn "mediacontrol" "backlight" "full"; }
+    Mod+XF86MonBrightnessDown hotkey-overlay-title=null { spawn "mediacontrol" "backlight" "off"; }
     XF86AudioMicMute { spawn "mediacontrol" "togglemic"; }
     XF86HomePage { spawn "mediacontrol" "togglemic"; }
     XF86Calculator { spawn "footclient" "-T" "qalc" "-a" "qalc" "qalc"; }
     XF86Launch4 { spawn "shortcuts" "-t"; }
     XF86Macro27 { spawn "dunstify" "-r" "134897" "-a" "Razer" "-i" "keyboard" "brightness increased"; }
     XF86Macro28 { spawn "dunstify" "-r" "134897" "-a" "Razer" "-i" "keyboard" "brightness decreased"; }
+    XF86Favorites hotkey-overlay-title="Open quick menu" { spawn "quickmenu"; }
 
     // TKL Extras
-    Mod+C { spawn "footclient" "-T" "qalc" "-a" "qalc" "qalc"; }
+    Mod+C hotkey-overlay-title="Open the calculator" { spawn "footclient" "-T" "qalc" "-a" "qalc" "qalc"; }
     ISO_Level3_Shift+K { spawn "mediacontrol" "togglemic"; }
 
-    Mod+Space { spawn "dunstctl" "close"; }
-    Mod+b { spawn "shortcuts" "-n"; }
-    Mod+shift+b { spawn "shortcuts" "-d"; }
-    Mod+Ctrl+Shift+Alt+T { spawn "shortcuts" "-T"; }
+    Mod+Space hotkey-overlay-title="Close the latest notification" { spawn "dunstctl" "close"; }
+    Mod+b hotkey-overlay-title="Show notification history" { spawn "shortcuts" "-n"; }
+    Mod+shift+b hotkey-overlay-title="Toggle do-not-disturb mode" { spawn "shortcuts" "-d"; }
 } 

@@ -3,11 +3,11 @@
     follow = mouse
 
     background = "#19191999"
-    foreground = "#f1dfda"
-    frame_color = "#442a22b3"
+    foreground = "#e8e1dd"
+    frame_color = "#382f24b3"
     frame_width = 2
     gap_size = 8
-    highlight = "#ffdbd0"
+    highlight = "#efe0cf"
 
     width = (100, 300)
     height = (0,160)
@@ -36,7 +36,7 @@
     history_length = 20
 
     separator_height = 0
-    separator_color = "#ffdbd0"
+    separator_color = "#efe0cf"
 
     font = proportional_font 11
     corner_radius = 7

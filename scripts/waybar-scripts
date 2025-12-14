@@ -1,154 +1,191 @@
-#!/bin/bash
-termwin="footclient zsh -c"
+#!/usr/bin/env fish
 
-sync_icon() {
-  if systemctl --user is-active --quiet backupDrive.service; then
-    total="$(easyclone get-status --show-total 2>/dev/null)"
-    current="$(easyclone get-status --all 2>/dev/null | jq '.finished_path_count' 2>/dev/null)"
-    echo "󰘿  <span foreground=\"#f1dfda\">${current:=0}</span> <span foreground=\"#ffb59e\">/</span> <span foreground=\"#f1dfda\">${total}</span>"
-  else
-    echo
-  fi
-}
+set termwin "footclient zsh -c"
 
-mic_icon() {
-  CARD_INDEX=1
-  CONTROL_NAME='Capture'
-  mic_status=$(amixer -c $CARD_INDEX sget $CONTROL_NAME | grep -o "\[[a-z]*\]")
+function sync_icon
+    if systemctl --user is-active --quiet backupDrive.service
+        set total (easyclone get-status -t 2>/dev/null)
+        set current (easyclone get-status -f 2>/dev/null)
+        set empty_paths (easyclone get-status -e 2>/dev/null)
 
-  if [[ $mic_status == *"[off]" ]]; then
-    echo "󰍭"
-  else
-    echo
-  fi
-}
+        if test $total -eq 0
+            set percentage 0
+        else
+            set raw_percent (math "($current / $total) * 100")
+            set  percentage (printf "%.1f" $raw_percent)
+        end
 
-do_not_disturb() {
-  if [[ "$(dunstctl is-paused)" = "true" ]]; then
-    printf "󰂛\nPress Ctrl+Alt+H"
-  else
-    echo ""
-  fi
-}
+        if test "$empty_paths" = "[]"
+          set backup_icon "backup"
+        else
+          set backup_icon "backup-empty-paths"
+          set tooltip "Empty paths:\r" (echo "$empty_paths" | sed "s/'/\"/g" | jq --raw-output '. | join("\r")')
+        end
 
-check_updates() {
-  updates_arch=0
-  updates_aur=0
-
-  while true; do
-    if command -v checkupdates &>/dev/null; then
-      updates_arch=$(checkupdates 2>/dev/null | wc -l)
-      if [ $? -eq 0 ]; then
-        break
-      fi
+        printf "{\"text\": \"%s\", \"alt\": \"%s\", \"tooltip\": \"%s\", \"class\": \"\", \"percentage\": \"%s\"}" \
+          "$percentage" "$backup_icon" "$tooltip" "$percentage"
     else
-      exit 1
-    fi
-    dunstify -a "waybar" -i go-down "update error" "cannot fetch update count from checkupdates, retrying in 5s"
-    sleep 5
-  done
+        echo ""
+    end
+end
 
-  if command -v paru &>/dev/null; then
-    updates_aur=$(paru -Qum 2>/dev/null | wc -l || echo 0)
-    if [ $? -ne 0 ]; then
-      updates_aur=0
-    fi
-  fi
+function mic_icon
+    set -l CARD_INDEX 1
+    set -l CONTROL_NAME Capture
+    set -l mic_status (amixer -c $CARD_INDEX sget $CONTROL_NAME | grep -o '\[[a-z]*\]')
 
-  updates=$((updates_arch + updates_aur))
-
-  if [ "$updates" -gt 0 ]; then
-    echo "󰏗 <span foreground=\"#f1dfda\">$updates</span>"
-  else
-    echo ""
-  fi
-}
-
-copy_date() {
-  if wl-copy $(date "+%F"); then
-    dunstify -a "Waybar" -r 9326 -i clipit-trayicon -t 5000 "date copied to clipboard!" "'$(date +"%F")'"
-  else
-    dunstify -a "Waybar" -r 9326 -i clipit-trayicon -t 5000 "something happend while copying date to clipboard." "check the script file $0."
-  fi
-}
-
-gpu_usage() {
-  echo "󰹑 <span foreground=\"#f1dfda\">$(cat /sys/class/hwmon/hwmon3/device/gpu_busy_percent)%</span>"
-
-}
-
-wifi_click() {
-  if ping -q -c 1 -W 1 8.8.8.8 >/dev/null 2>&1; then
-    footclient zsh -c '
-  read -p "are you sure you want to run nethogs? (y/n) " -n 1 -r
-    echo
-    if [[ $reply =~ ^[yy]$ ]]; then
-      printf "\e[1menter your password to monitor the network activity:\e[0m\n" &&
-      sudo nethogs
-    fi
-  '
-  elif rfkill | grep -w "blocked"; then
-    footclient zsh -c 'printf "\e[1mEnter your password to unblock network:\n" && sudo rfkill unblock all && impala'
-  else
-    footclient zsh -c 'impala'
-  fi
-}
-
-bt_toggle() {
-  if [ $(bluetoothctl show | grep "Powered: yes" | wc -c) -eq 0 ]; then
-    bluetoothctl power on
-  else
-    bluetoothctl power off
-  fi
-}
-
-switch_audio_sink() {
-  if ! pactl list short sinks | grep -q "combined"; then
-    pactl load-module module-combine-sink sink_name=combined sink_properties=device.description="CombinedOutput" slaves=alsa_output.pci-0000_04_00.6.analog-stereo,alsa_output.pci-0000_04_00.1.hdmi-stereo-extra1
-  fi
-
-  # Define your sinks
-  DEFAULT_SINK="combined"
-  BLUETOOTH_SINK="bluez_output.00_A4_1C_1D_BE_79.1"
-
-  # Check if Bluetooth sink exists and is connected
-  if ! pactl list short sinks | grep -q "$BLUETOOTH_SINK"; then
-    # Set Bluetooth sink as default
-    pactl set-default-sink "$DEFAULT_SINK"
-  else
-    if [[ $(pactl info | grep "Default Sink" | awk -F: '{print $2}' | xargs) = ${BLUETOOTH_SINK} ]]; then
-      pactl set-default-sink "$DEFAULT_SINK"
+    if string match -q "*[off]*" "$mic_status"
+        echo "󰍭 muted"
     else
-      pactl set-default-sink "$BLUETOOTH_SINK"
-    fi
-  fi
-}
+        echo ""
+    end
+end
 
-check_special_workspace() {
-  if hyprctl workspaces | grep "special:magic" 1>/dev/null; then
-    printf "H\nPress Super+V"
-  else
-    echo ""
-  fi
-}
+function do_not_disturb
+    if test (dunstctl is-paused) = "true"
+        printf "󰂛\nPress Mod+Shift+B\n"
+    else
+        echo ""
+    end
+end
 
-case $1 in
-sync_icon) sync_icon ;;
-mic_icon) mic_icon ;;
-do_not_disturb) do_not_disturb ;;
-check_special_workspace) check_special_workspace ;;
-switch_audio_sink) switch_audio_sink ;;
-sync_icon_click) $termwin "watch -c -n 0.5 tail -n 50 $HOME/.cache/logs/backupDrive.log" ;;
-gpu_click) $termwin "radeontop; zsh" ;;
-copy_date) copy_date ;;
-wifi_click) wifi_click ;;
-nethogs_command) nethogs_command ;;
-impala_command) impala_command ;;
-gpu_usage) gpu_usage ;;
-htop_cpu) $termwin "htop -t --sort-key PERCENT_CPU" ;;
-htop_mem) $termwin "htop -t --sort-key PERCENT_MEM" ;;
-check_updates) check_updates ;;
-open_update_screen) $termwin "printf '%b\n\n' '\e[1mEnter your password to update Pacman/AUR packages:\e[0m'; printf '%b\n' "\e[32m:: \e[0mImportant updates:"; checkupdates | grep -Ff ~/.config/paru/important_packages.txt; sudo paru; zsh" ;;
-bt_toggle) bt_toggle ;;
-*) echo "Don't use this script from your terminal." ;;
-esac
+function check_updates
+    set -l updates_arch 0
+    set -l updates_aur 0
+
+    while true
+        if type -q checkupdates
+            set updates_arch (checkupdates 2>/dev/null | wc -l)
+            if test $status -eq 0
+                break
+            end
+        else
+            exit 1
+        end
+        dunstify -a "waybar" -i go-down "update error" "cannot fetch update count from checkupdates, retrying in 5s"
+        sleep 5
+    end
+
+    if type -q paru
+        set updates_aur (paru -Qum 2>/dev/null | wc -l)
+        if test $status -ne 0
+            set updates_aur 0
+        end
+    end
+
+    set updates (math $updates_arch + $updates_aur)
+    if test $updates -gt 0
+        echo "󰏗 <span foreground=\"$matugen_on_surface\">$updates</span>"
+    else
+        echo ""
+    end
+end
+
+function copy_date
+    if date "+%F" | wl-copy
+        dunstify -a "Waybar" -r 9326 -i clipit-trayicon -t 5000 "date copied to clipboard!" "'"(date "+%F")"'"
+    else
+        dunstify -a "Waybar" -r 9326 -i clipit-trayicon -t 5000 "something happened while copying date to clipboard." "check the script file $argv[0]."
+    end
+end
+
+function gpu_usage
+    echo "󰹑 <span foreground=\"$matugen_on_surface\">"(cat /sys/class/hwmon/hwmon3/device/gpu_busy_percent)"%</span>"
+end
+
+function wifi_click
+    if ping -q -c 1 -W 1 8.8.8.8 >/dev/null 2>&1
+        $termwin '
+            read -p "are you sure you want to run nethogs? (y/n) " -n 1 -r
+            echo
+            if [[ $reply =~ ^[yy]$ ]]; then
+                printf "\e[1menter your password to monitor the network activity:\e[0m\n" &&
+                sudo nethogs
+            fi
+        '
+    else if rfkill | grep -w "blocked" >/dev/null
+        $termwin 'printf "\e[1mEnter your password to unblock network:\n" && sudo rfkill unblock all && impala'
+    else
+        $termwin 'impala'
+    end
+end
+
+function bt_toggle
+    if test (bluetoothctl show | grep "Powered: yes" | wc -c) -eq 0
+        bluetoothctl power on
+    else
+        bluetoothctl power off
+    end
+end
+
+function switch_audio_sink
+    if not pactl list short sinks | grep -q "combined"
+        pactl load-module module-combine-sink sink_name=combined sink_properties=device.description="CombinedOutput" slaves=alsa_output.pci-0000_04_00.6.analog-stereo,alsa_output.pci-0000_04_00.1.hdmi-stereo-extra1
+    end
+
+    set DEFAULT_SINK combined
+    set BLUETOOTH_SINK bluez_output.00_A4_1C_1D_BE_79.1
+
+    if not pactl list short sinks | grep -q "$BLUETOOTH_SINK"
+        pactl set-default-sink "$DEFAULT_SINK"
+    else
+        if test (pactl info | grep "Default Sink" | awk -F: '{print $2}' | xargs) = "$BLUETOOTH_SINK"
+            pactl set-default-sink "$DEFAULT_SINK"
+        else
+            pactl set-default-sink "$BLUETOOTH_SINK"
+        end
+    end
+end
+
+function check_special_workspace
+    if hyprctl workspaces | grep "special:magic" >/dev/null
+        printf "H\nPress Super+V\n"
+    else
+        echo ""
+    end
+end
+
+function show_failed_units
+    $termwin "echo 'Failed system services' && sudo systemctl --failed && echo '\nFailed user services' && systemctl --user --failed; zsh"
+end
+
+switch $argv[1]
+    case sync_icon
+        sync_icon
+    case mic_icon
+        mic_icon
+    case do_not_disturb
+        do_not_disturb
+    case check_special_workspace
+        check_special_workspace
+    case switch_audio_sink
+        switch_audio_sink
+    case sync_icon_click
+        eval "$termwin 'watch -c -n 0.5 tail -n 50 $HOME/.cache/logs/backupDrive.log'"
+    case gpu_click
+        eval "$termwin 'radeontop; zsh'"
+    case copy_date
+        copy_date
+    case wifi_click
+        wifi_click
+    case gpu_usage
+        gpu_usage
+    case htop_cpu
+        eval "$termwin 'htop -t --sort-key PERCENT_CPU'"
+    case htop_mem
+        eval "$termwin 'htop -t --sort-key PERCENT_MEM'"
+    case check_updates
+        check_updates
+    case open_update_screen
+        eval "$termwin 'printf \"%b\\n\\n\" \"\e[1mEnter your password to update Pacman/AUR packages:\e[0m\"; printf \"%b\\n\" \"\e[32m:: \e[0mImportant updates:\"; checkupdates | grep -Ff ~/.config/paru/important_packages.txt; sudo paru; zsh'"
+    case bt_toggle
+        bt_toggle
+    case change_keyboard_state
+        change_keyboard_state
+    case show_failed_units
+        show_failed_units
+    case get_keyboard_state
+        get_keyboard_state
+    case '*'
+        echo "Don't use this script from your terminal."
+end

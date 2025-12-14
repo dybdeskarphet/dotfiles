@@ -1,7 +1,7 @@
 input {
     keyboard {
         xkb {
-            layout "tr,es"
+            layout "tr"
             options "caps:swapescape,altwin:swap_lalt_lwin,grp:ctrls_toggle"
         }
         numlock
@@ -17,9 +17,11 @@ input {
 
     tablet {
         map-to-output "HDMI-A-1"
-        // calibration-matrix 1.0 0.0 0.0 0.0 1.0 0.0
+        calibration-matrix 1.0 0.0 0.0 0.0 1.0 0.0
     }
 
     focus-follows-mouse
     warp-mouse-to-focus
+    disable-power-key-handling
+
 }

@@ -1,0 +1,22 @@
+recent-windows {
+    debounce-ms 750
+    open-delay-ms 150
+    highlight {
+        active-color "{{colors.primary.dark.hex}}"
+        urgent-color "{{colors.error_container.dark.hex}}"
+        padding 30
+        corner-radius 10
+    }
+
+    previews {
+        max-height 700
+        max-scale 1.0
+    }
+
+    binds {
+        Alt+Tab         { next-window; }
+        Alt+Shift+Tab   { previous-window; }
+        Mod+Tab         { next-window; }
+        Mod+Shift+Tab   { previous-window; }
+    }
+}

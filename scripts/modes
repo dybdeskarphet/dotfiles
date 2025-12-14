@@ -3,8 +3,7 @@
 selection=$(echo -e "󰎁  movie mode\n  normal mode" | rofi -dmenu -theme ~/.local/share/rofi/themes/basic_launcher/rounded_with_listview.rasi -p "    modes")
 
 movie_mode() {
-  ~/.config/niri/companion/ipcext.py replace "width 2" "width 0"
-  ~/.config/niri/companion/ipcext.py replace "gaps 3" "gaps 0"
+  niri-genconfig generate movie
 
   if [ ! -f "/tmp/waybar_toggle.dat" ]; then
     waybar_toggle=1
@@ -21,7 +20,7 @@ movie_mode() {
 }
 
 normal_mode() {
-  ~/.config/niri/companion/genconfig.py generate
+  niri-genconfig generate
 
   if [ ! -f "/tmp/waybar_toggle.dat" ]; then
     waybar_toggle=1

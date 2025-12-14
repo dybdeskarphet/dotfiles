@@ -1,0 +1,29 @@
+[general]
+output_path = "~/.config/niri/config.kdl"
+
+[genconfig]
+watch_dir = "$XDG_CONFIG_HOME/niri/src"
+sources = [
+  "$XDG_CONFIG_HOME/niri/src/internal.kdl",
+  "$XDG_CONFIG_HOME/niri/src/monitors.kdl",
+  "$XDG_CONFIG_HOME/niri/src/visual.kdl",
+  "$XDG_CONFIG_HOME/niri/src/input.kdl",
+  "$XDG_CONFIG_HOME/niri/src/keybindings.kdl",
+  "$XDG_CONFIG_HOME/niri/src/rules.kdl",
+  "$XDG_CONFIG_HOME/niri/src/modules/recents.kdl",
+  [
+    { group = "default", path = "$XDG_CONFIG_HOME/niri/src/modules/corners/normal.kdl" },
+    { group = "movie", path = "$XDG_CONFIG_HOME/niri/src/modules/corners/no_corners.kdl" },
+  ],
+  [
+    { group = "default", path = "$XDG_CONFIG_HOME/niri/src/modules/layout/normal.kdl" },
+    { group = "movie", path = "$XDG_CONFIG_HOME/niri/src/modules/layout/immersive.kdl" },
+  ],
+
+]
+
+[workspaces]
+dmenu_command = "rofi -dmenu -theme ~/.local/share/rofi/themes/basic_launcher/rounded_with_listview.rasi -p '󰾂   workspace'"
+task_delay = 0.3
+
+[workspaces.items]

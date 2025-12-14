@@ -5,6 +5,7 @@ This repository contains my personal dotfiles for configuring various programs a
 ## Programs and Tools
 
 - **Wayland Compositor**: [niri](https://yalter.github.io/niri/)
+- **Niri Helper**: [niri-companion](https://github.com/dybdeskarphet/niri-companion)
 - **Terminal**: [foot](https://codeberg.org/dnkl/foot)
 - **Notification Daemon**: [Dunst](https://dunst-project.org/)
 - **Wallpaper Setter**: [swww](https://github.com/LGFae/swww)
@@ -17,7 +18,7 @@ This repository contains my personal dotfiles for configuring various programs a
 
 ## Screenshots
 
-<img src="screenshot1.png" width="384"> <img src="screenshot2.png" width="384">
+<img src="ss1.png" width="384"> <img src="ss2.png" width="384">
 
 ## Installation
 
@@ -37,7 +38,7 @@ This repository contains my personal dotfiles for configuring various programs a
 - Fonts used:
   - [JetBrains Mono Nerd Font](https://www.nerdfonts.com/font-downloads)
   - [Mulish](https://fonts.google.com/specimen/Mulish)
-  - [Deutsch Gothic](https://www.dafont.com/deutsch-gothic.font)
+  - [Karina](https://www.dafont.com/karina-4.font)
 
 ## License
 

@@ -6,13 +6,19 @@ window-rule {
 }
 
 window-rule {
-    match app-id=r#"clipse$"#
-    open-floating true
+    match app-id=r#"^org\.wezfurlong\.wezterm$"#
+    default-column-width {}
 }
 
 window-rule {
-  geometry-corner-radius 5
-  clip-to-geometry true
+    match title=r#"Layer Select"#
+    open-floating true
+    open-focused false
+}
+
+window-rule {
+    match app-id=r#"clipse$"#
+    open-floating true
 }
 
 window-rule {

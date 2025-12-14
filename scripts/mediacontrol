@@ -5,6 +5,7 @@ script_name="$(basename "$0")"
 print_usage() {
   printf '\n%b\n' "  \e[1mMEDIA CONTROL\e[0m"
   printf '%b\n' "  $script_name volume <up|down|full|off|toggle>    control the volume"
+  printf '%b\n' "  $script_name togglemic                           toggle microphone"
   printf '%b\n\n' "  $script_name backlight <down|up|full|off>        control the backlight"
 }
 
@@ -23,20 +24,17 @@ case $1 in
 volume)
   case $2 in
   up)
-    pamixer -i 5 &
+    wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ &
     paplay /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga &
     ;;
   down)
-    pamixer -d 5 &
+    wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- &
     paplay /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga &
     ;;
-  full) pamixer --set-volume 100 ;;
-  off) pamixer --set-volume 0 ;;
+  full) wpctl set-volume @DEFAULT_AUDIO_SINK@ 100% ;;
+  off) wpctl set-volume @DEFAULT_AUDIO_SINK@ 0% ;;
   toggle)
-    case $(pamixer --get-volume-human) in
-    muted) pamixer -t ;;
-    *) pamixer -t ;;
-    esac
+    wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
     ;;
   esac
   ;;

@@ -3,6 +3,25 @@ command = "swww"
 arguments = ["img", "--transition-fps", "100", "--transition-type", "center"]
 set = true
 
+[templates.niri_layout]
+input_path = './templates/niri_layout.kdl'
+output_path = '~/.config/niri/src/modules/layout/normal.kdl'
+post_hook = 'niri-genconfig generate'
+
+[templates.niri_recents]
+input_path = './templates/niri_recents.kdl'
+output_path = '~/.config/niri/src/modules/recents.kdl'
+post_hook = 'niri-genconfig generate'
+
+# [templates.hyprland]
+# input_path = './templates/hyprland.conf'
+# output_path = '~/.config/hypr/hyprland/colors.conf'
+# post_hook = 'hyprctl reload'
+
+[templates.foot]
+input_path = './templates/foot.ini'
+output_path = '~/.config/foot/colors.ini'
+
 [templates.waybar-style]
 input_path = './templates/colors.css'
 output_path = '~/.config/waybar/colors.css'
@@ -10,10 +29,11 @@ output_path = '~/.config/waybar/colors.css'
 [templates.waybar-config]
 input_path = './templates/waybar.jsonc'
 output_path = '~/.config/waybar/config.jsonc'
+post_hook = 'systemctl --user reload waybar.service'
 
 [templates.dunst]
 input_path = './templates/dunstrc.ini'
-output_path = '~/.config/dunst/config.ini'
+output_path = '~/.config/dunst/dunstrc'
 post_hook = 'dunstctl reload'
 
 [templates.rofi]
@@ -28,9 +48,18 @@ output_path = '~/.local/share/rofi/themes/launchpad/colors.rasi'
 input_path = './templates/current_colors.txt'
 output_path = '~/.config/matugen/references/colors.txt'
 
-[templates.zathura]
-input_path = './templates/zathurarc'
-output_path = '~/.config/zathura/zathurarc'
+[templates.neovim]
+input_path = './templates/colors.lua'
+output_path = '~/.config/nvim/lua/helpers/matugen.lua'
+
+[templates.yazilua]
+pre_hook = 'mkdir -p ~/.config/yazi/plugins/matugen.yazi'
+input_path = './templates/colors.lua'
+output_path = '~/.config/yazi/plugins/matugen.yazi/main.lua'
+
+# [templates.zathura]
+# input_path = './templates/zathurarc'
+# output_path = '~/.config/zathura/zathurarc'
 
 [templates.syshud]
 input_path = './templates/colors.css'
@@ -65,7 +94,44 @@ output_path = '~/.config/qt5ct/colors/matugen.conf'
 input_path = './templates/qt-colors.conf'
 output_path = '~/.config/qt6ct/colors/matugen.conf'
 
-[templates.niri]
-input_path = './templates/niri.kdl'
-output_path = '~/.config/niri/src/visual.kdl'
-post_hook = "~/.config/niri/companion/genconfig.py generate"
+[templates.btop]
+input_path = './templates/btop.theme'
+output_path = '~/.config/btop/themes/matugen.theme'
+
+[templates.polychromatic]
+input_path = './templates/polychromatic.json'
+output_path = '~/.config/polychromatic/colours.json'
+
+[templates.sudo_prompt]
+input_path = './templates/sudo_prompt.fish'
+output_path = '~/.config/fish/conf.d/sudo_prompt.fish'
+
+[templates.pywalfox]
+input_path = './templates/pywalfox.json'
+output_path = '~/.cache/wal/colors.json'
+post_hook = 'pywalfox update'
+
+[templates.openrazer]
+input_path = './templates/openrazer.txt'
+output_path = '~/.config/openrazer/matugen.txt'
+post_hook = 'maturazer ripple'
+
+[templates.env]
+input_path = './templates/env.fish'
+output_path = '~/.config/fish/conf.d/matugen.fish'
+
+[templates.matugen]
+input_path = './templates/vimium.css'
+output_path = '~/.config/matugen/outputs/vimium.css'
+
+[templates.tmux]
+input_path = './templates/tmux.conf'
+output_path = '~/.config/tmux/colors.conf'
+
+[templates.cava]
+input_path = './templates/cava.ini'
+output_path = '~/.config/cava/config'
+
+# [templates.zenbrowser]
+# input_path = './templates/zen.js'
+# output_path = '~/.zen/0moo0o80.Default (release)/user.js'

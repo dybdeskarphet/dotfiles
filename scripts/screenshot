@@ -42,7 +42,7 @@ class Screenshot:
 
     def _process_ocr(self):
         result = subprocess.run(
-            ["tesseract", str(self.path), "stdout"],
+            ["tesseract", "-l", "tur+eng", str(self.path), "stdout"],
             stdout=subprocess.PIPE,
             stderr=subprocess.DEVNULL,
             text=True,
@@ -100,9 +100,7 @@ class Screenshot:
         self._notify()
 
     def window(self):
-        _ = subprocess.run(
-            ["niri", "msg", "action", "screenshot-window", "-p", "false"], check=True
-        )
+        _ = subprocess.run(["niri", "msg", "action", "screenshot-window"], check=True)
         self._wait_for_file()
         self._copy()
         self._notify()
