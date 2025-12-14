@@ -6,12 +6,12 @@
  *******************************************************************************/
 
 * {
-    fg2: #e5dff9;
+    fg2: #d8c3ab;
     font: "proportional_font SemiBold 13";
-    colorbg: #48454fcc;
-    textfg: #e5e1e9;
-    transparentcolorbg: #c9c3dc4d;
-    borderfg:    #c9c3dc4d;
-    windowbg:    #1c1b20cc;
+    colorbg: #4f4539cc;
+    textfg: #e8e1dd;
+    transparentcolorbg: #d8c3ab4d;
+    borderfg:    #d8c3ab4d;
+    windowbg:    #221f1dcc;
 }
 

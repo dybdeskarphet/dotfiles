@@ -13,6 +13,6 @@ listview {
     border-color: @borderfg;
     columns:    2;
     fixed-height: false;
-    lines:      5;
+    lines:      6;
     padding: 15px;
 }
